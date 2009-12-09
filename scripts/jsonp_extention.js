@@ -10,7 +10,7 @@ gTransExp = function(){
 	else
 	{
 		var context = arguments[1].translatedText;
-		var original_lang = arguments[1].detectedSourceLanguage;
+		var original_lang = mbtweet.defined_language[ arguments[1].detectedSourceLanguage ];
 		if( original_lang == mbtweet.user.language )
 		{
 			// translated lanugage is same with translated language

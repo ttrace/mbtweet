@@ -54,7 +54,7 @@ mbtweet.defined_language =
 	yi	: "Yiddish"
 }
 
-mbtweet.prototype.set_language = function( lang_code )
+mbtweet.set_language = function( lang_code )
 {
 	var language_name = this.defined_language[ lang_code ];
 	if( language_name)
@@ -62,7 +62,7 @@ mbtweet.prototype.set_language = function( lang_code )
 		this.language = 
 		{
 			lang	: lang_code,
-			language: this.defined_language[ lang_code ].
+			language: this.defined_language[ lang_code ]
 		}
 	}
 }
