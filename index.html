@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>mbtweet</title>
+	<meta http-equiv="content-type" content="text/html, text/javascript; charset=utf-8">
+	<link rel="stylesheet"	href="pbapp.css">
+	<script src="./scripts/localstorage.js" 	type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/mbtweet.js"			type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/webdb.js"			type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/twitterapi_call.js" 	type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/oauth.js"			type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/sha1.js"				type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/ui.js"				type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/tweet.js"			type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/util.js"				type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/bitly.js"			type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/jsonp_extention.js"	type="application/x-javascript" charset="utf-8"></script>
+</head>
+
+<body onload="init_mbtweet()">
+	<header>
+	<div id = "post">
+		<div id="counter">140</div>
+		<form onSubmit="post_tweet(this , event); return(false);">
+		<textarea id="status" tabindex="0"></textarea>
+		<input name="post_status" id="post_status" type="submit" value="tweet!">
+		<input name="post_in_reply_to_status_id" id="post_in_reply_to_status_id" type="hidden" value="">
+		</form>
+	</div>
+	</header>
+	
+	<div id="column">
+		<div id = "home_column" class = "timeline_column">
+			<div class = "timeline_header">
+				Home
+			</div>
+			<div id = "home" class = "timeline">
+				<!--div class="read more">
+				read more...
+				</div -->
+			</div>
+		</div>
+		<div id = "mention_column" class = "timeline_column">
+			<div class = "timeline_header">
+				mention
+			</div>
+			<div id = "mention" class = "timeline">
+				<!--div class="read more">
+				read more...
+				</div -->
+			</div>
+		</div>
+		<!-- div id = "list_column" class = "timeline_column">
+			<div class = "timeline_header">
+				fri
+			</div>
+			<div id = "list" class = "timeline">
+				<div class="read more">
+				read more...
+				</div>
+			</div>
+		</div -->
+	</div>
+</html>

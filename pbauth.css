@@ -1,0 +1,27 @@
+body
+{
+	height	: 100%;
+}
+
+.current-process
+{
+	display : block;
+}
+
+.inactive
+{
+	display : none;
+}
+
+#post_key , #go_pbtweet
+{
+	display :none;
+}
+
+iframe
+{
+	background-color: white;
+	height			: 40px;
+	width			: 550px;
+	margin			: 5px auto;
+}

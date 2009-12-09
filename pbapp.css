@@ -1,0 +1,432 @@
+*
+{
+	-webkit-user-select : none;
+	font-family			: sans-serif;
+}
+
+body
+{
+	background-color	: rgb(90 , 90 , 90);
+	margin				: 0px;
+}
+
+a
+{
+	text-decoration : none;
+}
+
+a:hover
+{
+	text-decoration : underline;
+}
+
+#tab_bar
+{
+	margin : 0px;
+	padding : 0px;
+}
+
+#tab_bar li
+{
+	display : inline ;
+}
+
+#column
+{
+	height: 500px;
+	/*
+	overflow-x: hidden;
+	overflow-y: hidden;
+	position: absolute;
+	*/
+	width: 100%;
+}
+
+.timeline_column
+{
+	position	: absolute;
+	width		: 410px;
+}
+
+.timeline
+{
+	position : relative;
+
+	height		: 500px;
+	background-color: rgb( 90 , 90 , 90 );
+	overflow-y	: scroll;
+	overflow-x	: hidden;
+
+	border-width	: 0px 0px 6px 0px;
+	border-style	: none solid solid solid;
+	border-color	: rgb(60, 60, 60);
+	padding			: 0px 6px;
+
+	-webkit-background-clip				:padding-box;
+	-webkit-box-shadow	: 0px 5px 10px rgba(0, 0, 0, 0.5);
+	-webkit-border-bottom-left-radius	: 6px 6px;
+	-webkit-border-bottom-right-radius	: 6px 6px;
+	-webkit-border-top-left-radius		: 0px 0px;
+	-webkit-border-top-right-radius		: 0px 0px;
+}
+
+.timeline_header
+{
+	-webkit-border-bottom-left-radius: 0px 0px;
+	-webkit-border-bottom-right-radius: 0px 0px;
+	-webkit-border-top-left-radius: 6px 6px;
+	-webkit-border-top-right-radius: 6px 6px;
+	background-color: rgb(60, 60, 60);
+	color: white;
+	font-weight: bold;
+	padding: 2px;
+	text-align: center;
+}
+
+#home_column
+{
+	left : 10px;
+}
+
+#mention_column
+{
+	left : 430px;
+}
+
+#list_column
+{
+	left : 850px;
+}
+
+#dminbox
+{
+	display : none;
+	left : 840px;
+}
+
+
+/*
+	post status
+*/
+#post *
+{
+	-webkit-user-select : auto;
+}
+
+header
+{
+}
+
+#post
+{
+	width	: 550px;
+	-webkit-border-radius	: 6px;
+	margin	: 0px auto;
+}
+
+#post #status
+{
+	width		: 420px;
+	height		: 40px;
+	max-width	: 420px;
+	min-width	: 420px;
+	min-height	: 24px;
+	padding		: 3px;
+}
+
+#post #counter
+{
+	position	: absolute;
+	margin-left	: 470px;
+	font-size	: 24px;
+	font-family	: Helvetica , san-serif;
+	font-weight	: bold;
+	color		: white;
+}
+
+/*
+ Tweets' stylesheet
+*/
+.entry
+{
+	display			: block;
+	clear			: both;	
+	padding-bottom	: 5px;
+}
+
+.timeline > .entry
+{
+	border-bottom	: 1px solid rgb( 120 , 120 , 120 );
+}
+
+.entry.conv
+{
+	padding-bottom	: 0px;
+}
+
+.entry.unread
+{
+	background-color	:#BBDDFF;
+}
+
+.entry .u-status
+{
+	display		: table-cell;
+	width		: 331px;
+	height		: 40px;
+	max-width	: 331px;
+	padding		: 0px 0px 0px 0px;
+}
+
+.entry .u-status .u-string
+{
+	max-width	: 331px;
+	padding		: 14px 12px 0px 18px;
+	
+	background-repeat	: no-repeat;
+	background-image	 :	url("./images/favorited.png"),
+							url("./images/baloon_01.png"),
+							url("./images/baloon_02.png");
+	background-position :  321px 10px, 0px 8px , 0px 19px;
+	-webkit-background-size:  0px 0px, 331px 11px , 331px 100%;
+}
+
+.entry.mine > .u-status > .u-string
+{
+	background-image	 :	url("./images/favorited.png"),
+							url("./images/baloon_mine_01.png"),
+							url("./images/baloon_mine_02.png");
+}
+
+.entry.mention > .u-status > .u-string
+{
+	background-image	 :	url("./images/favorited.png"),
+							url("./images/baloon_mention_01.png"),
+							url("./images/baloon_mention_02.png");
+}
+
+.entry.favorited > .u-status > .u-string
+{
+	-webkit-background-size:  20px 20px, 331px 11px , 331px 100%;
+	background-position :  311px 0px, 0px 8px , 0px 19px;
+}
+
+.entry.loading > .u-status > .u-string
+{
+	-webkit-transition-property			: -webkit-background-size , background-position ;
+	-webkit-transition-duration			: 0.25s;
+	-webkit-transition-timing-function:	: ease-in;
+}
+
+.entry.conv .u-status .u-string
+{
+	padding		: 6px 12px 0px 18px;
+	background-position :  321px 10px, 0px 0px , 0px 11px;
+	-webkit-background-size:  0px 0px, 331px 11px , 331px 100%;
+}
+
+.entry .u-status .u-string
+{
+	font-size	: 12px;
+}
+
+.entry .u-status .u-string .user-name
+{
+	font-weight : bold;
+	margin: 0px 8px 0px 0px;
+}
+
+.entry.retweeted .u-status .u-string .user-name:first-of-type
+{
+	margin: 0px 0px 0px 0px;
+}
+
+.entry .u-status .u-string *
+{
+	-webkit-user-select : text;
+}
+
+.entry .u-status .status-meta
+{
+	display		: table-cell;
+	width		: 331px;
+	height		: 21px;
+	overflow	: hidden;
+	font-size	: 10px;
+	padding		: 0px 20px 0px 0px;
+	color		: rgb(136, 136, 136);
+	text-align	: right;
+	background-image 	: 	url("./images/baloon_03.png");
+	background-repeat	: no-repeat;
+}
+
+.entry.mine > .u-status > .status-meta
+{
+	background-image : 	url("./images/baloon_mine_03.png");
+}
+
+.entry.mention > .u-status > .status-meta
+{
+	background-image : 	url("./images/baloon_mention_03.png");
+}
+
+.entry .u-status .status-meta a
+{
+	color		: rgb(136, 136, 136);
+	text-decoration: none;
+}
+
+.entry .u-status .status-meta a:hover
+{
+	color		: rgb(80, 80, 80);
+	text-decoration: underline;
+}
+
+.entry .icon_wrapper
+{
+	display : table-cell;
+	vertical-align: bottom;
+	padding: 0px 5px 5px 5px;
+}
+
+.entry.conv .icon_wrapper
+{
+	vertical-align	: bottom;
+	padding			: 0px 0px 8px 20px;
+}
+
+.entry .icon
+{
+	margin	: 0px;
+	width	: 36px;
+	height	: 36px;
+}
+
+.entry.conv .icon
+{
+	width	: 28px;
+	height	: 28px;
+}
+
+.entry .rt-icon
+{
+	position	: absolute;
+	display		: block;
+	margin-left	: 18px;
+	margin-top	: -20px;
+	width		: 22px;
+	height		: 22px;
+	-webkit-box-shadow	: 0px 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+.entry .action
+{
+	position	: absolute;
+	width 		: 328px;
+	height		: 21px;
+	margin		: -21px 0px 0px 46px;
+	opacity		: 0;
+	text-align	: center;
+/*	background	: -webkit-gradient(	linear,
+									0% 0%, 0% 100%,
+									from(rgba(0, 0, 0, 0)),
+									color-stop(0.2, rgba(0, 0, 0, 0)),
+									to(rgb(30, 30, 30)));
+	-webkit-border-bottom-left-radius	: 10px 10px;
+	-webkit-border-bottom-right-radius	: 10px 10px;
+	-webkit-border-top-left-radius		: 0px 0px;
+	-webkit-border-top-right-radius		: 0px 0px;*/
+
+	background-image	: url("./images/button_background.png");
+	background-repeat	: no-repeat;
+
+	-webkit-transition-property			: opacity , margin-top ;
+	-webkit-transition-duration			: 0.25s;
+	-webkit-transition-timing-function:	: ease-in;
+}
+
+.u-status:hover + .action,
+.action:hover
+{
+	margin-top			: -14px;
+	opacity				: 1.0;
+}
+
+.entry .action a
+{
+	display					: inline-block;
+	box-sizing				: content-box;
+	height					: 12px;
+	font-size				: 9px;
+	font-weight				: bold;
+	cursor					: pointer;
+	margin					: 0px 3px 3px 3px;
+	padding					: 1px 6px;
+	border					: 1px solid white;
+	-webkit-border-radius	: 7px;
+	-webkit-transition		: -webkit-box-shadow	0.1s ease-in,
+													color 0.1s ease-in,
+													background 0.1s ease-in;
+	text-decoration			: none;
+
+	color					: white;
+	background				: -webkit-gradient(	linear,
+												left top,
+												left bottom,
+												from( rgba(255, 255, 255, 0.2) ),
+												to( rgba(150, 150, 150, 0.5) )
+												);
+	-webkit-box-shadow		: 0px 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.entry .action a:hover
+{
+	color				: #444;
+	background			: -webkit-gradient(linear, left top, left bottom, from( rgba(255, 255, 255, 0.8) ), to( rgba(200, 200, 200, 1) ), color-stop(0.1, rgb(255, 255, 255) ));
+	text-decoration		: none;
+	-webkit-box-shadow	: 0px 2px 3px rgba(0, 0, 0, 0.75);
+}
+
+.entry .action a.dimm
+{
+	cursor	: default;
+	color	: #666666;
+	border	: 1px solid #666666;
+	background			: rgb( 200 , 200 , 200 );
+}
+
+.entry .action a.dimm:hover
+{
+	color				: #666666;
+	border				: 1px solid #666666;
+	background			: rgb( 200 , 200 , 200 );
+	-webkit-box-shadow	: 0px 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.entry .u-string .translated
+{
+	color	: #444444;
+	border-top: 1px dashed rgb(150, 150, 150);
+}
+
+.entry .conv .load-conv
+{
+	-webkit-background-size	: 331px 11px, 331px 25px;
+	background-image		: url("./images/baloon_01.png"), url("./images/baloon_03.png");
+	background-position-x	: 0px, 0px;
+	background-position-y	: 0px, 11px;
+	background-repeat		: no-repeat;
+	font-size				: 12px;
+	height					: 26px;
+	margin-left				: 48px;
+	padding-top				: 10px;
+	text-align				: center;
+	font-weight				: bold;
+}
+
+.entry .conv .load-conv.no-reply
+{
+	backgorund	: none;
+	height		: 0px;
+	padding		: 0px;
+}

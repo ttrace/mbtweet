@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>mbtweet authentication</title>
+	<meta http-equiv="content-type" content="text/html, text/javascript; charset=utf-8">
+	<link rel="stylesheet"	href="pbapp.css">
+	<link rel="stylesheet"	href="pbauth.css">
+	<script src="./scripts/webdb.js"			type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/auth.js"			 	type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/oauth.js"			type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/sha1.js"				type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/util.js"				type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/twitterapi_call.js" 	type="application/x-javascript" charset="utf-8"></script>
+	<script src="./scripts/localstorage.js" 	type="application/x-javascript" charset="utf-8"></script>
+
+</head>
+<body onload="init_auth()">
+<div>
+	pbtweet Authentication on OAuth
+</div>
+<div id = "post">
+	<form method="GET" action="javascript:request_token()">
+		<div id = "start">
+			1. <input type="submit" value = "start authentication">
+		</div>
+		<div id = "post_key">
+			2. Copy all bellow oauth keys text and paste into "OAuth token and token secres". And click "Go Twitter OAuth authenticate Page!"<br>
+			OAuth token and token secres: <input type="text" name="keys">
+			<input type="button" value = "Go Twitter OAuth authenticate Page!" onclick="jump_to_auth_page();">
+		</div>
+		<div id = "go_pbtweet">
+			3. Copy all text and paste into "activate keys" text field and click "Open pbtweet".<input type="text" name="pbkey">
+			activate keys <input type="button" value = "Open pbtweet" onclick="open_pbtweet();">
+		</div>
+	</form>
+</div>
+
+</body>
+</html>
