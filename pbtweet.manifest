@@ -1,0 +1,22 @@
+CACHE MANIFEST
+#
+# build 00011
+#
+CACHE:
+./pbapp.css
+./scripts/localstorage.js 
+./scripts/webdb.js
+./scripts/twitterapi_call.js
+./scripts/oauth.js
+./scripts/sha1.js
+./scripts/ui.js
+./scripts/tweet.js
+./scripts/util.js		
+./scripts/language.js	
+./scripts/bitly.js	
+./scripts/jsonp_extention.js
+./scripts/mbtweet.js
+./images/*
+
+NETWORK:
+*

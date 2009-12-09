@@ -1,3 +1,7 @@
+mbui = {
+	window_resize_token	: "init",
+};
+	
 init_window_resize = function()
 {
 	var timeline_css_list = getMatchedCSSRules( document.querySelector(".timeline") , '')

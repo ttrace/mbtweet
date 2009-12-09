@@ -1,3 +1,7 @@
+/*
+	codes for language menu of pbtweet.
+*/
+
 mbtweet.defined_language = 
 {
 	af	: "Afrikaans",

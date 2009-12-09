@@ -14,7 +14,7 @@ mbtweet =
 	user :
 	{
 		language	: navigator.language.substr(0,2),
-		conv_length	: 3,
+		conv_length	: 2,
 	}
 }
 
@@ -36,6 +36,16 @@ restore_mb_settings();
 
 init_mbtweet = function()
 {
+// setInterval(function() {
+// 	applicationCache.update();
+//    // }, 5000);
+//     applicationCache.addEventListener("updateready", function() {
+// 	if (confirm("アップデートを利用できます。アップデートしますか？")) {
+// 	    applicationCache.swapCache();
+// 	    location.href = location.href;
+// 	}
+//     }, true);
+
 	init_web_database();
 	init_shorten_url();
 	init_window_resize();	

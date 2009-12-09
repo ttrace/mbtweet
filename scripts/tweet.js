@@ -757,19 +757,29 @@ tweet.prototype.buildEntry = function( target , append_mode )
 	{
 		var load_conv_button = target.querySelector( ".load-conv" );
 		target.removeChild( load_conv_button );
-		
-			var new_conv_load_button 		= document.createElement("DIV");
-			new_conv_load_button.className = "load-conv";
+
+		var new_load_conv_button 	= document.createElement("DIV");
+			new_load_conv_button.className = "load-conv";
+											
  		if( this.in_reply_to_status_id != null && this.in_reply_to_status_id != "null" )
  		{
-// 			new_conv_load_button.innerText = "load in reply to " + this.in_reply_to_screen_name;
-			new_conv_load_button.innerHTML = "open in reply to <a href='http://twitter.com/" + this.in_reply_to_screen_name + "/status/" + this.in_reply_to_status_id + "' target='_blank'>" + this.in_reply_to_screen_name + "</a>";
+			new_load_conv_button.innerHTML = "load in reply to <a href='http://twitter.com/" + this.in_reply_to_screen_name + "/status/" + this.in_reply_to_status_id + "' target='_blank'>" + this.in_reply_to_screen_name + "</a>";
+			var target_id = target.id;
+			var my_status_in_reply_to_status_id = this.in_reply_to_status_id;
+			new_load_conv_button.addEventListener( "click", 
+													function( event )
+														{
+															window.console.log( event , this );
+															load_conversation	( target_id , my_status_in_reply_to_status_id , mbtweet.user.conv_length );
+														},
+													false);
  		}
  		else
  		{
-			new_conv_load_button.className = "load-conv noreply"
+ 			new_load_conv_button.innerHTML = "";
+			addClass( new_load_conv_button , "noreply" );
 		}
-		target.appendChild( new_conv_load_button );
+		target.appendChild( new_load_conv_button );
 	}
 	
 	if( this.in_reply_to_status_id != null && this.in_reply_to_status_id != "null" && conv_length > 0)
@@ -799,11 +809,23 @@ tweet.prototype.buildEntry = function( target , append_mode )
 	
 			var load_conv_button 		= document.createElement("DIV");
 				load_conv_button.className = "load-conv";
-				load_conv_button.innerHTML = "open in reply to <a href='http://twitter.com/" + my_status.in_reply_to_screen_name + "/status/" + my_status.in_reply_to_status_id + "' target='_blank'>" + my_status.in_reply_to_screen_name + "</a>";
+				load_conv_button.innerHTML = "load in reply to <a href='http://twitter.com/" + my_status.in_reply_to_screen_name + "/status/" + my_status.in_reply_to_status_id + "' target='_blank'>" + my_status.in_reply_to_screen_name + "</a>";
+
+			var conv_chain_id = conv_chain.id;
+			var my_status_in_reply_to_status_id = this.in_reply_to_status_id;
+			var more_load_conv_length = mbtweet.conv_length;
 			
 			conv_chain.appendChild( load_conv_button );
 			entry_wrapper.appendChild( conv_chain );
 
+			load_conv_button.addEventListener( "click", 
+													function( event )
+														{
+															window.console.log( event , this );
+															load_conversation	( target_id , my_status_in_reply_to_status_id , more_load_conv_length );
+														},
+													false);
+			
 			var conv_chain_id = conv_chain.id;
 			var my_status_in_reply_to_status_id = my_status.in_reply_to_status_id;
 			window.console.log(
@@ -939,6 +961,7 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 
 load_conversation = function( conv_chain_id , in_reply_to_status_id , conv_length )
 {
+	window.console.log( conv_chain_id , in_reply_to_status_id , conv_length );
 	mbdatabase.db.transaction(
 		function( tx ){
 			tx.executeSql(
