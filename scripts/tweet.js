@@ -784,14 +784,12 @@ tweet.prototype.buildEntry = function( target , append_mode )
 			if( mbtweet.debug )window.console.log( target_id , my_status_in_reply_to_status_id , conv_length );
 			
 			setTimeout(
-				(
-					function( target_id , my_status_in_reply_to_status_id , conv_length )
+						(function( target_id , my_status_in_reply_to_status_id , conv_length )
 							{
 							load_conversation	( target_id , my_status_in_reply_to_status_id , conv_length )
 							}
-				)
-				( target_id , my_status_in_reply_to_status_id , conv_length ),
-			300 );
+						)( target_id , my_status_in_reply_to_status_id , conv_length ),
+						300 );
 		}
 		else
 		{
@@ -835,7 +833,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 					my_status_in_reply_to_status_id,
 					conv_length
 				),
-			100 );
+			300 );
 		}
 	}
 
@@ -908,7 +906,6 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 				default:
 					break;
 			}
-			//if(mbtweet.debug)window.console.log( append_mode , timeline.id , target_scrollTop , " = " , target_scrollTop , " + " ,  entry_wrapper.offsetHeight , " + " , current_margin , " =  " , ( target_scrollTop + entry_wrapper.offsetHeight + current_margin ) );
 
 			// fixsing view
 			if( entry_wrapper.offsetTop <= target_scrollTop + 1 )

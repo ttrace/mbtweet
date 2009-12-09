@@ -108,7 +108,7 @@ mbdata.prototype.save_status = function( status_json )
 				{
 					if( result.rows.length == 0 )
 					{
-						mbdatabase.store_status( status_json , "new" );
+						( function( tx , status ){ insert_status( tx , status ) } )( tx , status );
 					}
 					else if( result.rows.length > 0 )
 					{
@@ -124,34 +124,8 @@ mbdata.prototype.save_status = function( status_json )
 							{
 								if( mbtweet.debug )window.console.log( "Error on remove_user(): " , error );							
 							}
-						);
-						
-						tx.executeSql(
-							"INSERT INTO status_data ( status_id , created_at , in_reply_to_screen_name , in_reply_to_status_id , in_reply_to_user_id , favorited , geo , source , text , truncated , screen_name , profile_image_url ) VALUES (? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?, ?)" ,
-							[
-								status._status_id + "",
-								status._created_at , 
-								status._in_reply_to_screen_name , 
-								status._in_reply_to_status_id + "",
-								status._in_reply_to_user_id + "",
-								status._favorited , 
-								status._geo , 
-								status._source , 
-								status._text , 
-								status._truncated , 
-								status._screen_name , 
-								status._profile_image_url
-							],
-							function( tx )
-							{
-							},
-							function( tx , error)
-							{
-								if( mbtweet.debug )window.console.log( "Error on store tweet status(): " , error );
-							}
-						);
-
-//						mbdatabase.store_status( status_json , "new" );
+						);						
+						( function( tx , status ){ insert_status( tx , status ) } )( tx , status );
 					}
 				},
 				function( tx , error)
@@ -181,7 +155,8 @@ mbdata.prototype.save_user = function( user_json )
 					//window.console.log( result.rows );	
 					if( result.rows.length == 0 )
 					{
-						mbdatabase.save( user_json , "new" );
+						( function( tx , user ){ insert_user( tx , user ) } )( tx , user );
+						//mbdatabase.save( user_json , "new" );
 					}
 					else if( result.rows.length > 0 )
 					{
@@ -199,7 +174,8 @@ mbdata.prototype.save_user = function( user_json )
 								if( mbtweet.debug )window.console.log( "Error on remove_user(): " , error );							
 							}
 						);
-						mbdatabase.save( user_json , "new" );
+//						mbdatabase.save( user_json , "new" );
+						( function( tx , user ){ insert_user( tx , user ) } )( tx , user );
 					}
 				},
 				function( tx , error)
@@ -211,103 +187,73 @@ mbdata.prototype.save_user = function( user_json )
 	);
 }
 
-mbdata.prototype.store_status = function( status_json )
+insert_status = function( tx , status )
 {
-	var status = eval('(' + status_json + ')');
-//		var status_id = status._status_id.match(/[0-9]+/)[0];
-	if( arguments[1] == "new")
-	{
-		this.db.transaction(
-			function( tx )
-			{
-				tx.executeSql(
-					"INSERT INTO status_data ( status_id , created_at , in_reply_to_screen_name , in_reply_to_status_id , in_reply_to_user_id , favorited , geo , source , text , truncated , screen_name , profile_image_url ) VALUES (? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?, ?)" ,
-					[
-						status._status_id + "",
-						status._created_at , 
-						status._in_reply_to_screen_name , 
-						status._in_reply_to_status_id + "",
-						status._in_reply_to_user_id + "",
-						status._favorited , 
-						status._geo , 
-						status._source , 
-						status._text , 
-						status._truncated , 
-						status._screen_name , 
-						status._profile_image_url
-					],
-					function( tx )
-					{
-					},
-					function( tx , error)
-					{
-						if( mbtweet.debug )window.console.log( "Error on store tweet status(): " , error );
-					}
-				);
-			}
-		);
-	}
-	else
-	{
-		//window.console.log( user.user_id );	
-	}
+	tx.executeSql(
+		"INSERT INTO status_data ( status_id , created_at , in_reply_to_screen_name , in_reply_to_status_id , in_reply_to_user_id , favorited , geo , source , text , truncated , screen_name , profile_image_url ) VALUES (? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?, ?)" ,
+		[
+			status._status_id + "",
+			status._created_at , 
+			status._in_reply_to_screen_name , 
+			status._in_reply_to_status_id + "",
+			status._in_reply_to_user_id + "",
+			status._favorited , 
+			status._geo , 
+			status._source , 
+			status._text , 
+			status._truncated , 
+			status._screen_name , 
+			status._profile_image_url
+		],
+		function( tx )
+		{
+		},
+		function( tx , error)
+		{
+			if( mbtweet.debug )window.console.log( "Error on insert tweet status(): " , error );
+		}
+	);
 }
 
-mbdata.prototype.save = function( user_json )
+insert_user = function( tx , user )
 {
-	var user = eval('(' + user_json + ')');
-	var sql_string = "UPDATE user_data SET created_at = ? , description = ? , favourites_count = ? , followers_count = ? , following = ? , friends_count = ? , geo_enabled = ? , user_id = ? , location = ? , name = ? , notifications = ? , user_protected = ? , screen_name = ? , statuses_count = ? , time_zone = ? , utc_offset = ? , url = ? , verified = ? , profile_background_color = ? , profile_background_image_url = ? , profile_background_tile = ? , profile_image_url = ? , profile_link_color = ? , profile_sidebar_border_color = ? , profile_sidebar_fill_color = ? , profile_text_color = ? , ";
-
-	if( arguments[1] == "new")
-	{
-		this.db.transaction(
-			function( tx )
-			{
-				tx.executeSql(
-					"INSERT INTO user_data (created_at , description , favourites_count , followers_count , following , friends_count , geo_enabled , user_id , location , name , notifications , user_protected , screen_name , statuses_count , time_zone , utc_offset , url , verified , profile_background_color , profile_background_image_url , profile_background_tile , profile_image_url , profile_link_color , profile_sidebar_border_color , profile_sidebar_fill_color , profile_text_color ) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)" ,
-					[ 
-						"" , //user._created_at ,
-						"" , //user._description ,
-						"" , //user._favourites_count ,
-						user._followers_count ,
-						user._following ,
-						user._friends_count ,
-						user._geo_enabled ,
-						(user._user_id + "") ,
-						user._location ,
-						user._name ,
-						user._notifications ,
-						user._user_protected ,
-						user._screen_name ,
-						user._statuses_count ,
-						"" , //user._time_zone ,
-						"" , //user._utc_offset ,
-						user._url ,
-						user._verified ,
-						"" , //user._profile_background_color ,
-						"" , //user._profile_background_image_url ,
-						"" , //user._profile_background_tile ,
-						user._profile_image_url ,
-						"" , //user._profile_link_color ,
-						"" , //user._profile_sidebar_border_color ,
-						"" , //user._profile_sidebar_fill_color ,
-						"" //user._profile_text_color
-					],
-					function( tx )
-					{
-					},
-					function( tx , error)
-					{
-						if( mbtweet.debug )window.console.log( "Error on save_asnew_user(): " , error );
-					}
-				);
-			}
-		);
-	}
-	else
-	{
-		//window.console.log( user.user_id );	
-	}
+	tx.executeSql(
+		"INSERT INTO user_data (created_at , description , favourites_count , followers_count , following , friends_count , geo_enabled , user_id , location , name , notifications , user_protected , screen_name , statuses_count , time_zone , utc_offset , url , verified , profile_background_color , profile_background_image_url , profile_background_tile , profile_image_url , profile_link_color , profile_sidebar_border_color , profile_sidebar_fill_color , profile_text_color ) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)" ,
+		[ 
+			"" , //user._created_at ,
+			"" , //user._description ,
+			"" , //user._favourites_count ,
+			user._followers_count ,
+			user._following ,
+			user._friends_count ,
+			user._geo_enabled ,
+			(user._user_id + "") ,
+			user._location ,
+			user._name ,
+			user._notifications ,
+			user._user_protected ,
+			user._screen_name ,
+			user._statuses_count ,
+			"" , //user._time_zone ,
+			"" , //user._utc_offset ,
+			user._url ,
+			user._verified ,
+			"" , //user._profile_background_color ,
+			"" , //user._profile_background_image_url ,
+			"" , //user._profile_background_tile ,
+			user._profile_image_url ,
+			"" , //user._profile_link_color ,
+			"" , //user._profile_sidebar_border_color ,
+			"" , //user._profile_sidebar_fill_color ,
+			"" //user._profile_text_color
+		],
+		function( tx )
+		{
+		},
+		function( tx , error)
+		{
+			if( mbtweet.debug )window.console.log( "Error on save_asnew_user(): " , error );
+		}
+	);
 }
-
 
