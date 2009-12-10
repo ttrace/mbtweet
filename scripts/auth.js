@@ -57,7 +57,7 @@ jump_to_auth_page = function()
 	}
 	else
 	{
-		alert( "Please copy all text and paste of authentication keys." );
+		alert( "Please copy all text and paste to OAuth token and token secret keys." );
 	}
 }
 
@@ -74,7 +74,7 @@ open_pbtweet = function()
 	}
 	else
 	{
-		alert( "Please copy all text and paste of authentication keys." );
+		alert( "Please copy all text and paste to activate keys." );
 	}
 }
 
