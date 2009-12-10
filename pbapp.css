@@ -218,11 +218,17 @@ header
 	-webkit-transition-timing-function:	: ease-in;
 }
 
-.entry.conv .u-status .u-string
+.entry.conv > .u-status > .u-string
 {
 	padding		: 6px 12px 0px 18px;
 	background-position :  321px 10px, 0px 0px , 0px 11px;
 	-webkit-background-size:  0px 0px, 331px 11px , 331px 100%;
+}
+
+.entry.conv.favorited > .u-status > .u-string
+{
+	background-position :  311px 0px, 0px 0px , 0px 11px;
+	-webkit-background-size:  20px 20px, 331px 11px , 331px 100%;
 }
 
 .entry .u-status .u-string

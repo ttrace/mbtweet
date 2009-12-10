@@ -60,6 +60,14 @@ retreveMention = function(data)
 	}
 }
 
+retreveMine = function(data)
+{
+	for( i = 0 ; i < data.length ; i++ )
+	{
+		create_tweet_element( data[i] );
+	}
+}
+
 retreveList = function(data)
 {
 	var list = document.querySelector("#list");
@@ -228,7 +236,9 @@ catch_post = function( event , api_method )
 			break;
 		
 		case "favorite":
-			var fave_entry = document.querySelector( "#" + api_method[1] );
+			window.console.log("fave bug =" , api_method[1] );
+//			var fave_entry = document.querySelector( "#" + api_method[1] );
+			var fave_entry = document.querySelector( "[id$='" + api_method[1] + "']" );
 			var fave_status = api_method[2];
 			var fave_button = document.querySelector( "#" + api_method[1] + " .favorite" );
 			

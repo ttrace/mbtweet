@@ -66,6 +66,14 @@ init_mbtweet = function()
 							]
 						);
 
+	mbtweetOAuth.callAPI(	"http://twitter.com/statuses/user_timeline.json" ,
+							"GET",
+							[
+								["callback" , "retreveMine"],
+								["count" , "100"]
+							]
+						);
+
 
 // 	mbtweetOAuth.callAPI(	"http://api.twitter.com/1/t_trace/lists/279034/statuses.json" ,
 // 							"GET",
@@ -230,12 +238,12 @@ favorite_this = function( tweet_id_string , fav_status )
 		favorited = true;
 		method_url = "http://twitter.com/favorites/destroy/" + favorite_id.match(/[0-9]+/) + ".xml";	
 	}
-
+	window.console.log([ "favorite" , favorite_id , favorited ]);
 	mbtweetOAuth.callAPI(	method_url ,
 							"POST",
 							[
 							],
-							[ "favorite" , favorite_id , fav_status ]
+							[ "favorite" , favorite_id , favorited ]
 						);
 	return true;
 }
