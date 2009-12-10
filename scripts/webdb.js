@@ -60,10 +60,11 @@ mbdata.prototype.init_table = function()
 		function( tx )
 		{
 			tx.executeSql(
-				"SELECT user_id FROM user_data LIMIT 1",
+				"SELECT user_data.screen_name , status_data.status_id FROM user_data , status_data LIMIT 1",
 				[],
 				function( tx , result )
 				{
+					reduce_old_rows( tx );
 				},
 				function( tx , error )
 				{
@@ -257,3 +258,70 @@ insert_user = function( tx , user )
 	);
 }
 
+mbdata.prototype.maintain_tables = function()
+{
+	this.db.transaction(
+		function( tx )
+		{
+			tx.executeSql(
+				"SELECT user_id FROM user_data LIMIT 1",
+				[],
+				function( tx , result )
+				{
+				},
+				function( tx , error )
+				{
+					tx.executeSql(
+						"CREATE TABLE status_data (status_id TEXT ,created_at TEXT ,in_reply_to_screen_name TEXT ,in_reply_to_status_id TEXT ,in_reply_to_user_id TEXT ,favorited BOOL ,geo TEXT ,source TEXT ,text TEXT ,truncated BOOL, screen_name TEXT, profile_image_url TEXT)",
+						[],
+						function( tx ){},
+						function( tx , error)
+						{
+							if( mbtweet.debug )window.console.log( "Error on creating user table" , error );
+						}
+					);
+					tx.executeSql(
+						"CREATE TABLE user_data (created_at TEXT , description TEXT , favourites_count NUMBER , followers_count NUMBER , following NUMBER , friends_count NUMBER , geo_enabled BOOL , user_id TEXT , location TEXT , name TEXT , notifications BOOL , user_protected BOOL , screen_name TEXT , statuses_count NUMBER , time_zone TEXT , utc_offset TEXT , url TEXT , verified NUMBER , profile_background_color TEXT , profile_background_image_url TEXT , profile_background_tile TEXT , profile_image_url TEXT , profile_link_color TEXT , profile_sidebar_border_color TEXT , profile_sidebar_fill_color TEXT , profile_text_color TEXT)",
+						[],
+						function( tx ){},
+						function( tx , error)
+						{
+							if( mbtweet.debug )window.console.log( "Error on creating user table" , error );
+						}
+					);
+				}
+			);
+		}
+	);
+}
+
+
+reduce_old_rows = function( tx )
+{
+	var_sql_string = "DELETE FROM status_data WHERE status_id NOT IN (SELECT status_id FROM status_data ORDER BY status_id DESC LIMIT 5000)";
+
+	tx.executeSql(
+		var_sql_string ,
+		[],
+		function( tx )
+		{
+		},
+		function( tx , error)
+		{
+			if( mbtweet.debug )window.console.log( "Error in reduce_old_rows(): " , error );
+		}
+	);
+
+	tx.executeSql(
+		"VACUUM" ,
+		[],
+		function( tx )
+		{
+		},
+		function( tx , error)
+		{
+			if( mbtweet.debug )window.console.log( "Error on vacuuming in reduce_old_rows(): " , error );
+		}
+	);
+	
+}
