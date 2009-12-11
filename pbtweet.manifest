@@ -1,6 +1,6 @@
 CACHE MANIFEST
 #
-# build 00011
+# build 000001
 #
 CACHE:
 ./pbapp.css
@@ -16,7 +16,3 @@ CACHE:
 ./scripts/bitly.js	
 ./scripts/jsonp_extention.js
 ./scripts/mbtweet.js
-./images/*
-
-NETWORK:
-*
