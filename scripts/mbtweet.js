@@ -36,19 +36,19 @@ restore_mb_settings();
 
 init_mbtweet = function()
 {
-    setInterval(function() {
-	applicationCache.update();
-    }, 50000);
-    applicationCache.addEventListener(
-    	"updateready",
-    	function() {
-		if (confirm("New update"))
-		{
-			applicationCache.swapCache();
-			location.href = location.href;
-		}
-		},
-	true);
+//     setInterval(function() {
+// 	applicationCache.update();
+//     }, 50000);
+//     applicationCache.addEventListener(
+//     	"updateready",
+//     	function() {
+// 		if (confirm("New update"))
+// 		{
+// 			applicationCache.swapCache();
+// 			location.href = location.href;
+// 		}
+// 		},
+// 	true);
 
 	init_web_database();
 	init_shorten_url();

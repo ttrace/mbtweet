@@ -63,24 +63,29 @@ jsonp_fetch = function( access_URL , action , method, parameter , mbtweet_method
 		loader.src	= access_URL;
 	var loader_id	= guid();
 		loader.id	= loader_id;
+		loader.setAttribute('language','javascript'); 
+		loader.setAttribute('type', 'text/javascript');
 	
 	document.getElementsByTagName( "head" )[0].appendChild( loader );
 	
 	loader.addEventListener("load" ,
-							function(){
-								if( !this.type )
-								{
-									window.console.log( "Loading jsonp is failed" );
-									if( mbtweet_method.retry == true)
-									{
-										mbtweetOAuth.callAPI( action , method, parameter , mbtweet_method );
-									}
-								}
+							function( event ){
+								if( mbtweet.debug )window.console.log( "Loading jsonp" , event.target ,document.getElementById( loader_id ).type );
+// 								if( !event.target )
+// 								{
+// 									window.console.log( "Loading jsonp is failed" , this.type );
+// 									if( mbtweet_method.retry == true)
+// 									{
+// 									//	mbtweetOAuth.callAPI( action , method, parameter , mbtweet_method );
+// 									}
+// 								}
+// 
 								setTimeout(
 									function() {
-									//	document.getElementsByTagName("head")[0].removeChild( document.getElementById( loader_id ) );
+									document.getElementsByTagName("head")[0].removeChild( document.getElementById( loader_id ) );
 									}
 									,500);
+								return true;
 							},
 							false);
 	return( false );

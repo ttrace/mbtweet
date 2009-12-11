@@ -201,6 +201,7 @@ header
 	height		: 40px;
 	max-width	: 331px;
 	padding		: 0px 0px 0px 0px;
+	text-align	: left;
 }
 
 .entry .u-status .u-string
