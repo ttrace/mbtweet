@@ -1,4 +1,4 @@
-mbtweetOAuth.callAPI = function( action , method, parameter )
+mbtweetOAuth.callAPI = function( action , method, parameter , mbtweet_method )
 {
     var accessor = { consumerSecret: mbtweetOAuth.consumerSecret
                    , tokenSecret   : mbtweetOAuth.accessTokenSecret};
@@ -24,7 +24,7 @@ mbtweetOAuth.callAPI = function( action , method, parameter )
 
  	if( method == "GET" )
  	{
-		jsonp_fetch( access_URL );
+		jsonp_fetch( access_URL , action , method, parameter , mbtweet_method );
 	}
 	else if( method == "POST")
 	{

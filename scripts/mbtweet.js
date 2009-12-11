@@ -55,7 +55,8 @@ init_mbtweet = function()
 							[
 								["callback" , "retreveHome"],
 								["count" , "100"]
-							]
+							],
+							{ retry : true }
 						);
 
 	mbtweetOAuth.callAPI(	"https://twitter.com/statuses/mentions.json" ,
@@ -63,7 +64,8 @@ init_mbtweet = function()
 							[
 								["callback" , "retreveMention"],
 								["count" , "20"]
-							]
+							],
+							{ retry : true }
 						);
 
 	mbtweetOAuth.callAPI(	"http://twitter.com/statuses/user_timeline.json" ,
@@ -71,7 +73,8 @@ init_mbtweet = function()
 							[
 								["callback" , "retreveMine"],
 								["count" , "100"]
-							]
+							],
+							{ retry : true }
 						);
 
 

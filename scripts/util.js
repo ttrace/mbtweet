@@ -57,7 +57,7 @@ hasURL = function( string )
 }
 
 //pbtweet functions
-jsonp_fetch = function( access_URL )
+jsonp_fetch = function( access_URL , action , method, parameter , mbtweet_method )
 {
 	var loader		= document.createElement("script");
 		loader.src	= access_URL;
@@ -68,9 +68,17 @@ jsonp_fetch = function( access_URL )
 	
 	loader.addEventListener("load" ,
 							function(){
+								if( !this.type )
+								{
+									window.console.log( "Loading jsonp is failed" );
+									if( mbtweet_method.retry == true)
+									{
+										mbtweetOAuth.callAPI( action , method, parameter , mbtweet_method );
+									}
+								}
 								setTimeout(
 									function() {
-										document.getElementsByTagName("head")[0].removeChild( document.getElementById( loader_id ) );
+									//	document.getElementsByTagName("head")[0].removeChild( document.getElementById( loader_id ) );
 									}
 									,500);
 							},

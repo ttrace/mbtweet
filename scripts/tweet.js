@@ -770,7 +770,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 													function( event )
 														{
 															window.console.log( event , this );
-															load_conversation	( target_id , my_status_in_reply_to_status_id , mbtweet.user.conv_length );
+															load_conversation	( target_id , my_status_in_reply_to_status_id , 10 );
 														},
 													false);
  		}
@@ -822,7 +822,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 													function( event )
 														{
 															window.console.log( event , this );
-															load_conversation	( target_id , my_status_in_reply_to_status_id , more_load_conv_length );
+															load_conversation	( target_id , my_status_in_reply_to_status_id , 10 );
 														},
 													false);
 			

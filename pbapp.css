@@ -40,15 +40,21 @@ a:hover
 	display : inline ;
 }
 
+#column-wrapper
+{
+	width: 100%;
+	overflow	:hidden;
+}
+
 #column
 {
 	height: 500px;
+	text-align	: center;
 	/*
 	overflow-x: hidden;
 	overflow-y: hidden;
 	position: absolute;
 	*/
-	width: 100%;
 }
 
 .timeline_column
@@ -90,12 +96,13 @@ a:hover
 	background	: -webkit-gradient(	linear,
 									left bottom,
 									left top,
-									from( rgb(240, 240, 240) ),
-									color-stop( 0.75, rgb( 240, 240, 240 ) ),
-									color-stop( 0.95, rgb( 255, 255, 255 ) ),
-									to( rgb(150, 150, 150) )
+									from( rgb( 80, 80, 80) ),
+									color-stop( 0.75, rgb( 150, 150, 150) ),
+									color-stop( 0.95, rgb( 190, 190, 190 ) ),
+									to( rgb( 70, 70, 70) )
 									);
-	color: rgb( 120 , 120 , 120 );
+	color: rgb( 10 , 10 , 10 );
+	border:1px solid rgb(80, 80, 80);
 	font-weight: bold;
 	padding: 2px;
 	text-align: center;
