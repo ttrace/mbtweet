@@ -311,17 +311,4 @@ reduce_old_rows = function( tx )
 			if( mbtweet.debug )window.console.log( "Error in reduce_old_rows(): " , error );
 		}
 	);
-
-	tx.executeSql(
-		"VACUUM" ,
-		[],
-		function( tx )
-		{
-		},
-		function( tx , error)
-		{
-			if( mbtweet.debug )window.console.log( "Error on vacuuming in reduce_old_rows(): " , error );
-		}
-	);
-	
 }

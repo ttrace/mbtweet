@@ -38,7 +38,7 @@ window_resize = function( window_resize_token )
 		var collumn_wrapper = document.querySelector("#column");
 		for( var i = 0 ; i < timeline_list.length ; i++ )
 		{
-			collumn_wrapper.style.height	= window.innerHeight - 65 + "px";
+			collumn_wrapper.style.height	= window.innerHeight - 55 + "px";
 			timeline_list[i].style.height	= window.innerHeight - 100 + "px";
 		}
 	}

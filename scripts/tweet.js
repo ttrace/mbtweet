@@ -655,7 +655,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 		favorite.addEventListener("click" ,
 								function( event )
 								{
-									favorite_this( tweet_id_string , fave_status );
+									favorite_this( status_id_string , tweet_id_string , fave_status );
 								},
 								false );
 	if( this.favorited == false)

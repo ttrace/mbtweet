@@ -219,31 +219,31 @@ retweet_this = function( tweet_id_string )
 	return true;
 }
 
-favorite_this = function( tweet_id_string , fav_status )
+favorite_this = function( status_id_string , tweet_id_string , fave_status )
 {
-	var favorited		= fav_status;
-	var favorite_id		= tweet_id_string + "";
+	var favorited		= fave_status;
+	var favorite_id		= status_id_string + "";
 	var method_url		= "";
 
-	var target_tweet	= document.querySelector( "#" + favorite_id );
+	var target_tweet	= document.querySelector( "#" + tweet_id_string );
 		addClass( target_tweet , "loading" );
 
 	if( !hasClass( target_tweet , "favorited" ) )
 	{
 		favorited = false;
-		method_url = "http://twitter.com/favorites/create/" + favorite_id.match(/[0-9]+/) + ".xml";
+		method_url = "http://twitter.com/favorites/create/" + favorite_id + ".xml";
 	}
 	else
 	{
 		favorited = true;
-		method_url = "http://twitter.com/favorites/destroy/" + favorite_id.match(/[0-9]+/) + ".xml";	
+		method_url = "http://twitter.com/favorites/destroy/" + favorite_id + ".xml";	
 	}
-	window.console.log([ "favorite" , favorite_id , favorited ]);
+	window.console.log([ "favorite", favorite_id, tweet_id_string , favorited ]);
 	mbtweetOAuth.callAPI(	method_url ,
 							"POST",
 							[
 							],
-							[ "favorite" , favorite_id , favorited ]
+							[ "favorite" , tweet_id_string , favorited ]
 						);
 	return true;
 }
