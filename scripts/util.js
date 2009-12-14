@@ -3,7 +3,8 @@
 */
 mbutil = {
 //	isUrlRegexp : /((http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)([\"\'\s\(\)\[\]]|$)/g ,
-	isUrlRegexp : /((https?):((\/)|(\\\\))+[\w\d:#@%\/;$()~_?\+-=\\\.&]*)([\"\'\s\(\)\[\]]|$)?/g ,
+	isUrlRegexp		: /((https?):((\/)|(\\\\))+[\w\d:#@%\/;$\(\)~_\?\+-=\\\.&]*)([\"\'\s\(\)\[\]]|$)?/g ,
+	isWWWUrlRegexp	: /[^:](www\.[\w\d:#@%\/;$\(\)~_\?\+-=\\\.&]*)/g ,
 }
 
 
@@ -15,6 +16,20 @@ S4 = function()
 guid = function()
 {
 	return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+}
+
+base58_decode = function(snipcode)
+{
+	var alphabet = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
+	var num = snipcode.length;
+	var decoded = 0;
+	var multi = 1;
+	for ( var i = (num-1) ; i >= 0 ; i-- )
+	{
+		decoded = decoded + multi * alphabet.indexOf(snipcode[i]);
+		multi = multi * alphabet.length;
+	}
+	return decoded;
 }
 
 //Standard function
@@ -70,7 +85,7 @@ jsonp_fetch = function( access_URL , action , method, parameter , mbtweet_method
 	
 	loader.addEventListener("load" ,
 							function( event ){
-								if( mbtweet.debug )window.console.log( "Loading jsonp" , event.target ,document.getElementById( loader_id ).type );
+//								if( mbtweet.debug )window.console.log( "Loading jsonp" , event.target ,document.getElementById( loader_id ).type );
 // 								if( !event.target )
 // 								{
 // 									window.console.log( "Loading jsonp is failed" , this.type );

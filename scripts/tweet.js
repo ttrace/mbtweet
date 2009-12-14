@@ -616,13 +616,38 @@ tweet.prototype.buildEntry = function( target , append_mode )
 		string.className = "status-text";
 
 	var linked_source = this.text;
-		linked_source = linked_source.replace( mbutil.isUrlRegexp , "<a href='$1' target='_blank'>$1</a>$6");
+		linked_source = linked_source.replace( mbutil.isUrlRegexp		, "<a href='$1' target='_blank'>$1</a>$6");
+		linked_source = linked_source.replace( /([^\/]|^)(www\.[\w\d:#@%\/;$\(\)~_\?\+-=\\\.&]+\.[\w\d:#@%\/;$\(\)~_\?\+-=\\\.&]+)/g , "<a href='http://$2' target='_blank'>$2</a>" );
 		linked_source = linked_source.replace(/blank\'\>([^\<]{28})[^\<]+\<\/a/g, "blank'>$1...</a");
 		linked_source = linked_source.replace(/#((([^\s\(\)\\\-\!\@\#\$\%\^\&\+\=\;\:\"\'\|\<\>\,\.\~\?]|[0-9a-zA-Z_])+[0-9a-zA-Z_]+){1,16}(\s+|$))/g ,"<a hashtag' href='" + window.location.protocol + "//twitter.com/search?q=%23$2' target='_blank'>#$2</a>$4");
 		linked_source = linked_source.replace(/[@＠]([0-9a-zA-Z\_\-]+)/g,"@<a class='sname' href='" + window.location.protocol + "//twitter.com/$1' target='_blank'>$1</a>");
 
 		string.innerHTML = linked_source;
 	status_string_wrapper.appendChild( string );
+
+	var url_list = string.querySelectorAll("a");
+	for( var i = 0 ; i < url_list.length ; i++ )
+	{
+		var media_url = url_list[i].href;
+		var media_carrier = has_media_url( media_url );
+		if( media_carrier )
+		{
+			var media_wrapper = document.createElement("A");
+				media_wrapper.className = "thumbnail";
+				media_wrapper.target = "_blank";
+			var media_thumbnail = document.createElement("IMG");
+				media_thumbnail.className = "thumbnail";
+				
+			media_wrapper.appendChild( media_thumbnail );
+			string.insertBefore( media_wrapper , string.firstChild );
+			
+			setTimeout( function()
+				{
+					fetch_media_thumbnail( entry_wrapper.id , media_url , media_carrier );
+				}
+				, 200 );
+		}
+	}
 
 	var meta = document.createElement("DIV");
 		meta.className = "status-meta";
@@ -788,7 +813,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 			var target_id = target.id;
 				my_status_in_reply_to_status_id = my_status.in_reply_to_status_id;
 			
-			if( mbtweet.debug )window.console.log( target_id , my_status_in_reply_to_status_id , conv_length );
+//			if( mbtweet.debug )window.console.log( target_id , my_status_in_reply_to_status_id , conv_length );
 			
 			setTimeout(
 						(function( target_id , my_status_in_reply_to_status_id , conv_length )
@@ -825,11 +850,11 @@ tweet.prototype.buildEntry = function( target , append_mode )
 			
 			var conv_chain_id = conv_chain.id;
 			var my_status_in_reply_to_status_id = my_status.in_reply_to_status_id;
-			if( mbtweet.debug ) window.console.log(
-								conv_chain_id ,
-								my_status_in_reply_to_status_id,
-								conv_length
-							);
+// 			if( mbtweet.debug ) window.console.log(
+// 								conv_chain_id ,
+// 								my_status_in_reply_to_status_id,
+// 								conv_length
+// 							);
 
 
 			setTimeout(
@@ -958,7 +983,7 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 
 load_conversation = function( conv_chain_id , in_reply_to_status_id , conv_length )
 {
-	if( mbtweet.debug ) window.console.log( conv_chain_id , in_reply_to_status_id , conv_length );
+//	if( mbtweet.debug ) window.console.log( conv_chain_id , in_reply_to_status_id , conv_length );
 	mbdatabase.db.transaction(
 		function( tx ){
 			tx.executeSql(
@@ -1007,7 +1032,7 @@ load_conversation = function( conv_chain_id , in_reply_to_status_id , conv_lengt
 						}
 						
 						var conv_container = document.querySelectorAll( "#" + conv_chain_id );
-						if( mbtweet.debug ) window.console.log( conv_chain_id , "conv" , conv_length  );
+						//if( mbtweet.debug ) window.console.log( conv_chain_id , "conv" , conv_length  );
 
 						if( conv_container.length != 0 )
 						{
@@ -1016,7 +1041,7 @@ load_conversation = function( conv_chain_id , in_reply_to_status_id , conv_lengt
 					}
 					else
 					{
-						if( mbtweet.debug ) window.console.log( "not found " , in_reply_to_status_id  );					
+						//if( mbtweet.debug ) window.console.log( "not found " , in_reply_to_status_id  );					
 					}
 				},
 				function( tx , error)

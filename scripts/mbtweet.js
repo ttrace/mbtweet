@@ -59,7 +59,7 @@ init_mbtweet = function()
 							"GET",
 							[
 								["callback" , "retreveHome"],
-								["count" , "100"]
+								["count" , "60"]
 							],
 							{ retry : true }
 						);
@@ -270,11 +270,15 @@ translate_this = function( tweet_id_string , status_text_string )
 		var translated				= document.createElement("DIV");
 			translated.className	= "translated loading";
 			translated.innerText	= "loading";
-		
-		insert_point.appendChild( translated );
-		
+
 		var jsonp_src		= "http://www.google.com/uds/Gtranslate?callback=gTransExp&context=" + tweet_id_string + "&q=" + encodeURIComponent( status_text_string ) + "&key=notsupplied&v=1.0&nocache=1240207680396&langpair=%7C" + mbtweet.user.language;
-			jsonp_fetch( jsonp_src );
+			translated.addEventListener( "webkitAnimationEnd",
+										function( event )
+										{
+											jsonp_fetch( jsonp_src );										
+										},
+										false);
+		insert_point.appendChild( translated );
 	}
 	return false;
 }
