@@ -101,11 +101,12 @@ a:hover
 									color-stop( 0.95, rgb( 190, 190, 190 ) ),
 									to( rgb( 70, 70, 70) )
 									);
-	color: rgb( 10 , 10 , 10 );
-	border:1px solid rgb(80, 80, 80);
-	font-weight: bold;
-	padding: 2px;
-	text-align: center;
+	color			: white;
+	text-shadow		: black 0px 1px 0px;
+	border			: 1px solid rgb(80, 80, 80);
+	font-weight		: bold;
+	padding			: 2px;
+	text-align		: center;
 }
 
 #home_column
