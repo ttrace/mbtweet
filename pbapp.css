@@ -356,7 +356,7 @@ header
 	position	: absolute;
 	width 		: 328px;
 	height		: 21px;
-	margin		: -21px 0px 0px 46px;
+	margin		: -14px 0px 0px 46px;
 	opacity		: 0;
 	text-align	: center;
 	background	: -webkit-gradient(	linear,
@@ -372,15 +372,15 @@ header
 /*	background-image	: url("./images/button_background.png");
 	background-repeat	: no-repeat;*/
 
-	-webkit-transition-property			: opacity , margin-top ;
-	-webkit-transition-duration			: 0.25s;
+	-webkit-transition-property			: opacity;
+	-webkit-transition-duration			: 0.2s;
 	-webkit-transition-timing-function:	: ease-in;
 }
 
 .u-status:hover + .action,
 .action:hover
 {
-	margin-top			: -14px;
+/*	margin-top			: -14px; */
 	opacity				: 1.0;
 }
 

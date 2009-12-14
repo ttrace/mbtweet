@@ -2,7 +2,7 @@ var mbtweet = {};
 
 mbtweet = 
 {
-	debug			: true ,
+	debug			: false ,
 	build			: 00001 ,
 	version			: "1.0" ,
 	bitly_token		: "",
@@ -32,13 +32,14 @@ mbtweetOAuth =
   }
 };
 
-restore_mb_settings();
 
 init_mbtweet = function()
 {
+	restore_mb_settings();
+
 //     setInterval(function() {
 // 	applicationCache.update();
-//     }, 50000);
+//     }, 5000);
 //     applicationCache.addEventListener(
 //     	"updateready",
 //     	function() {
@@ -63,7 +64,7 @@ init_mbtweet = function()
 							{ retry : true }
 						);
 
-	mbtweetOAuth.callAPI(	"https://twitter.com/statuses/mentions.json" ,
+	mbtweetOAuth.callAPI(	"http://twitter.com/statuses/mentions.json" ,
 							"GET",
 							[
 								["callback" , "retreveMention"],
@@ -72,7 +73,7 @@ init_mbtweet = function()
 							{ retry : true }
 						);
 
-	mbtweetOAuth.callAPI(	"http://twitter.com/statuses/user_timeline.json" ,
+	mbtweetOAuth.callAPI(	"https://twitter.com/statuses/user_timeline.json" ,
 							"GET",
 							[
 								["callback" , "retreveMine"],

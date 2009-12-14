@@ -579,6 +579,11 @@ tweet.prototype.buildEntry = function( target , append_mode )
 	var status_wrapper = document.createElement("DIV");
 		status_wrapper.className = "u-status";
 	entry_wrapper.appendChild( status_wrapper );
+
+//	if( hasClass( entry_wrapper , "mine" ) )
+//	{
+//		entry_wrapper.insertBefore( status_wrapper , icon_wrapper );
+//	}
 	
 	var status_string_wrapper = document.createElement("DIV");
 		status_string_wrapper.className = "u-string";
@@ -626,14 +631,6 @@ tweet.prototype.buildEntry = function( target , append_mode )
 		meta_source = new Date( this.created_at ).toString().replace(/:[0-9][0-9]\s.+/,'') + " ";
 		meta_source += "from " + this.source + " ";
 	
-// 	var reply_name = this.in_reply_to_screen_name + "";
-// 	var reply_id = this.in_reply_to_status_id + "";
-// 
-// 
-// 	if( reply_id != "null")
-// 	{
-// 		meta_source = meta_source + "<a class='in-reply-to' href='http://twitter.com/" + reply_name + "/status/" + reply_id + "' target='_blank'>in reply to " + reply_name + "</a>";
-// 	}
 		meta.innerHTML = meta_source;
 		
 	status_wrapper.appendChild( meta );
@@ -828,7 +825,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 			
 			var conv_chain_id = conv_chain.id;
 			var my_status_in_reply_to_status_id = my_status.in_reply_to_status_id;
-			window.console.log(
+			if( mbtweet.debug ) window.console.log(
 								conv_chain_id ,
 								my_status_in_reply_to_status_id,
 								conv_length
@@ -961,7 +958,7 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 
 load_conversation = function( conv_chain_id , in_reply_to_status_id , conv_length )
 {
-	window.console.log( conv_chain_id , in_reply_to_status_id , conv_length );
+	if( mbtweet.debug ) window.console.log( conv_chain_id , in_reply_to_status_id , conv_length );
 	mbdatabase.db.transaction(
 		function( tx ){
 			tx.executeSql(
