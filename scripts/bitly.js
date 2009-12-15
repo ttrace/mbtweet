@@ -83,6 +83,25 @@ bitly_shorten_URL = function(data)
 	return;
 }
 
+expandResponse = function(data , target_id)
+{	//bit.ly expander support script
+	var result;
+	var url_list;
+	var real_url = '';
+	var i = 0;
+	for( key in data.results )
+	{	
+		if( key.match(/\-/) )
+		{
+			target_id = key + '';
+		} else {
+			real_url = data.results[key]['longUrl'];
+		}
+	}
+	expand_url( real_url , target_id );
+	return;
+}
+
 
 //
 if (typeof(BitlyApi) == 'undefined')

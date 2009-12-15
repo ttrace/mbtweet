@@ -227,6 +227,17 @@ retweet_this = function( tweet_id_string )
 	return true;
 }
 
+legacy_retweet = function( in_reply_to_screen_name , in_reply_to_status_id , status_string )
+{
+	var status_editor 		= document.querySelector("#status");
+	var status_id_container = document.querySelector("#post_in_reply_to_status_id");
+	var quote_url 			= "http://twitter.com/" + in_reply_to_screen_name + "/status/" + in_reply_to_status_id;
+	status_editor.value = "RT @" + in_reply_to_screen_name + ": "+ status_string;
+	status_id_container.value = "";
+	status_editor.focus();
+	status_editor.setSelectionRange( status_editor.value.length , status_editor.value.length );
+}
+
 favorite_this = function( status_id_string , tweet_id_string , fave_status )
 {
 	var favorited		= fave_status;

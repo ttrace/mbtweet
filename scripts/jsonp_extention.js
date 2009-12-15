@@ -28,6 +28,19 @@ gTransExp = function(){
 }
 
 // media supports
+
+mbutil.defined_media_regexp = 
+{
+	twitpic_carrier		: /(http\:\/\/twitpic.com\/[a-zA-Z0-9]+)/,
+	pikchur_carrier		: /(http\:\/\/pk.gd\/([a-zA-Z0-9]+))/,
+	twitvid_carrier		: /(http\:\/\/twitvid.com\/[a-zA-Z0-9]+)/,
+	tweetphoto_carrier	: /http\:\/\/pic\.gd\/([a-zA-Z0-9]+)/,
+	yfrog_carrier		: /http\:\/\/yfrog.[a-z]+\/([a-zA-Z0-9]+)/,
+	photoshare_carrier	: /(http\:\/\/www.bcphotoshare\.com\/photos\/([0-9][0-9])[0-9]+\/([0-9]+))/,
+	flickr_carrier		: /http\:\/\/flic\.kr\/p\/([a-zA-Z0-9]+)/,
+	flickrcom_carrier	: /http\:\/\/www\.flickr.com\/photos\/[a-z]+\/([0-9]+)/
+}
+
 has_media_url = function( url )
 {
 	for( key in mbutil.defined_media_regexp )
@@ -40,20 +53,28 @@ has_media_url = function( url )
 	}
 }
 
-mbutil.defined_media_regexp = {
-	twitpic_carrier		: /(http\:\/\/twitpic.com\/[a-zA-Z0-9]+)/,
-	pikchur_carrier		: /(http\:\/\/pk.gd\/([a-zA-Z0-9]+))/,
-	twitvid_carrier		: /(http\:\/\/twitvid.com\/[a-zA-Z0-9]+)/,
-	tweetphoto_carrier	: /http\:\/\/pic\.gd\/([a-zA-Z0-9]+)/,
-	yfrog_carrier		: /http\:\/\/yfrog.[a-z]+\/([a-zA-Z0-9]+)/,
-	photoshare_carrier	: /(http\:\/\/www.bcphotoshare\.com\/photos\/([0-9][0-9])[0-9]+\/([0-9]+))/,
-	flickr_carrier		: /http\:\/\/flic\.kr\/p\/([a-zA-Z0-9]+)/,
-	flickrcom_carrier	: /http\:\/\/www\.flickr.com\/photos\/[a-z]+\/([0-9]+)/
+// shorten url
+mbutil.defined_snipurl_regexp = 
+{
+	bitly_carrier		: /(http:\/\/|www\.)(bit.ly|j.mp)\/([a-zA-Z0-9]+)/,
 }
+
+has_shorten_url = function( url )
+{
+	for( key in mbutil.defined_snipurl_regexp )
+	{
+		var shorten_url = url.match( mbutil.defined_snipurl_regexp[key] );
+		if( shorten_url )
+		{
+			return( key )
+		}
+	}
+}
+
 
 fetch_media_thumbnail = function( status_id , media_url , media_carrier )
 {
-	window.console.log( "fetch_media_thumbnail:" , status_id , media_url , media_carrier );
+//	window.console.log( "fetch_media_thumbnail:" , status_id , media_url , media_carrier );
 
 	switch ( media_carrier ) {
 		case "twitpic_carrier":
@@ -131,20 +152,7 @@ fetch_media_thumbnail = function( status_id , media_url , media_carrier )
 // 		pic_thumb_loader.src = "http://pipes.yahoo.com/pipes/pipe.run?_id=d6a5ce53ecce335477faf60122f8f7f3&_render=json&snipcode=" + pic_thumb_query + "&parentid=" + id + "&_callback=mediaJson";
 // 		document.getElementsByTagName("head")[0].appendChild(pic_thumb_loader);
 // 	}
-//  getting flic.kr image
-// 	if (media_url.match(flickr_carrier)){
-// 		var pic_thumb_query = media_url.match(flickr_carrier)[1];
-// 		var pic_thumb_loader = document.createElement('script');
-// 		pic_thumb_loader.src = "http://pipes.yahoo.com/pipes/pipe.run?_id=416a1c6eb426f097dcd35aa745cfe22d&_render=json&snipcode=" + base58_decode(pic_thumb_query) + "&parentid=" + id + "&_callback=mediaJson";
-// 		document.getElementsByTagName("head")[0].appendChild(pic_thumb_loader);
-// 	}
-//  getting flickr.com image
-// 	if (media_url.match(flickrcom_carrier)){
-// 		var pic_thumb_query = media_url.match(flickrcom_carrier)[1];
-// 		var pic_thumb_loader = document.createElement('script');
-// 		pic_thumb_loader.src = "http://pipes.yahoo.com/pipes/pipe.run?_id=416a1c6eb426f097dcd35aa745cfe22d&_render=json&snipcode=" + pic_thumb_query + "&parentid=" + id + "&_callback=mediaJson";
-// 		document.getElementsByTagName("head")[0].appendChild(pic_thumb_loader);
-// 	}
+
 //  getting bctiny_carrier image
 // 	if (media_url.match(bctiny_carrier)){
 // 		var pic_thumb_query = media_url.match(bctiny_carrier)[1];
@@ -157,7 +165,7 @@ fetch_media_thumbnail = function( status_id , media_url , media_carrier )
 
 place_picture = function( status_id , pic_thumb_src , pic_href )
 {
-	window.console.log( "place_picture:" , status_id , pic_thumb_src , pic_href );
+//	window.console.log( "place_picture:" , status_id , pic_thumb_src , pic_href );
 	var pic_thumb_wrapper		= document.querySelector("#" + status_id + " a.thumbnail");
 	var pic_thumb				= document.querySelector("#" + status_id + " img.thumbnail");
 		pic_thumb_wrapper.href	= pic_href;
@@ -167,4 +175,53 @@ place_picture = function( status_id , pic_thumb_src , pic_href )
 mediaJson = function( data ){
 	window.console.log( "mediaJson" , data );
 	place_picture( data.value.items[1].content , data.value.items[0].content , data.value.items[2].content );
+}
+
+url_expander = function( target_element , shorten_url_carrier )
+{
+	var unique_id = 'bitly' + guid().replace( /\-/g , '');
+	var real_url_holder = document.createElement("A");
+		real_url_holder.id = unique_id;
+	target_element.appendChild( real_url_holder );
+	var url_alias = target_element.href;
+	var function_name = unique_id;
+
+	BitlyClient.expand( url_alias , function_name );
+
+	//make bit.ly receiver
+	var bitly_receiver = document.createElement('script');
+		bitly_receiver.id = "bitly_loader" + unique_id;
+		bitly_receiver.innerHTML = "var " + function_name + " = function(data){ expandResponse(data , '" + unique_id + "'); document.getElementById('" + bitly_receiver.id + "').parentNode.removeChild(document.getElementById('" + bitly_receiver.id + "')) }";
+	document.getElementsByTagName("head")[0].appendChild( bitly_receiver );
+}
+
+expand_url = function( real_url, id ){
+	window.console.log( real_url, id );
+	var target = document.querySelector("#" + id);
+		target.parentNode.removeEventListener( "mouseover", arguments.callee , "false" );
+
+	if( real_url.match( /^https*\:\/\/.+/ ) )
+	{
+		target.href = real_url;
+		target.target = "_blank";
+		var inner_string = real_url.replace( /([\/\-?\=\+\%])/g , '$1&shy;');
+			inner_string = inner_string.replace( /([a-zA-Z0-9_]{6,6})/g , '$1&shy;' );
+		target.innerHTML = inner_string;
+		
+//		document.getElementById( id ).innerText = real_url;
+// 		var real_url_link = document.createElement('a');
+// 			real_url_link.href = real_url.replace(/\, /g , ',');
+// 			real_url_link.innerText = real_url.replace(/\, /g , ',');
+// 			real_url_link.innerHTML = real_url_link.innerHTML.replace(/([\/\-?\=\+\%])/g , '$1&shy;');
+// 			real_url_link.target = '_blank';
+// 		target.innerText = '';
+// 		target.appendChild( real_url_link );
+// 		addClass( real_url_link , 'pb-real-url' );
+		removeClass( target.parentNode , 'loading' );
+	}
+	else
+	{
+		document.getElementById(id).innerText = 'can\'t read real url';
+		removeClass( target , 'loading' );
+	}
 }

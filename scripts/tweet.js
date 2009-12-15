@@ -612,6 +612,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 		status_string_wrapper.appendChild( rt_user_name );
 	}
 	
+	// string build
 	var string = document.createElement("SPAN");
 		string.className = "status-text";
 
@@ -625,6 +626,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 		string.innerHTML = linked_source;
 	status_string_wrapper.appendChild( string );
 
+	// image attachment
 	var url_list = string.querySelectorAll("a");
 	for( var i = 0 ; i < url_list.length ; i++ )
 	{
@@ -632,6 +634,11 @@ tweet.prototype.buildEntry = function( target , append_mode )
 		var media_carrier = has_media_url( media_url );
 		if( media_carrier )
 		{
+			// append blank image
+			var media_blank = document.createElement("DIV");
+				media_blank.className = "thumbnail_blank";
+			status_string_wrapper.insertBefore( media_blank , status_string_wrapper.firstChild );
+
 			var media_wrapper = document.createElement("A");
 				media_wrapper.className = "thumbnail";
 				media_wrapper.target = "_blank";
@@ -639,7 +646,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 				media_thumbnail.className = "thumbnail";
 				
 			media_wrapper.appendChild( media_thumbnail );
-			string.insertBefore( media_wrapper , string.firstChild );
+			entry_wrapper.insertBefore( media_wrapper , icon_wrapper );
 			
 			setTimeout( function()
 				{
@@ -650,7 +657,27 @@ tweet.prototype.buildEntry = function( target , append_mode )
 			break;
 		}
 	}
-
+	
+	// shorten URL expander
+	for( var i = 0 ; i < url_list.length ; i++ )
+	{
+		var shorten_url = url_list[i].href;
+		var shorten_url_carrier = has_shorten_url( shorten_url );	
+		if( shorten_url_carrier )
+		{
+			// append shorten url event.
+			addClass( url_list[i] , "shorten-url" );
+			url_list[i].addEventListener( "mouseover",
+											function( event )
+											{
+												addClass( event.target , "loading" );
+												event.target.removeEventListener( "mouseover" , arguments.callee);
+												url_expander( event.target , shorten_url_carrier );
+											},
+											false);
+		}
+	}
+	
 	var meta = document.createElement("DIV");
 		meta.className = "status-meta";
 	var meta_source;
@@ -744,7 +771,14 @@ tweet.prototype.buildEntry = function( target , append_mode )
 			retweet.addEventListener("click" ,
 									function( event )
 									{
-										retweet_this( tweet_id_string );
+										if( !event.shiftKey )
+										{
+											retweet_this( tweet_id_string );
+										}
+										else
+										{
+											legacy_retweet( user_name , status_id_string , status_text_string );
+										}
 									},
 									false );
 			retweet.innerText = "ReTweet";
@@ -948,11 +982,11 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 						// try for listed item.
 						if( hasClass( load_conv_button.previousElementSibling , "conv" ) )
 						{
-							current_margin =- 6;
+							//current_margin =- 6;
 						}
 						else
 						{
-							current_margin =- 3;						
+							//current_margin =- 6;						
 						}
 						
 						target.insertBefore( entry_wrapper , load_conv_button );
