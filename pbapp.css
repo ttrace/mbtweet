@@ -175,7 +175,7 @@ header
 */
 .entry
 {
-	display			: list-item;
+	display			: block;
 	list-style-type	: none;
 	clear			: both;	
 	padding-bottom	: 5px;

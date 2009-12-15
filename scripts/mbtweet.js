@@ -2,7 +2,7 @@ var mbtweet = {};
 
 mbtweet = 
 {
-	debug			: true ,
+	debug			: debug ,
 	build			: 00001 ,
 	version			: "1.0" ,
 	bitly_token		: "",

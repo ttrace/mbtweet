@@ -915,6 +915,7 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 			{
 				case "insert":
 						target.insertBefore( entry_wrapper , option );
+						target.parentNode.querySelector(".unread-counter").innerText = target.querySelectorAll(".entry:not(.conv)").length;
 					break;
 				
 				case "conv":
@@ -939,14 +940,16 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 							}
 							if( option == (mbtweet.user.conv_length - 1) )
 							{
-								// current_margin =- 14
+								 //current_margin =- 10;
 							}
-
 							removing_status[0].parentNode.removeChild( removing_status[0] );
 						}
+						// try for listed item.
+						//current_margin =- 5;
 						
 						target.insertBefore( entry_wrapper , load_conv_button );
 					break;
+					
 				default:
 					break;
 			}
