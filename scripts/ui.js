@@ -57,6 +57,7 @@ remove_unread = function( target_id )
 {
 	var target_query = target_id + "";
 	var start_element = document.querySelector( target_query );
+	var timeline		= start_element.parentNode;
 		removeClass( start_element , "unread");
 
 	var target_elements = document.querySelectorAll( target_query + " ~ .entry" );
@@ -64,4 +65,7 @@ remove_unread = function( target_id )
 	{
 		removeClass( target_elements[i] , "unread");
 	}
+
+	//counting number of tweets.
+	timeline.parentNode.querySelector(".unread-counter").innerText = timeline.querySelectorAll(".unread").length + "/" + timeline.querySelectorAll(".entry:not(.conv)").length;
 }

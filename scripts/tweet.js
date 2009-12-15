@@ -646,6 +646,8 @@ tweet.prototype.buildEntry = function( target , append_mode )
 					fetch_media_thumbnail( entry_wrapper.id , media_url , media_carrier );
 				}
 				, 200 );
+			
+			break;
 		}
 	}
 
@@ -915,7 +917,6 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 			{
 				case "insert":
 						target.insertBefore( entry_wrapper , option );
-						target.parentNode.querySelector(".unread-counter").innerText = target.querySelectorAll(".entry:not(.conv)").length;
 					break;
 				
 				case "conv":
@@ -945,14 +946,23 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 							removing_status[0].parentNode.removeChild( removing_status[0] );
 						}
 						// try for listed item.
-						//current_margin =- 5;
+						if( hasClass( load_conv_button.previousElementSibling , "conv" ) )
+						{
+							current_margin =- 6;
+						}
+						else
+						{
+							current_margin =- 3;						
+						}
 						
 						target.insertBefore( entry_wrapper , load_conv_button );
 					break;
-					
 				default:
 					break;
 			}
+			
+			//counting number of tweets.
+			timeline.parentNode.querySelector(".unread-counter").innerText = timeline.querySelectorAll(".unread").length + "/" + timeline.querySelectorAll(".entry:not(.conv)").length;
 
 			// fixsing view
 			if( entry_wrapper.offsetTop <= target_scrollTop + 1 )
