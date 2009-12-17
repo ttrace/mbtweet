@@ -55,7 +55,8 @@
 		</div>
 		<div id = "search_column" class = "timeline_column">
 			<div class = "timeline_header">
-				<input type="search" onchange="retreve_search()">
+				<input id = "serch_keyword" type="search" onchange="retreve_search( this )">
+				<span class="unread-counter">0</span>
 			</div>
 			<div id = "search" class = "timeline">
 				<!--div class="read more">

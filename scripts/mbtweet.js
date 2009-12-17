@@ -6,6 +6,7 @@ mbtweet =
 	build			: 00001 ,
 	version			: "1.0" ,
 	bitly_token		: "",
+	currentSearch	: "",
 	database:
 	{
 		name		: "mbtweet",
@@ -138,6 +139,48 @@ update_list = function()
 	setTimeout( function(){ update_list() } , 120000 );
 	return false;
 }
+
+retreve_search = function( input_element )
+{
+	if( query != mbtweet.currentSearch )
+	{
+		var old_entry = document.querySelectorAll( "#search .entry" );
+		var search_timeline = document.querySelector( "#search" );
+		for( i = 0 ; i < old_entry.length ; i++ )
+		{
+			search_timeline.removeChild( old_entry[i] );
+		}
+		var query = input_element.value;
+		mbtweet.currentSearch = query;
+		mbtweetOAuth.callAPI(	"http://search.twitter.com/search.json" ,
+								"GET",
+								[
+									["callback" , "retreveSearch"],
+									["q" , query],
+									["rpp" , "20"]
+								]
+							);
+		setTimeout( function(){ update_search( ) } , 180000 );
+	}
+	return false;
+}
+
+update_search = function()
+{
+	var since_id = document.querySelector("#search > .entry").id.replace(/[a-z]+_/ , "") + "";
+	mbtweetOAuth.callAPI(	"http://search.twitter.com/search.json" ,
+							"GET",
+							[
+								["callback" , "updateSearchTimeline"],
+								["q" , mbtweet.currentSearch],
+								["since_id" , since_id],
+								["rpp" , "100"]
+							]
+						);
+	setTimeout( function(){ update_search() } , 180000 );
+	return false;
+}
+
 
 post_tweet = function( form , event)
 {

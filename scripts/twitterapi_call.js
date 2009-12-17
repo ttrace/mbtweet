@@ -79,6 +79,17 @@ retreveList = function(data)
 	}
 }
 
+retreveSearch = function( data )
+{
+	var search_timeline = document.querySelector("#search");
+//	var insert_target = document.querySelector("#search > .read.more");
+	window.console.log( "search: " , data );
+	for( i = 0 ; i < data.results.length ; i++ )
+	{
+		create_search_element( data.results[i] ).buildEntry( search_timeline );
+	}
+}
+
 updateHomeTimeline = function(data)
 {
 	var home = document.querySelector("#home");
@@ -106,9 +117,20 @@ updateListTimeline = function(data)
 	var list = document.querySelector("#list");
 	var insert_target = document.querySelector("#list > .entry");
 
-	for( i = 0 ; i < data.length ; i++ )
+	for( i = 0 ; i < data.results.length ; i++ )
 	{
-		create_tweet_element( data[i] ).buildEntry( list , "insert" , insert_target );
+		create_tweet_element( data.results[i] ).buildEntry( list , "insert" , insert_target );
+	}
+}
+
+updateSearchTimeline = function(data)
+{
+	var search_timeline = document.querySelector("#search");
+	var insert_target = document.querySelector("#search > .entry");
+
+	for( i = 0 ; i < data.results.length ; i++ )
+	{
+		create_search_element( data.results[i] ).buildEntry( search_timeline , "insert" , insert_target );
 	}
 }
 
@@ -174,6 +196,61 @@ create_tweet_element = function( data )
 		newTweet.rt_user_name				 = data.user.screen_name;
 		newTweet.rt_profile_image_url		 = data.user.profile_image_url;
 	}
+	return( newTweet );
+}
+
+create_search_element = function( data )
+{
+	var tweet_data = data;
+// 	if( data.retweeted_status )
+// 	{
+// 		tweet_data.retweeted_status.id = tweet_data.id;
+// 		tweet_data.retweeted_status.favorited = false;
+// 		tweet_data = data.retweeted_status;
+// 	}
+// {"text":"@twitterapi  http:\/\/tinyurl.com\/ctrefg",
+//      "to_user_id":396524,
+//      "to_user":"TwitterAPI",
+//      "from_user":"jkoum",
+//      "id":1478555574,   
+//      "from_user_id":1833773,
+//      "iso_language_code":"nl",
+//      "source":"<a href="http:\/\/twitter.com\/">twitter<\/a>",
+//      "profile_image_url":"http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/118412707\/2522215727_a5f07da155_b_normal.jpg",
+//      "created_at":"Wed, 08 Apr 2009 19:22:10 +0000"}
+	var newTweet = new tweet();
+		newTweet.status_id					 = tweet_data.id;
+		newTweet.created_at					 = tweet_data.created_at;
+	var source_string						 = tweet_data.source.replace(/\&lt;/g , "<");
+		source_string						 = source_string.replace(/\&gt;/g , ">");
+		source_string						 = source_string.replace(/\&quote;/g , '"');
+		newTweet.source						 = source_string;
+		
+		newTweet.text						 = tweet_data.text;
+
+		newTweet.user.user_id				 = tweet_data.from_user_id;
+		newTweet.user.screen_name			 = tweet_data.from_user;
+		newTweet.user.profile_image_url		 = tweet_data.profile_image_url;
+		
+		newTweet.screen_name				 = tweet_data.from_user;
+		newTweet.profile_image_url			 = tweet_data.profile_image_url;
+		newTweet.user.user_id				 = tweet_data.from_user_id;
+
+		newTweet.in_reply_to_screen_name	 = null;
+		newTweet.in_reply_to_status_id		 = null;
+		newTweet.in_reply_to_user_id		 = null;
+
+//		var user_json = JSON.stringify( newTweet.user );
+//		mbdatabase.save_user( user_json );
+
+//		var status_json = JSON.stringify( newTweet );
+//		mbdatabase.save_status( status_json );
+		
+// 	if( data.retweeted_status )
+// 	{
+// 		newTweet.rt_user_name				 = data.user.screen_name;
+// 		newTweet.rt_profile_image_url		 = data.user.profile_image_url;
+// 	}
 	return( newTweet );
 }
 

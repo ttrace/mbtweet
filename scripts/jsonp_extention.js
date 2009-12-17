@@ -207,16 +207,8 @@ expand_url = function( real_url, id ){
 		var inner_string = real_url.replace( /([\/\-?\=\+\%])/g , '$1&shy;');
 			inner_string = inner_string.replace( /([a-zA-Z0-9_]{6,6})/g , '$1&shy;' );
 		target.innerHTML = inner_string;
+		target.style.webkitTransformOrigin = ( target.parentNode.offsetLeft - 85 ) + "px 0px";
 		
-//		document.getElementById( id ).innerText = real_url;
-// 		var real_url_link = document.createElement('a');
-// 			real_url_link.href = real_url.replace(/\, /g , ',');
-// 			real_url_link.innerText = real_url.replace(/\, /g , ',');
-// 			real_url_link.innerHTML = real_url_link.innerHTML.replace(/([\/\-?\=\+\%])/g , '$1&shy;');
-// 			real_url_link.target = '_blank';
-// 		target.innerText = '';
-// 		target.appendChild( real_url_link );
-// 		addClass( real_url_link , 'pb-real-url' );
 		removeClass( target.parentNode , 'loading' );
 	}
 	else
