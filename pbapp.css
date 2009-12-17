@@ -71,6 +71,7 @@ a:hover
 
 	height		: 500px;
 	background-color: rgb( 240 , 240 , 240 );
+
 	overflow-y	: scroll;
 	overflow-x	: hidden;
 
@@ -175,7 +176,7 @@ header
 */
 .entry
 {
-	display			: block;
+	display			: list-item;
 	list-style-type	: none;
 	clear			: both;	
 	padding-bottom	: 5px;
@@ -189,6 +190,7 @@ header
 
 .entry.conv
 {
+	display			: block;
 	margin			: 0px 0px;
 	padding-bottom	: 0px;
 }
@@ -206,6 +208,11 @@ header
 	max-width	: 331px;
 	padding		: 0px 0px 0px 0px;
 	text-align	: left;
+}
+
+.entry .thumbnail ~ .u-status .u-string
+{
+	min-height	:36px;
 }
 
 .entry .u-status .u-string
@@ -430,7 +437,8 @@ header
 	opacity		: 0;
 	text-align	: center;
 
-/*	background-image	: url("./images/button_background.png");
+/*
+	background-image	: url("./images/button_background.png");
 	background-repeat	: no-repeat;
 */
 	background	: -webkit-gradient(	linear,
@@ -453,29 +461,28 @@ header
 .u-status:hover + .action,
 .action:hover
 {
-	margin-top			: -14px;
 	opacity				: 1.0;
-	-webkit-animation	: popAction 0.3s linear 1;
+/*	-webkit-animation	: popAction 0.3s linear 1; */
 }
 
 @-webkit-keyframes popAction
 {
 	0%
 	{
-		margin-top		: -24px;
-		opacity			: 0;
+		height		: 0px;
+		opacity		: 0;
 	}
 	
 	50%
 	{
-		margin-top		: -14px;
-		opacity			: 0.2;
+		height		: 21px;
+		opacity		: 0.3;
 	}
 	
 	100%
 	{
-		margin-top		: -14px;
-		opacity			: 1;
+		height		: 21px;
+		opacity		: 1;
 	}
 }
 
@@ -550,19 +557,19 @@ header
 	0%
 	{
 		opacity		: 0;
-		margin-top	: -14px;
+		height	: 0px;
 	}
 
 	50%
 	{
 		opacity		: 0;
-		margin-top	: 0px;
+		height	: 14px;
 	}
 	
 	100%
 	{
 		opacity		: 1;
-		margin-top : 0px;
+		height : 14px;
 	}
 }
 

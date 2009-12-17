@@ -118,7 +118,7 @@ create_tweet_element = function( data )
 	if( data.retweeted_status )
 	{
 		tweet_data.retweeted_status.id = tweet_data.id;
-		tweet_data.retweeted_status.favorited = tweet_data.favorited;
+		tweet_data.retweeted_status.favorited = false;
 		tweet_data = data.retweeted_status;
 	}
 	var newTweet = new tweet();

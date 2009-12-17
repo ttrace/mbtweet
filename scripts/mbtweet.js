@@ -59,7 +59,7 @@ init_mbtweet = function()
 							"GET",
 							[
 								["callback" , "retreveHome"],
-								["count" , "60"]
+								["count" , "200"]
 							],
 							{ retry : true }
 						);
@@ -217,7 +217,7 @@ retweet_this = function( tweet_id_string )
 
 	if( !hasClass( retweet_button , "dimm") ) 	// prohibiting to redundant translation
 	{
-		mbtweetOAuth.callAPI(	"https://api.twitter.com/1/statuses/retweet/" + retweeting_id.match(/[0-9]+/) + ".xml" ,
+		mbtweetOAuth.callAPI(	"https://api.twitter.com/1/statuses/retweet/" + retweeting_id.match(/[0-9]+$/) + ".xml" ,
 								"POST",
 								[
 								],
