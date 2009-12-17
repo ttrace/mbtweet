@@ -623,7 +623,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 		linked_source = linked_source.replace(/#((([^\s\(\)\\\-\!\@\#\$\%\^\&\+\=\;\:\"\'\|\<\>\,\.\~\?]|[0-9a-zA-Z_])+[0-9a-zA-Z_]+){1,16}(\s+|$))/g ,"<a hashtag' href='" + window.location.protocol + "//twitter.com/search?q=%23$2' target='_blank'>#$2</a>$4");
 		linked_source = linked_source.replace(/[@＠]([0-9a-zA-Z\_\-]+)/g,"@<a class='sname' href='" + window.location.protocol + "//twitter.com/$1' target='_blank'>$1</a>");
 
-		string.innerHTML = linked_source;
+		string.innerHTML = linked_source.replace(/&amp;/g , "&amp;amp;");
 	status_string_wrapper.appendChild( string );
 
 	// image attachment
