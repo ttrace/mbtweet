@@ -525,7 +525,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 
 	var entry_wrapper = document.createElement("DIV");
 		entry_wrapper.className = "entry";
-		entry_wrapper.id = target.id + "_" + this.status_id;
+		entry_wrapper.id = target.id + "-" + this.status_id;
 
 	if( append_mode == "conv" ) //conversation id
 	{
@@ -538,7 +538,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 	{
 		entry_wrapper.className += " mine";
 	}
-	else if( this.text.match( RegExp( mbtweet.user.screen_name ) ) )
+	else if( this.text.match( RegExp( "@" + mbtweet.user.screen_name ) ) )
 	{
 		entry_wrapper.className += " mention";
 	}
@@ -580,11 +580,6 @@ tweet.prototype.buildEntry = function( target , append_mode )
 		status_wrapper.className = "u-status";
 	entry_wrapper.appendChild( status_wrapper );
 
-//	if( hasClass( entry_wrapper , "mine" ) )
-//	{
-//		entry_wrapper.insertBefore( status_wrapper , icon_wrapper );
-//	}
-	
 	var status_string_wrapper = document.createElement("DIV");
 		status_string_wrapper.className = "u-string";
 	status_wrapper.appendChild( status_string_wrapper );
@@ -625,6 +620,21 @@ tweet.prototype.buildEntry = function( target , append_mode )
 
 		string.innerHTML = linked_source.replace(/&amp;/g , "&amp;amp;");
 	status_string_wrapper.appendChild( string );
+
+	// open new user's timeline in mbtweet
+	var sname_list = status_string_wrapper.querySelectorAll("a.user-name , a.sname")
+	for( var i = 0 ; i < sname_list.length ; i++ )
+	{
+		sname_list[i].addEventListener( "click" ,
+										function(event)
+										{
+											if( !event.shiftKey )  // Shift click openes Twitter Website
+											{
+												event.preventDefault() ; new_user_timeline( event.target )
+											}
+										},
+										false );
+	}
 
 	// image attachment
 	var url_list = string.querySelectorAll("a");
@@ -849,8 +859,6 @@ tweet.prototype.buildEntry = function( target , append_mode )
 			var target_id = target.id;
 				my_status_in_reply_to_status_id = my_status.in_reply_to_status_id;
 			
-//			if( mbtweet.debug )window.console.log( target_id , my_status_in_reply_to_status_id , conv_length );
-			
 			setTimeout(
 						(function( target_id , my_status_in_reply_to_status_id , conv_length )
 							{
@@ -862,7 +870,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 		else
 		{
 			var conv_chain				= document.createElement("DIV");
-				conv_chain.id			= "conv_" + entry_wrapper.id;
+				conv_chain.id			= "conv-" + entry_wrapper.id;
 				conv_chain.className	= "conv";
 	
 			var load_conv_button 		= document.createElement("DIV");
@@ -886,12 +894,6 @@ tweet.prototype.buildEntry = function( target , append_mode )
 			
 			var conv_chain_id = conv_chain.id;
 			var my_status_in_reply_to_status_id = my_status.in_reply_to_status_id;
-// 			if( mbtweet.debug ) window.console.log(
-// 								conv_chain_id ,
-// 								my_status_in_reply_to_status_id,
-// 								conv_length
-// 							);
-
 
 			setTimeout(
 				(
@@ -943,7 +945,7 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 	{
 		if( !target.querySelector( target_id ) )
 		{
-			var timeline			= document.querySelector( "#" + entry_wrapper.id.match(/([a-z]+)_[0-9]+/)[1] );
+			var timeline			= document.querySelector( "#" + entry_wrapper.id.match(/([a-zA-Z0-9_]+)\-[0-9]+/)[1] );
 			var target_scrollTop	= timeline.scrollTop;
 			var current_margin		= 0;
 			
@@ -955,7 +957,7 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 				
 				case "conv":
 						var original_status_id = status_id;
-						var timeline_name = target.id.match(/conv_([a-z]+)/)[1];
+						var timeline_name = target.id.match(/conv\-([a-zA-Z0-9_]+)/)[1];
 						var load_conv_button = target.querySelector( ".load-conv" );
 						if( hasClass( load_conv_button , "noreply") )
 						{
@@ -964,7 +966,7 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 							current_margin =- 36;
 						}
 					
-						var original_element_id = timeline_name + "_" + original_status_id;
+						var original_element_id = timeline_name + "-" + original_status_id;
 						var removing_status	= document.querySelectorAll( "#" + original_element_id );
 
 						if( removing_status.length != 0 )

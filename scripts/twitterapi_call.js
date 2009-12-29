@@ -28,55 +28,40 @@ mbtweetOAuth.callAPI = function( action , method, parameter , mbtweet_method )
 	}
 	else if( method == "POST")
 	{
-		post_method( access_URL , arguments[3] );
+		post_method( access_URL , mbtweet_method );
 	}
-	else if( method == "PIPES")
-	{
-		jsonp_fetch( "http://pipes.yahoo.com/pipes/pipe.run?_id=c61a07bae7f57ad13c74a0fec778c68c&_render=json&" + access_URL.replace(/(^.+json\?)/ , "") );	
-	}
+// 	else if( method == "PIPES")
+// 	{
+// 		jsonp_fetch( "http://pipes.yahoo.com/pipes/pipe.run?_id=c61a07bae7f57ad13c74a0fec778c68c&_render=json&" + access_URL.replace(/(^.+json\?)/ , "") );	
+// 	}
 
  return true;
 };
-
-retreveHome = function(data)
-{
-	var home = document.querySelector("#home");
-	var insert_target = document.querySelector("#home > .read.more");
-
-	for( i = 0 ; i < data.length ; i++ )
-	{
-		create_tweet_element( data[i] ).buildEntry( home );
-	}
-}
-
-retreveMention = function(data)
-{
-	var mention = document.querySelector("#mention");
-	var insert_target = document.querySelector("#mention > .read.more");
-
-	for( i = 0 ; i < data.length ; i++ )
-	{
-		create_tweet_element( data[i] ).buildEntry( mention );
-	}
-}
 
 retreveMine = function(data)
 {
 	for( i = 0 ; i < data.length ; i++ )
 	{
-		create_tweet_element( data[i] );
+		create_tweet_element( data[i] , true );
 	}
 }
 
-retreveList = function(data)
+countRate = function(data)
 {
-	var list = document.querySelector("#list");
-	var insert_target = document.querySelector("#list > .read.more");
-
-	for( i = 0 ; i < data.length ; i++ )
-	{
-		create_tweet_element( data[i] ).buildEntry( list );
-	}
+/*
+hourly_limit: 150
+remaining_hits: 146
+reset_time: "Fri Dec 25 10:44:15 +0000 2009"
+reset_time_in_seconds: 1261737855
+*/
+	window.console.log(data);
+	var hourly_rate_index = document.querySelector(".hourly-rate");
+		hourly_rate_index.style.width = data.hourly_limit + "px";
+	var remaining_hits_index = document.querySelector(".rate");
+		remaining_hits_index.style.width = data.remaining_hits + "px";
+	var reset_time_in_seconds = document.querySelector(".reset-time");
+	var time = new Date( data.reset_time_in_seconds * 1000 );
+		reset_time_in_seconds.innerText = "Auth Rate reset time is " + time.getHours() + ":" + time.getMinutes();
 }
 
 retreveSearch = function( data )
@@ -87,39 +72,6 @@ retreveSearch = function( data )
 	for( i = 0 ; i < data.results.length ; i++ )
 	{
 		create_search_element( data.results[i] ).buildEntry( search_timeline );
-	}
-}
-
-updateHomeTimeline = function(data)
-{
-	var home = document.querySelector("#home");
-	var insert_target = document.querySelector("#home > .entry");
-
-	for( i = 0 ; i < data.length ; i++ )
-	{
-		create_tweet_element( data[i] ).buildEntry( home , "insert" , insert_target );
-	}
-}
-
-updateMentionTimeline = function(data)
-{
-	var mention = document.querySelector("#mention");
-	var insert_target = document.querySelector("#mention > .entry");
-
-	for( i = 0 ; i < data.length ; i++ )
-	{
-		create_tweet_element( data[i] ).buildEntry( mention , "insert" , insert_target );
-	}
-}
-
-updateListTimeline = function(data)
-{
-	var list = document.querySelector("#list");
-	var insert_target = document.querySelector("#list > .entry");
-
-	for( i = 0 ; i < data.results.length ; i++ )
-	{
-		create_tweet_element( data.results[i] ).buildEntry( list , "insert" , insert_target );
 	}
 }
 
@@ -134,7 +86,7 @@ updateSearchTimeline = function(data)
 	}
 }
 
-create_tweet_element = function( data )
+create_tweet_element = function( data , cache )
 {
 	var tweet_data = data;
 	if( data.retweeted_status )
@@ -142,6 +94,10 @@ create_tweet_element = function( data )
 		tweet_data.retweeted_status.id = tweet_data.id;
 		tweet_data.retweeted_status.favorited = false;
 		tweet_data = data.retweeted_status;
+	}
+	if( data.sender )
+	{
+		tweet_data.user = tweet_data.sender;
 	}
 	var newTweet = new tweet();
 		newTweet.status_id					 = tweet_data.id;
@@ -154,7 +110,7 @@ create_tweet_element = function( data )
 		newTweet.source						 = tweet_data.source;
 		newTweet.text						 = tweet_data.text;
 		newTweet.truncated					 = tweet_data.truncated;
-		
+
 		newTweet.screen_name				 = tweet_data.user.screen_name;
 		newTweet.profile_image_url			 = tweet_data.user.profile_image_url;
 
@@ -189,8 +145,12 @@ create_tweet_element = function( data )
 		mbdatabase.save_user( user_json );
 
 		var status_json = JSON.stringify( newTweet );
-		mbdatabase.save_status( status_json );
-		
+		window.console.log( cache )
+		if( cache )
+		{
+			mbdatabase.save_status( status_json );
+		}
+
 	if( data.retweeted_status )
 	{
 		newTweet.rt_user_name				 = data.user.screen_name;
@@ -202,12 +162,8 @@ create_tweet_element = function( data )
 create_search_element = function( data )
 {
 	var tweet_data = data;
-// 	if( data.retweeted_status )
-// 	{
-// 		tweet_data.retweeted_status.id = tweet_data.id;
-// 		tweet_data.retweeted_status.favorited = false;
-// 		tweet_data = data.retweeted_status;
-// 	}
+/*
+//	search JSON.
 // {"text":"@twitterapi  http:\/\/tinyurl.com\/ctrefg",
 //      "to_user_id":396524,
 //      "to_user":"TwitterAPI",
@@ -218,6 +174,7 @@ create_search_element = function( data )
 //      "source":"<a href="http:\/\/twitter.com\/">twitter<\/a>",
 //      "profile_image_url":"http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/118412707\/2522215727_a5f07da155_b_normal.jpg",
 //      "created_at":"Wed, 08 Apr 2009 19:22:10 +0000"}
+*/
 	var newTweet = new tweet();
 		newTweet.status_id					 = tweet_data.id;
 		newTweet.created_at					 = tweet_data.created_at;
@@ -240,17 +197,6 @@ create_search_element = function( data )
 		newTweet.in_reply_to_status_id		 = null;
 		newTweet.in_reply_to_user_id		 = null;
 
-//		var user_json = JSON.stringify( newTweet.user );
-//		mbdatabase.save_user( user_json );
-
-//		var status_json = JSON.stringify( newTweet );
-//		mbdatabase.save_status( status_json );
-		
-// 	if( data.retweeted_status )
-// 	{
-// 		newTweet.rt_user_name				 = data.user.screen_name;
-// 		newTweet.rt_profile_image_url		 = data.user.profile_image_url;
-// 	}
 	return( newTweet );
 }
 

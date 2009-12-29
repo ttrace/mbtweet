@@ -1,16 +1,18 @@
 // inserting google translation result into tweet's string
-gTransExp = function(){
-	var translate_parent	= document.querySelector( "#" + arguments[0] ).querySelector( ".u-string" );
-	var translate_element	= document.querySelector( "#" + arguments[0] ).querySelector( ".translated" );
+gTransExp = function( data ){
+//	var translate_parent	= document.querySelector( "#" + arguments[0] ).querySelector( ".u-string" );
+//	var translate_element	= document.querySelector( "#" + arguments[0] ).querySelector( ".translated" );
+//	var translate_parent	= document.querySelector( "#" + arguments[0] ).querySelector( ".u-string" );
+	var translate_element	= document.querySelector( ".translated.loading" );
 	if(arguments[3] != null) // in error case
 	{
-		translate_element.innerText = arguments[3];
+		translate_element.innerText = data.responseData.translatedText;
 		removeClass(translated_object,'loading');
 	}
 	else
 	{
-		var context = arguments[1].translatedText;
-		var original_lang = mbtweet.defined_language[ arguments[1].detectedSourceLanguage ];
+		var context = data.responseData.translatedText;
+		var original_lang = mbtweet.defined_language[ data.responseData.detectedSourceLanguage ];
 		if( original_lang == mbtweet.user.language )
 		{
 			// translated lanugage is same with translated language
@@ -70,7 +72,6 @@ has_shorten_url = function( url )
 		}
 	}
 }
-
 
 fetch_media_thumbnail = function( status_id , media_url , media_carrier )
 {

@@ -3,7 +3,7 @@ var mbtweet = {};
 mbtweet = 
 {
 	debug			: true ,
-	build			: 00001 ,
+	build			: 00002 ,
 	version			: "1.0" ,
 	bitly_token		: "",
 	currentSearch	: "",
@@ -37,7 +37,9 @@ mbtweetOAuth =
 init_mbtweet = function()
 {
 	restore_mb_settings();
-
+/*
+//	auto updater with using App Cache on HTML5
+// Safari 4 can't run...
 //     setInterval(function() {
 // 	applicationCache.update();
 //     }, 5000);
@@ -51,28 +53,14 @@ init_mbtweet = function()
 // 		}
 // 		},
 // 	true);
-
+*/
 	init_web_database();
 	init_shorten_url();
 	init_window_resize();	
 
-	mbtweetOAuth.callAPI(	"https://api.twitter.com/1/statuses/home_timeline.json" ,
-							"GET",
-							[
-								["callback" , "retreveHome"],
-								["count" , "200"]
-							],
-							{ retry : true }
-						);
-
-	mbtweetOAuth.callAPI(	"http://twitter.com/statuses/mentions.json" ,
-							"GET",
-							[
-								["callback" , "retreveMention"],
-								["count" , "20"]
-							],
-							{ retry : true }
-						);
+	count_api_rate( true );
+	
+	var home = new timeline( "home" );
 
 	mbtweetOAuth.callAPI(	"https://twitter.com/statuses/user_timeline.json" ,
 							"GET",
@@ -82,63 +70,25 @@ init_mbtweet = function()
 							],
 							{ retry : true }
 						);
-
-
-// 	mbtweetOAuth.callAPI(	"http://api.twitter.com/1/t_trace/lists/279034/statuses.json" ,
-// 							"GET",
-// 							[
-// 								["callback" , "retreveList"],
-// 								["per_page" , "20"]
-// 							]
-// 						);
-
-	setTimeout( function(){ update_home() } , 90000 );
-	setTimeout( function(){ update_mention() } , 130000 );
-//	setTimeout( function(){ update_list() } , 120000 );
 }
 
-update_home = function()
+function count_api_rate( main )
 {
-	var since_id = document.querySelector("#home > .entry").id.replace(/[a-z]+_/ , "") + "";
-	mbtweetOAuth.callAPI(	"https://api.twitter.com/1/statuses/home_timeline.json" ,
+	// count Rate Limit
+	mbtweetOAuth.callAPI(	"http://twitter.com/account/rate_limit_status.json" ,
 							"GET",
 							[
-								["callback" , "updateHomeTimeline"],
-								["since_id" , since_id],
-								["count" , "200"]
-							]
+								["callback" , "countRate"],
+							],
+							{ retry : true }
 						);
-	setTimeout( function(){ update_home() } , 90000 );
-	return false;
+
+	if( main )
+	{
+		setTimeout( function(){ count_api_rate( true ) } , 60000 );
+	}
 }
 
-update_mention = function()
-{
-	var since_id = document.querySelector("#mention > .entry").id.replace(/[a-z]+_/ , "") + "";
-	mbtweetOAuth.callAPI(	"https://twitter.com/statuses/mentions.json" ,
-							"GET",
-							[
-								["callback" , "updateMentionTimeline"],
-								["since_id" , since_id]
-							]
-						);
-	setTimeout( function(){ update_mention() } , 120000 );
-	return false;
-}
-
-update_list = function()
-{
-	var since_id = document.querySelector("#list > .entry").id.replace(/[a-z]+_/ , "") + "";
-	mbtweetOAuth.callAPI(	"http://api.twitter.com/1/t_trace/lists/279034/statuses.json" ,
-							"GET",
-							[
-								["callback" , "updateListTimeline"],
-								["since_id" , since_id]
-							]
-						);
-	setTimeout( function(){ update_list() } , 120000 );
-	return false;
-}
 
 retreve_search = function( input_element )
 {
@@ -167,7 +117,7 @@ retreve_search = function( input_element )
 
 update_search = function()
 {
-	var since_id = document.querySelector("#search > .entry").id.replace(/[a-z]+_/ , "") + "";
+	var since_id = document.querySelector("#search > .entry").id.replace(/[a-zA-Z0-9_]+\-/ , "") + "";
 	mbtweetOAuth.callAPI(	"http://search.twitter.com/search.json" ,
 							"GET",
 							[
@@ -254,20 +204,23 @@ quote_this = function( in_reply_to_screen_name , in_reply_to_status_id , status_
 
 retweet_this = function( tweet_id_string )
 {
-	var retweeting_id = tweet_id_string + "";
-	var target_tweet	= document.querySelector( "#" + retweeting_id );
-	var retweet_button= target_tweet.querySelector( ".retweet" );
-
-	if( !hasClass( retweet_button , "dimm") ) 	// prohibiting to redundant translation
+	if( confirm("Retweet to your followers?") )
 	{
-		mbtweetOAuth.callAPI(	"https://api.twitter.com/1/statuses/retweet/" + retweeting_id.match(/[0-9]+$/) + ".xml" ,
-								"POST",
-								[
-								],
-								[ "retweet" , retweeting_id , ""]
-							);
+		var retweeting_id = tweet_id_string + "";
+		var target_tweet	= document.querySelector( "#" + retweeting_id );
+		var retweet_button= target_tweet.querySelector( ".retweet" );
+	
+		if( !hasClass( retweet_button , "dimm") ) 	// prohibiting to redundant translation
+		{
+			mbtweetOAuth.callAPI(	"https://api.twitter.com/1/statuses/retweet/" + retweeting_id.match(/[0-9]+$/) + ".xml" ,
+									"POST",
+									[
+									],
+									[ "retweet" , retweeting_id , ""]
+								);
+		}
+		return true;
 	}
-	return true;
 }
 
 legacy_retweet = function( in_reply_to_screen_name , in_reply_to_status_id , status_string )
@@ -325,14 +278,16 @@ translate_this = function( tweet_id_string , status_text_string )
 			translated.className	= "translated loading";
 			translated.innerText	= "loading";
 
-		var jsonp_src		= "http://www.google.com/uds/Gtranslate?callback=gTransExp&context=" + tweet_id_string + "&q=" + encodeURIComponent( status_text_string ) + "&key=notsupplied&v=1.0&nocache=1240207680396&langpair=%7C" + mbtweet.user.language;
-			translated.addEventListener( "webkitAnimationEnd",
-										function( event )
-										{
-											jsonp_fetch( jsonp_src );										
-										},
-										false);
+		var jsonp_src		= "http://www.google.com/uds/Gtranslate?callback=gTransExp&q=" + encodeURIComponent( status_text_string ) + "&key=notsupplied&v=1.0&nocache=1240207680396&langpair=%7C" + mbtweet.user.language;
+//		var jsonp_src		= "http://www.google.com/uds/Gtranslate?callback=gTransExp&context=" + tweet_id_string + "&q=" + encodeURIComponent( status_text_string ) + "&key=notsupplied&v=1.0&nocache=1240207680396&langpair=%7C" + mbtweet.user.language;
+// 			translated.addEventListener( "webkitAnimationEnd",
+// 										function( event )
+// 										{
+// 											jsonp_fetch( jsonp_src );										
+// 										},
+// 										false);
 		insert_point.appendChild( translated );
+		jsonp_fetch( jsonp_src );
 	}
 	return false;
 }

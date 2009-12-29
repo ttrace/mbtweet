@@ -72,7 +72,7 @@ hasURL = function( string )
 }
 
 //pbtweet functions
-jsonp_fetch = function( access_URL , action , method, parameter , mbtweet_method )
+jsonp_fetch = function( access_URL , action , method , parameter , mbtweet_method )
 {
 	var loader		= document.createElement("script");
 		loader.src	= access_URL;
