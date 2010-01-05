@@ -83,9 +83,16 @@ jsonp_fetch = function( access_URL , action , method , parameter , mbtweet_metho
 	
 	document.getElementsByTagName( "head" )[0].appendChild( loader );
 	
+	loader.addEventListener("DOMActivate",
+							function( event )
+							{
+								if( mbtweet.debug )window.console.log( "Error on loading jsonp" , event , event.target );
+							}
+	);
+	
 	loader.addEventListener("load" ,
 							function( event ){
-//								if( mbtweet.debug )window.console.log( "Loading jsonp" , event.target ,document.getElementById( loader_id ).type );
+//								if( mbtweet.debug )window.console.log( "Loading jsonp" , event , event.target );
 // 								if( !event.target )
 // 								{
 // 									window.console.log( "Loading jsonp is failed" , this.type );
@@ -105,3 +112,21 @@ jsonp_fetch = function( access_URL , action , method , parameter , mbtweet_metho
 							false);
 	return( false );
 }
+
+// following codes are used after twitter support XHR2.
+// function __jsonp_fetch( access_URL , action , method , parameter , mbtweet_method )
+// {
+// 	window.console.log( access_URL );
+// 	var update_req = new XMLHttpRequest();
+// 	update_req.onreadystatechange = function()
+// 	{
+// 		if(update_req.readyState == 4 && update_req.status == 200)
+// 		{
+// 			window.console.log( update_req.responseText );
+// 		}
+// 	}
+// 	update_req.open('GET' , access_URL , true );
+// 	update_req.setRequestHeader("Accept", "application/json, text/javascript, */*");
+// 	update_req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+// 	update_req.send();
+// }

@@ -12,14 +12,18 @@ mbtweetOAuth.callAPI = function( action , method, parameter , mbtweet_method )
                   	]
                   };
 
-     for (var i = 0; i < parameter.length; i++ )
-     {
+    for (var i = 0; i < parameter.length; i++ )
+    {
          var input = parameter[i];
              message.parameters.push([ parameter[i][0], parameter[i][1] ]);
-     }
-
-	OAuth.completeRequest( message, accessor );        
-	OAuth.SignatureMethod.sign( message, accessor );
+    }
+    
+	if( !(mbtweet_method.auth == false) )
+	{
+		window.console.log( mbtweet_method.auth );
+		OAuth.completeRequest( message, accessor );        
+		OAuth.SignatureMethod.sign( message, accessor );
+	}
 	var access_URL = action + "?" + OAuth.formEncode( message.parameters );
 
  	if( method == "GET" )
@@ -54,14 +58,39 @@ remaining_hits: 146
 reset_time: "Fri Dec 25 10:44:15 +0000 2009"
 reset_time_in_seconds: 1261737855
 */
-	window.console.log(data);
 	var hourly_rate_index = document.querySelector(".hourly-rate");
 		hourly_rate_index.style.width = data.hourly_limit + "px";
 	var remaining_hits_index = document.querySelector(".rate");
 		remaining_hits_index.style.width = data.remaining_hits + "px";
+		remaining_hits_index.innerText = data.remaining_hits;
 	var reset_time_in_seconds = document.querySelector(".reset-time");
 	var time = new Date( data.reset_time_in_seconds * 1000 );
 		reset_time_in_seconds.innerText = "Auth Rate reset time is " + time.getHours() + ":" + time.getMinutes();
+
+	mbtweet.rate.auth		= data.remaining_hits;
+	mbtweet.rate.auth_reset	= data.reset_time_in_seconds;
+}
+
+countNoAuthRate = function(data)
+{
+/*
+hourly_limit: 150
+remaining_hits: 146
+reset_time: "Fri Dec 25 10:44:15 +0000 2009"
+reset_time_in_seconds: 1261737855
+*/
+	window.console.log(data);
+	var hourly_rate_index = document.querySelector(".hourly-rate.no-auth");
+		hourly_rate_index.style.width = data.hourly_limit + "px";
+	var remaining_hits_index = document.querySelector(".rate.no-auth");
+		remaining_hits_index.style.width = data.remaining_hits + "px";
+		remaining_hits_index.innerText = data.remaining_hits;
+	var reset_time_in_seconds = document.querySelector(".reset-time.no-auth");
+	var time = new Date( data.reset_time_in_seconds * 1000 );
+		reset_time_in_seconds.innerText = "IP Rate reset time is " + time.getHours() + ":" + time.getMinutes();
+
+	mbtweet.rate.ip			= data.remaining_hits;
+	mbtweet.rate.ip_reset	= data.reset_time_in_seconds;
 }
 
 retreveSearch = function( data )
@@ -145,7 +174,7 @@ create_tweet_element = function( data , cache )
 		mbdatabase.save_user( user_json );
 
 		var status_json = JSON.stringify( newTweet );
-		window.console.log( cache )
+//		window.console.log( cache )
 		if( cache )
 		{
 			mbdatabase.save_status( status_json );

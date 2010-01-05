@@ -16,6 +16,13 @@ mbtweet =
 	{
 		language	: navigator.language.substr(0,2),
 		conv_length	: 2,
+	},
+	rate :
+	{
+		auth		: 0,
+		ip			: 0,
+		auth_reset	: 0,
+		ip_reset	: 0,
 	}
 }
 
@@ -68,7 +75,7 @@ init_mbtweet = function()
 								["callback" , "retreveMine"],
 								["count" , "100"]
 							],
-							{ retry : true }
+							{ retry : true , auth	: true }
 						);
 }
 
@@ -80,8 +87,10 @@ function count_api_rate( main )
 							[
 								["callback" , "countRate"],
 							],
-							{ retry : true }
+							{ retry : true , auth	: true }
 						);
+
+	jsonp_fetch( "http://twitter.com/account/rate_limit_status.json?callback=countNoAuthRate" );
 
 	if( main )
 	{
@@ -108,7 +117,8 @@ retreve_search = function( input_element )
 									["callback" , "retreveSearch"],
 									["q" , query],
 									["rpp" , "20"]
-								]
+								],
+								{ auth : true }
 							);
 		setTimeout( function(){ update_search( ) } , 180000 );
 	}
@@ -137,7 +147,7 @@ post_tweet = function( form , event)
 	event.preventDefault();
 	var posting_status = form.status.value + "";
 	var posting_in_reply_to_stats_id = form.post_in_reply_to_status_id.value + "";
-	mbtweetOAuth.callAPI(	"https://twitter.com/statuses/update.xml" ,
+	mbtweetOAuth.callAPI(	"https://twitter.com/statuses/update.xml",
 							"POST",
 							[
 								["status" , posting_status ],

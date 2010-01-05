@@ -28,6 +28,7 @@ window_resize_starter = function()
 					window_resize( window_resize_token );
 				},
 				500);
+
 	if( window.innerWidth < 1260 )
 	{
 		document.querySelector("#search_column").style.display = "none";

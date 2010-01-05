@@ -622,7 +622,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 	status_string_wrapper.appendChild( string );
 
 	// open new user's timeline in mbtweet
-	var sname_list = status_string_wrapper.querySelectorAll("a.user-name , a.sname")
+	var sname_list = status_string_wrapper.querySelectorAll("a.user-name , a.sname");
 	for( var i = 0 ; i < sname_list.length ; i++ )
 	{
 		sname_list[i].addEventListener( "click" ,
@@ -630,7 +630,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 										{
 											if( !event.shiftKey )  // Shift click openes Twitter Website
 											{
-												event.preventDefault() ; new_user_timeline( event.target )
+												event.preventDefault() ; new_user_timeline( event.target );
 											}
 										},
 										false );

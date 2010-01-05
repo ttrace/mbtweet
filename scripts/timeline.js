@@ -8,6 +8,7 @@ mbtweet.timeline =
 					api			: "https://api.twitter.com/1/statuses/home_timeline.json",
 					interval	: 90000,
 					count		: 200,
+					auth		: true,
 					cache		: true,
 				},
 	mention		:
@@ -17,6 +18,7 @@ mbtweet.timeline =
 					api			: "https://twitter.com/statuses/mentions.json",
 					interval	: 180000,
 					count		: 50,
+					auth		: true,
 					cache		: true,
 				},
 	favorite	:
@@ -26,6 +28,7 @@ mbtweet.timeline =
 					api			: "https://twitter.com/favorites.json",
 					interval	: 180000,
 					count		: 50,
+					auth		: true,
 					cache		: false,
 				},
 	mine		:
@@ -34,7 +37,8 @@ mbtweet.timeline =
 					timeline_id	: "mine",
 					api			: "https://twitter.com/statuses/user_timeline.json",
 					interval	: 180000,
-					count		: 200,
+					count		: 100,
+					auth		: true,
 					cache		: true,
 				},
 	message		:
@@ -44,11 +48,12 @@ mbtweet.timeline =
 					api			: "https://twitter.com/direct_messages.json",
 					interval	: 180000,
 					count		: 20,
+					auth		: true,
 					cache		: false,
 				},
 }
 
-function new_user_timeline( target_link )
+function new_user_timeline( target_link , myauth )
 {
 	var screen_name = "";
 	if( target_link.href )
@@ -65,6 +70,7 @@ function new_user_timeline( target_link )
 			new_timeline.timeline_id = screen_name;
 			new_timeline.name = screen_name + "'s timeline";
 			new_timeline.api = "https://twitter.com/statuses/user_timeline/" + screen_name + ".json";
+			new_timeline.auth = myauth;
 			new_timeline.create();
 	}
 }
@@ -78,6 +84,8 @@ timeline = function( preset )
 		this.name			= mbtweet.timeline[preset].name;
 		this.api			= mbtweet.timeline[preset].api;
 		this.interval		= mbtweet.timeline[preset].interval;
+		this.count			= mbtweet.timeline[preset].count;
+		this.auth			= mbtweet.timeline[preset].auth;
 		this.cache			= mbtweet.timeline[preset].cache;
 		this.create();
 	}
@@ -134,7 +142,7 @@ timeline.prototype = {
 		this._interval = x;
 	},
 
-	// fetching interval
+	// fetching number of statuses
 	get count ()
 	{
 		if (!("_count" in this))
@@ -158,6 +166,38 @@ timeline.prototype = {
 	set cache ( x )
 	{
 		this._cache = x;
+	},
+
+	get auth ()
+	{
+		if (!("_auth" in this))
+				this._auth = false;
+		return this._auth;
+	},
+	
+	set auth ( x )
+	{
+		this._auth = x;
+	},
+}
+
+search = function()
+{
+	var self = this;
+}
+
+search.prototype = 
+{
+	get query ()
+	{
+		if (!("_query" in this))
+				this._query = "";
+		return this._query;
+	},
+	
+	set query ( x )
+	{
+		this._query = x;
 	},
 }
 
@@ -198,8 +238,15 @@ timeline.prototype.create = function()
 		timeline.id = this.timeline_id;
 	timeline_column.appendChild( timeline );
 		this.timeline = timeline;
-	
+
 	document.querySelector("#column").appendChild( timeline_column );
+
+	var column_wrapper = document.querySelector("#column");
+	var timelines = column_wrapper.querySelectorAll(".timeline_column");
+//	if( column_wrapper.offsetWidth < timelines.length * 420 )
+//	{
+		column_wrapper.style.width = ( ( timelines.length ) * 420 ) + "px";
+//	}
 
 	window_resize( mbui.window_resize_token );
 	
@@ -210,11 +257,14 @@ timeline.prototype.init = function()
 {
 	var timeline_object = this.timeline;
 	eval( "initial" + this.timeline_id + "=function(data){initialTimeline(data,'" + this.timeline_id + "' , " + this.cache + ")}" );
+
 	mbtweetOAuth.callAPI(	this.api ,
 							"GET",
 							[
 								["callback" , "initial" + this.timeline_id ],
-							]
+								["count" , this.count ],
+							],
+							{ auth	: this.auth }
 						);
 	var my_timeline = this;
 	setTimeout( function(){ my_timeline.update() } , this.interval );
@@ -232,8 +282,10 @@ timeline.prototype.update = function()
 								"GET",
 								[
 									["callback" , "update" + this.timeline_id ],
-									["since_id" , since_id]
-								]
+									["since_id" , since_id],
+									["count" , this.count ],
+								],
+								{ auth	: this.auth }
 							);
 		var my_timeline = this;
 		setTimeout( function(){ my_timeline.update() } , this.interval );
