@@ -6,7 +6,7 @@ mbtweet.timeline =
 					name		: "Home",
 					timeline_id	: "home",
 					api			: "https://api.twitter.com/1/statuses/home_timeline.json",
-					interval	: 90000,
+					interval	: 60000,
 					count		: 200,
 					auth		: true,
 					cache		: true,
@@ -64,7 +64,7 @@ function new_user_timeline( target_link , myauth )
 	{
 		screen_name = target_link;		
 	}
-	if( document.querySelectorAll( "#" + screen_name ).length == 0 )
+	if( !document.getElementById( screen_name ) )
 	{
 		var new_timeline = new timeline();
 			new_timeline.timeline_id = screen_name;
@@ -243,10 +243,7 @@ timeline.prototype.create = function()
 
 	var column_wrapper = document.querySelector("#column");
 	var timelines = column_wrapper.querySelectorAll(".timeline_column");
-//	if( column_wrapper.offsetWidth < timelines.length * 420 )
-//	{
 		column_wrapper.style.width = ( ( timelines.length ) * 420 ) + "px";
-//	}
 
 	window_resize( mbui.window_resize_token );
 	
@@ -308,6 +305,11 @@ timeline.prototype.shrink = function()
 timeline.prototype.close = function()
 {
 	document.querySelector( "#column" ).removeChild( this.timelineColumn );
+
+	var column_wrapper = document.querySelector("#column");
+	var timelines = column_wrapper.querySelectorAll(".timeline_column");
+		column_wrapper.style.width = ( ( timelines.length ) * 420 ) + "px";
+
 	delete this;
 }
 

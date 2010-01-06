@@ -65,7 +65,8 @@ init_mbtweet = function()
 	init_shorten_url();
 	init_window_resize();	
 
-	count_api_rate( true );
+	count_api_rate( { auth : true , main	: true} );
+	setTimeout( function(){ count_api_rate( { auth : false , main : true } ) } , 30000 );
 	
 	var home = new timeline( "home" );
 
@@ -79,22 +80,23 @@ init_mbtweet = function()
 						);
 }
 
-function count_api_rate( main )
+function count_api_rate( option )
 {
+	var callback_process = "countRate";
+	if( option.auth == false) callback_process = "countNoAuthRate";
 	// count Rate Limit
-	mbtweetOAuth.callAPI(	"http://twitter.com/account/rate_limit_status.json" ,
+	mbtweetOAuth.callAPI(	"https://twitter.com/account/rate_limit_status.json" ,
 							"GET",
 							[
-								["callback" , "countRate"],
+								["callback" , callback_process ],
 							],
-							{ retry : true , auth	: true }
+							{ retry : true , auth	: option.auth }
 						);
+//	jsonp_fetch( "http://twitter.com/account/rate_limit_status.json?callback=countNoAuthRate" );
 
-	jsonp_fetch( "http://twitter.com/account/rate_limit_status.json?callback=countNoAuthRate" );
-
-	if( main )
+	if( option.main )
 	{
-		setTimeout( function(){ count_api_rate( true ) } , 60000 );
+		setTimeout( function(){ count_api_rate( { auth : option.auth , main : true } ) } , 60000 );
 	}
 }
 
@@ -118,15 +120,15 @@ retreve_search = function( input_element )
 									["q" , query],
 									["rpp" , "20"]
 								],
-								{ auth : true }
+								{ auth : false }
 							);
-		setTimeout( function(){ update_search( ) } , 180000 );
+		setTimeout( function(){ update_search() } , 60000 );
 	}
-	return false;
 }
 
 update_search = function()
 {
+	window.console.log("update search");
 	var since_id = document.querySelector("#search > .entry").id.replace(/[a-zA-Z0-9_]+\-/ , "") + "";
 	mbtweetOAuth.callAPI(	"http://search.twitter.com/search.json" ,
 							"GET",
@@ -135,10 +137,10 @@ update_search = function()
 								["q" , mbtweet.currentSearch],
 								["since_id" , since_id],
 								["rpp" , "100"]
-							]
+							],
+							{ auth : false }
 						);
-	setTimeout( function(){ update_search() } , 180000 );
-	return false;
+	setTimeout( function(){ update_search() } , 60000 );
 }
 
 

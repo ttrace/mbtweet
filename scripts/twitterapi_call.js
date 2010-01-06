@@ -20,11 +20,14 @@ mbtweetOAuth.callAPI = function( action , method, parameter , mbtweet_method )
     
 	if( !(mbtweet_method.auth == false) )
 	{
-		window.console.log( mbtweet_method.auth );
 		OAuth.completeRequest( message, accessor );        
 		OAuth.SignatureMethod.sign( message, accessor );
+		var access_URL = action + "?" + OAuth.formEncode( message.parameters );
 	}
-	var access_URL = action + "?" + OAuth.formEncode( message.parameters );
+	else
+	{
+		var access_URL = action + "?" + formEncode_noOAuth( parameter );
+	}
 
  	if( method == "GET" )
  	{
@@ -41,6 +44,23 @@ mbtweetOAuth.callAPI = function( action , method, parameter , mbtweet_method )
 
  return true;
 };
+
+formEncode_noOAuth = function formEncode( parameters ) {
+	var form = "";
+	var list = [];
+
+	for (var p in parameters) {
+		list.push([parameters[p][0] , parameters[p][1]]);
+	}
+
+	for (var p = 0; p < list.length; ++p) {
+		var value = list[p][1];
+		if (value == null) value = "";
+		if (form != "") form += '&';
+		form += OAuth.percentEncode(list[p][0]) +'='+ OAuth.percentEncode(value);
+	}
+	return form;
+}
 
 retreveMine = function(data)
 {
@@ -106,6 +126,7 @@ retreveSearch = function( data )
 
 updateSearchTimeline = function(data)
 {
+	window.console.log("update search timeline");
 	var search_timeline = document.querySelector("#search");
 	var insert_target = document.querySelector("#search > .entry");
 
