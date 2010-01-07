@@ -49,6 +49,7 @@ a:hover
 #column
 {
 	height		: 500px;
+	width		: 420px;
 	text-align	: center;
 	margin		: 0px auto;
 	/*
@@ -58,19 +59,31 @@ a:hover
 	*/
 }
 
+#column.fitting,
+.timeline_column.fitting
+{
+	-webkit-transition-property			: width ;
+	-webkit-transition-duration			: 0.2s;
+	-webkit-transition-delay			: 10ms;
+	-webkit-transition-timing-function:	: ease-in;
+}
+
 .timeline_column
 {
 	display			:inline-block;
 	vertical-align	: top;
 	width			: 410px;
 	margin			: 0px 4px;
+/*	
+	-webkit-transition-property			: width ;
+	-webkit-transition-duration			: 0.2s;
+	-webkit-transition-delay			: 10ms;
+	-webkit-transition-timing-function:	: ease-in;
+*/
 }
 
 .timeline_column:hover
 {
-	-webkit-transition-property			: width ;
-	-webkit-transition-duration			: 0.3s;
-	-webkit-transition-timing-function:	: ease-in;
 }
 
 .timeline
@@ -131,13 +144,13 @@ a:hover
 	float		: left;
 	width		: 14px;
 	height		: 14px;
-	background				: -webkit-gradient(	linear,
-												left top,
-												left bottom,
-												from( rgb( 230, 230, 230) ),
-												color-stop( 0.4 , rgb( 70, 70, 80) ),
-												to( rgb( 160, 160, 170) )
-												);
+	background	: -webkit-gradient(	linear,
+									left top,
+									left bottom,
+									from( rgb( 230, 230, 230) ),
+									color-stop( 0.4 , rgb( 70, 70, 80) ),
+									to( rgb( 160, 160, 170) )
+									);
 	-webkit-border-radius	:8px;
 	border		: 1px solid rgb( 200 , 200 , 200 );
 	display		: none;
@@ -159,10 +172,11 @@ a:hover
 .timeline_column:hover .timeline_header .timeline-button.close:hover,
 .timeline_column:hover .timeline_header .timeline-button.shrink:hover
 {
+	/*
 	-webkit-transition-property			: background , -webkit-gradient , text-shadow ;
 	-webkit-transition-duration			: 0.3s;
 	-webkit-transition-timing-function:	: ease-in;	
-
+	*/
 	color			: white;
 	cursor			: pointer;
 	text-shadow		: white 0px 0px 2px;
@@ -203,6 +217,16 @@ a:hover
 }
 
 /* timeline shrinked*/
+.timeline_column.shrink
+{
+	-webkit-animation: shrinkTimeline 0.2s ease-in 1;
+}
+
+.timeline_column.expand
+{
+	-webkit-animation: expandTimeline 0.2s ease-in 1;
+}
+
 .timeline_column.mini
 {
 	width	: 120px;
@@ -219,7 +243,7 @@ a:hover
 
 	100%
 	{
-		width	: 30px;
+		width	: 120px;
 		height	: 30px;
 	}
 }
@@ -228,7 +252,8 @@ a:hover
 {
 	0%
 	{
-		width	: 30px;
+		width	: 120px;
+		height	: 30px;
 	}
 
 	100%
@@ -243,6 +268,12 @@ a:hover
 	-webkit-border-radius	: 6px;
 	font-size	: 10px;
 }
+
+.timeline_column.mini .timeline_header input
+{
+	display	: none;
+}
+
 
 .timeline_column.mini .timeline
 {
@@ -832,6 +863,42 @@ a.shorten-url.loading a
 		opacity		: 1;
 		-webkit-transform	: scale(1, 1);
 	}
+}
+
+a.hashtag
+{
+	border		: 1px solid rgb( 120 , 120 , 120 );
+	font-weight	: bold;
+	color		: rgb( 240 , 240 , 240 ) ;
+	text-shadow	: 0px 0px 1px rgba( 0 , 0 , 0 , 0.5);
+	display		: inline-block;
+	margin		: 0px 0px;
+	padding		: 0px 4px;
+	background	: -webkit-gradient(	linear,
+					left top,
+					left bottom,
+					from( rgba(180, 180, 180 , 0.5) ),
+					to( rgba(80, 80, 80 , 0.5) )
+					);
+	-webkit-background-clip	: padding-box;
+	-webkit-border-radius	: 7px;
+	-webkit-transition-property			: -webkit-box-shadow , text-shadow ;
+	-webkit-transition-duration			: 0.15s;
+	-webkit-transition-timing-function:	: ease-in;	
+}
+
+a.hashtag:hover
+{
+	color			: white;
+	text-shadow		: 0px 0px 1px rgba( 255 , 255 , 255 , 0.5);
+	text-decoration	: none;
+	background		: -webkit-gradient(	linear,
+						left top,
+						left bottom,
+						from( rgb(180, 180, 180) ),
+						to( rgb(80, 80, 80) )
+						);
+	-webkit-box-shadow	: 0px 1px 2px rgba( 0 , 0 , 0 , 0.5);
 }
 
 /*

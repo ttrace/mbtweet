@@ -99,7 +99,6 @@ remaining_hits: 146
 reset_time: "Fri Dec 25 10:44:15 +0000 2009"
 reset_time_in_seconds: 1261737855
 */
-	window.console.log(data);
 	var hourly_rate_index = document.querySelector(".hourly-rate.no-auth");
 		hourly_rate_index.style.width = data.hourly_limit + "px";
 	var remaining_hits_index = document.querySelector(".rate.no-auth");
@@ -116,7 +115,6 @@ reset_time_in_seconds: 1261737855
 retreveSearch = function( data )
 {
 	var search_timeline = document.querySelector("#search");
-//	var insert_target = document.querySelector("#search > .read.more");
 	window.console.log( "search: " , data );
 	for( i = 0 ; i < data.results.length ; i++ )
 	{
@@ -126,7 +124,6 @@ retreveSearch = function( data )
 
 updateSearchTimeline = function(data)
 {
-	window.console.log("update search timeline");
 	var search_timeline = document.querySelector("#search");
 	var insert_target = document.querySelector("#search > .entry");
 
@@ -309,8 +306,7 @@ catch_post = function( event , api_method )
 			break;
 		
 		case "favorite":
-			window.console.log("fave bug =" , api_method[1] );
-//			var fave_entry = document.querySelector( "#" + api_method[1] );
+			if(mbtweet.debug)window.console.log("fave bug =" , api_method[1] );
 			var fave_entry = document.querySelector( "[id$='" + api_method[1] + "']" );
 			var fave_status = api_method[2];
 			var fave_button = document.querySelector( "#" + api_method[1] + " .favorite" );
@@ -338,7 +334,6 @@ catch_post = function( event , api_method )
 	{
 		document.querySelector("#post").removeChild( document.querySelector("#proxy_frame") );
 	}
-	window.console.log( event );
 }
 
 function __post_method( url )

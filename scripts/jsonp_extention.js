@@ -15,8 +15,6 @@ gTransExp = function( data ){
 		var original_lang = mbtweet.defined_language[ data.responseData.detectedSourceLanguage ];
 		if( original_lang == mbtweet.user.language )
 		{
-			// translated lanugage is same with translated language
-			//translate_parent.removeChild( translate_element );
 			removeClass( translate_element ,'loading');
 			translate_element.innerHTML = "" + context + " -- translated from :" + original_lang;
 		}
@@ -30,12 +28,12 @@ gTransExp = function( data ){
 }
 
 // media supports
-
 mbutil.defined_media_regexp = 
 {
 	twitpic_carrier		: /(http\:\/\/twitpic.com\/[a-zA-Z0-9]+)/,
 	pikchur_carrier		: /(http\:\/\/pk.gd\/([a-zA-Z0-9]+))/,
 	twitvid_carrier		: /(http\:\/\/twitvid.com\/[a-zA-Z0-9]+)/,
+	movapic_carrier		: /http\:\/\/movapic.com\/pic\/([a-z0-9]+)/,
 	tweetphoto_carrier	: /http\:\/\/pic\.gd\/([a-zA-Z0-9]+)/,
 	yfrog_carrier		: /http\:\/\/yfrog.[a-z]+\/([a-zA-Z0-9]+)/,
 	photoshare_carrier	: /(http\:\/\/www.bcphotoshare\.com\/photos\/([0-9][0-9])[0-9]+\/([0-9]+))/,
@@ -93,6 +91,11 @@ fetch_media_thumbnail = function( status_id , media_url , media_carrier )
 			place_picture( status_id , pic_thumb_src , media_url );
 			break;
 
+		case "movapic_carrier":
+			var pic_thumb_src = "http://image.movapic.com/pic/s_" + media_url.match(mbutil.defined_media_regexp[media_carrier])[1] +".jpeg";
+			place_picture( status_id , pic_thumb_src , media_url );
+			break;
+
 		case "tweetphoto_carrier":
 			var pic_thumb_query	= media_url.match(mbutil.defined_media_regexp[media_carrier])[1];
 				access_URL		= "http://pipes.yahoo.com/pipes/pipe.run?_id=bad514af30be9c742b19fd563c257a6b&_render=json&snipcode=" + pic_thumb_query + "&parentid=" + status_id + "&_callback=mediaJson";
@@ -127,11 +130,6 @@ fetch_media_thumbnail = function( status_id , media_url , media_carrier )
 			break;
 	}
 
-// movapic support
-// 	if(media_url.match(movapic_carrier)){
-// 		var pic_thumb_src = "http://image.movapic.com/pic/s_" + media_url.match(movapic_carrier)[2] +".jpeg";
-// 		place_picture(id,pic_thumb_src,media_url.match(movapic_carrier)[1]);
-// 	}
 //  getting bkite.com image
 // 	if (media_url.match(bkite_carrier)){
 // 		var pic_thumb_query = media_url.replace(/.+<a\ [^\>]*href\=\"http\:\/\/bkite\.com\/([0-9a-zA-Z]+)\".+/,"http://bkite.com/objects/$1");

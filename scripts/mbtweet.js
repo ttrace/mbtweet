@@ -2,8 +2,8 @@ var mbtweet = {};
 
 mbtweet = 
 {
-	debug			: false ,
-	build			: 00002 ,
+	debug			: true ,
+	build			: 00004 ,
 	version			: "1.0" ,
 	bitly_token		: "",
 	currentSearch	: "",
@@ -61,14 +61,16 @@ init_mbtweet = function()
 // 		},
 // 	true);
 */
+
 	init_web_database();
 	init_shorten_url();
-	init_window_resize();	
+	init_window_resize();
 
 	count_api_rate( { auth : true , main	: true} );
-	setTimeout( function(){ count_api_rate( { auth : false , main : true } ) } , 30000 );
+	setTimeout( function(){ count_api_rate( { auth : false , main : true } ) } , 3000 );
 	
 	var home = new timeline( "home" );
+	var mention = new timeline( "mention" );
 
 	mbtweetOAuth.callAPI(	"https://twitter.com/statuses/user_timeline.json" ,
 							"GET",
@@ -84,7 +86,6 @@ function count_api_rate( option )
 {
 	var callback_process = "countRate";
 	if( option.auth == false) callback_process = "countNoAuthRate";
-	// count Rate Limit
 	mbtweetOAuth.callAPI(	"https://twitter.com/account/rate_limit_status.json" ,
 							"GET",
 							[
@@ -92,7 +93,6 @@ function count_api_rate( option )
 							],
 							{ retry : true , auth	: option.auth }
 						);
-//	jsonp_fetch( "http://twitter.com/account/rate_limit_status.json?callback=countNoAuthRate" );
 
 	if( option.main )
 	{
@@ -103,6 +103,7 @@ function count_api_rate( option )
 
 retreve_search = function( input_element )
 {
+	if( mbtweet.debug )window.console.log("retreve_search:" , input_element);
 	if( query != mbtweet.currentSearch )
 	{
 		var old_entry = document.querySelectorAll( "#search .entry" );
@@ -112,37 +113,41 @@ retreve_search = function( input_element )
 			search_timeline.removeChild( old_entry[i] );
 		}
 		var query = input_element.value;
-		mbtweet.currentSearch = query;
+		if( query != "" )
+		{
+			mbtweet.currentSearch = query;
+			mbtweetOAuth.callAPI(	"http://search.twitter.com/search.json" ,
+									"GET",
+									[
+										["callback" , "retreveSearch"],
+										["q" , query],
+										["rpp" , "20"]
+									],
+									{ auth : false }
+								);
+			setTimeout( function(){ update_search() } , 60000 );
+		}
+	}
+}
+
+update_search = function()
+{
+	if( document.querySelectorAll("#search").length != 0 )
+	{
+		var since_id = document.querySelector("#search > .entry").id.replace(/[a-zA-Z0-9_]+\-/ , "") + "";
 		mbtweetOAuth.callAPI(	"http://search.twitter.com/search.json" ,
 								"GET",
 								[
-									["callback" , "retreveSearch"],
-									["q" , query],
-									["rpp" , "20"]
+									["callback" , "updateSearchTimeline"],
+									["q" , mbtweet.currentSearch],
+									["since_id" , since_id],
+									["rpp" , "100"]
 								],
 								{ auth : false }
 							);
 		setTimeout( function(){ update_search() } , 60000 );
 	}
 }
-
-update_search = function()
-{
-	window.console.log("update search");
-	var since_id = document.querySelector("#search > .entry").id.replace(/[a-zA-Z0-9_]+\-/ , "") + "";
-	mbtweetOAuth.callAPI(	"http://search.twitter.com/search.json" ,
-							"GET",
-							[
-								["callback" , "updateSearchTimeline"],
-								["q" , mbtweet.currentSearch],
-								["since_id" , since_id],
-								["rpp" , "100"]
-							],
-							{ auth : false }
-						);
-	setTimeout( function(){ update_search() } , 60000 );
-}
-
 
 post_tweet = function( form , event)
 {

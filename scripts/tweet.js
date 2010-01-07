@@ -615,7 +615,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 		linked_source = linked_source.replace( mbutil.isUrlRegexp		, "<a href='$1' target='_blank'>$1</a>$6");
 		linked_source = linked_source.replace( /([^\/]|^)(www\.[\w\d:#@%\/;$\(\)~_\?\+-=\\\.&]+\.[\w\d:#@%\/;$\(\)~_\?\+-=\\\.&]+)/g , "<a href='http://$2' target='_blank'>$2</a>" );
 		linked_source = linked_source.replace(/blank\'\>([^\<]{28})[^\<]+\<\/a/g, "blank'>$1...</a");
-		linked_source = linked_source.replace(/#((([^\s\(\)\\\-\!\@\#\$\%\^\&\+\=\;\:\"\'\|\<\>\,\.\~\?]|[0-9a-zA-Z_])+[0-9a-zA-Z_]+){1,16}(\s+|$))/g ,"<a hashtag' href='" + window.location.protocol + "//twitter.com/search?q=%23$2' target='_blank'>#$2</a>$4");
+		linked_source = linked_source.replace(/#((([^\s\(\)\\\-\!\@\#\$\%\^\&\+\=\;\:\"\'\|\<\>\,\.\~\?]|[0-9a-zA-Z_])+[0-9a-zA-Z_]+){1,16}(\s+|$))/g ,"<a class='hashtag' href='" + window.location.protocol + "//twitter.com/search?q=%23$2' target='_blank'>#$2</a>$4");
 		linked_source = linked_source.replace(/[@＠]([0-9a-zA-Z\_\-]+)/g,"@<a class='sname' href='" + window.location.protocol + "//twitter.com/$1' target='_blank'>$1</a>");
 
 		string.innerHTML = linked_source.replace(/&amp;/g , "&amp;amp;");
@@ -625,15 +625,38 @@ tweet.prototype.buildEntry = function( target , append_mode )
 	var sname_list = status_string_wrapper.querySelectorAll("a.user-name , a.sname");
 	for( var i = 0 ; i < sname_list.length ; i++ )
 	{
+		var load_with_auth = false;
+		if( hasClass( sname_list , "user-name" ) && this.user.user_protected )
+		{
+			load_with_auth = true;
+		}
 		sname_list[i].addEventListener( "click" ,
-										function(event)
+										function( event )
 										{
 											if( !event.shiftKey )  // Shift click openes Twitter Website
 											{
-												event.preventDefault() ; new_user_timeline( event.target );
+												event.preventDefault();
+												new_user_timeline( event.target , load_with_auth );
 											}
 										},
 										false );
+	}
+
+	var hashtag_list =  status_string_wrapper.querySelectorAll("a.hashtag");
+	for( var i = 0 ; i < hashtag_list.length ; i++ )
+	{
+		//var query = hashtag_list[i].innerText;
+		//window.console.log( query );
+		hashtag_list[i].addEventListener( 	"click",
+											function( event )
+											{
+												if( !event.shiftKey )
+												{
+													event.preventDefault();
+													new_search_timeline( event.target.innerText );
+												}
+											},
+											false );
 	}
 
 	// image attachment
@@ -996,10 +1019,8 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 				default:
 					break;
 			}
-			
-			//counting number of tweets.
-			timeline.parentNode.querySelector(".unread-counter").innerText = timeline.querySelectorAll(".unread").length + "/" + timeline.querySelectorAll(".entry:not(.conv)").length;
 
+			unread_counter( timeline.id );			
 			// fixsing view
 			if( entry_wrapper.offsetTop <= target_scrollTop + 1 )
 			{
@@ -1026,6 +1047,8 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 	else
 	{
 		target.appendChild( entry_wrapper );
+		//counting number of tweets.
+		unread_counter( target.id );
 	}
 }
 

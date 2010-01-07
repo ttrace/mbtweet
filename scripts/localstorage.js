@@ -40,7 +40,21 @@ function get_storage_Value( key )
 {
 	if ( is_localstorage() )
 	{
-		return( localStorage.getItem(key) );
+		// upgrading process if key does not exist.
+		var value = localStorage.getItem(key);
+		if( value == "" || value == null)
+		{
+			var cookies = document.cookie.split("; ");
+			for ( var i = 0 ; i < cookies.length ; i++ )
+			{
+				var str = cookies[i].split("=");
+				if ( str[0] == key ) {
+					value = unescape( str[1] );
+					break ;
+				}
+			}
+		}
+		return( value );
 	}
 	else
 	{
@@ -79,7 +93,7 @@ function clearValue(value)
 
 function is_localstorage()
 {
-	if (typeof(sessionStorage) == 'undefined' || sessionStorage == null || typeof(localStorage) == 'undefined' || localStorage == null)
+	if ( typeof(localStorage) == 'undefined' || localStorage == null )
 	{
 		return(false);
 	}

@@ -83,16 +83,30 @@ jsonp_fetch = function( access_URL , action , method , parameter , mbtweet_metho
 	
 	document.getElementsByTagName( "head" )[0].appendChild( loader );
 	
-	loader.addEventListener("DOMActivate",
+	loader.addEventListener("error",
 							function( event )
 							{
-								if( mbtweet.debug )window.console.log( "Error on loading jsonp" , event , event.target );
-							}
-	);
+								if( mbtweet.debug )window.console.log( "ERROR:" , event , event.target );
+							},
+							false);
+	
+	loader.addEventListener("abort",
+							function( event )
+							{
+								if( mbtweet.debug )window.console.log( "abort:" , event , event.target );
+							},
+							false);
+	
+	loader.addEventListener("unload",
+							function( event )
+							{
+								if( mbtweet.debug )window.console.log( "unload:" , event , event.target );
+							},
+							false);
 	
 	loader.addEventListener("load" ,
 							function( event ){
-//								if( mbtweet.debug )window.console.log( "Loading jsonp" , event , event.target );
+								if( mbtweet.debug )window.console.log( "Loading jsonp" , event , event.target.type );
 // 								if( !event.target )
 // 								{
 // 									window.console.log( "Loading jsonp is failed" , this.type );

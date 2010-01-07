@@ -51,9 +51,19 @@ mbtweet.timeline =
 					auth		: true,
 					cache		: false,
 				},
+	search		:
+				{
+					name		: "Search",
+					timeline_id	: "search",
+					api			: "http://search.twitter.com/search.json",
+					interval	: 60000,
+					count		: 100,
+					auth		: false,
+					cache		: false,
+				},
 }
 
-function new_user_timeline( target_link , myauth )
+new_user_timeline = function( target_link , myauth )
 {
 	var screen_name = "";
 	if( target_link.href )
@@ -75,7 +85,23 @@ function new_user_timeline( target_link , myauth )
 	}
 }
 
-timeline = function( preset )
+new_search_timeline = function( query )
+{
+	var new_search_timeline					= new timeline();
+		new_search_timeline.timeline_id		= "search_" + guid().replace(/\-/g , "");
+		new_search_timeline.name			= "Search " + query;
+		new_search_timeline.api				= mbtweet.timeline.search.api;
+		new_search_timeline.interval		= mbtweet.timeline.search.interval;
+		new_search_timeline.count			= mbtweet.timeline.search.count;
+		new_search_timeline.auth			= mbtweet.timeline.search.auth;
+		new_search_timeline.cache			= mbtweet.timeline.search.cache;
+		new_search_timeline.search			= new search();
+		new_search_timeline.search.query	= query;
+		
+		new_search_timeline.create();
+}
+
+function timeline( preset )
 {
 	var self = this;
 	if( mbtweet.timeline[preset] && ( document.querySelectorAll( "#" + preset ).length == 0 ))
@@ -87,6 +113,11 @@ timeline = function( preset )
 		this.count			= mbtweet.timeline[preset].count;
 		this.auth			= mbtweet.timeline[preset].auth;
 		this.cache			= mbtweet.timeline[preset].cache;
+		if( preset == "search" )
+		{
+			this.search			= new search();
+			this.search.query	= "";
+		}
 		this.create();
 	}
 }
@@ -215,6 +246,17 @@ timeline.prototype.create = function()
 		timeline_header.innerHTML = this.name;
 	timeline_column.appendChild( timeline_header );
 	
+	if( this.timeline_id == "search" )
+	{
+		var search_field		= document.createElement("INPUT");
+			search_field.id		= "search_keyword";
+			search_field.type	= "search";
+			search_field.addEventListener(	"change",
+											function(){ retreve_search( search_field ) },
+											false);
+		timeline_header.appendChild( search_field );			
+	}
+	
 	var timeline_count = document.createElement("SPAN");
 		timeline_count.className = "unread-counter";
 		timeline_count.innerText = "0";
@@ -241,14 +283,23 @@ timeline.prototype.create = function()
 
 	document.querySelector("#column").appendChild( timeline_column );
 
-	var column_wrapper = document.querySelector("#column");
-	var timelines = column_wrapper.querySelectorAll(".timeline_column");
-		column_wrapper.style.width = ( ( timelines.length ) * 420 ) + "px";
+	fit_holizontal_width();
+// 	var column_wrapper = document.querySelector("#column");
+// 	var timelines = column_wrapper.querySelectorAll(".timeline_column");
+// 		column_wrapper.style.width = ( ( timelines.length ) * 420 ) + "px";
 
 	window_resize( mbui.window_resize_token );
-	
-	this.init();
+
+	if( !this.search )
+	{
+		this.init();
+	}
+	else if( this.search.query != "")
+	{
+		this.search.init( this );
+	}
 }
+
 
 timeline.prototype.init = function()
 {
@@ -264,13 +315,32 @@ timeline.prototype.init = function()
 							{ auth	: this.auth }
 						);
 	var my_timeline = this;
+	setTimeout( function(){ count_api_rate( { auth : my_timeline.auth , main : false } ) } , 2000 );
 	setTimeout( function(){ my_timeline.update() } , this.interval );
+	return false;
+}
+
+search.prototype.init = function( timeline )
+{
+	var timeline_object = timeline.timeline;
+	eval( "initial" + timeline.timeline_id + "=function(data){initialSearchTimeline(data,'" + timeline.timeline_id + "' , " + timeline.cache + ")}" );
+
+	mbtweetOAuth.callAPI(	timeline.api ,
+							"GET",
+							[
+								["callback" , "initial" + timeline.timeline_id ],
+								["q" , this.query ],
+								["rpp" , "20"],
+							],
+							{ auth	: false }
+						);
+	setTimeout( function(){ timeline.search.update( timeline ) } , timeline.interval );
 	return false;
 }
 
 timeline.prototype.update = function()
 {
-	if( document.getElementById(this.timeline.id) )
+	if( document.getElementById( this.timeline.id ) )
 	{
 		var timeline_object = this.timeline;
 		var since_id = timeline_object.querySelector(".entry").id.replace(/.+\-([0-9]+)$/ , "$1") + "";
@@ -285,31 +355,67 @@ timeline.prototype.update = function()
 								{ auth	: this.auth }
 							);
 		var my_timeline = this;
+		setTimeout( function(){ count_api_rate( { auth : my_timeline.auth , main : false } ) } , 2000 );
 		setTimeout( function(){ my_timeline.update() } , this.interval );
+	}
+	return false;
+}
+
+search.prototype.update = function( timeline )
+{
+	var timeline_object = timeline.timeline;
+	if( document.getElementById( timeline_object.id ) )
+	{
+		var timeline_object = timeline.timeline;
+		var since_id = timeline_object.querySelector(".entry").id.replace(/.+\-([0-9]+)$/ , "$1") + "";
+		eval( "update" + timeline.timeline_id + "=function( data ){updateSearchTimeline(data,'" + timeline.timeline_id + "' , " + timeline.cache + ")}" );
+		mbtweetOAuth.callAPI(	timeline.api ,
+								"GET",
+								[
+									["callback" , "update" + timeline.timeline_id ],
+									["q" , this.query ],
+									["rpp" , "100"],
+								],
+								{ auth	: false }
+							);
+		setTimeout( function(){ timeline.search.update( timeline ) } , timeline.interval );
 	}
 	return false;
 }
 
 timeline.prototype.shrink = function()
 {
+	fit_holizontal_width();
+	addClass( this.timelineColumn , "fitting" );
+	this.timelineColumn.addEventListener(	"webkitTransitionEnd",
+											function( event )
+											{
+												if( hasClass( event.target , "timeline_column" ) )
+												{
+													removeClass( this.timelineColumn , "fitting" );
+													fit_holizontal_width();
+													event.target.removeEventListener( "webkitTransitionEnd" , arguments.callee );
+												}
+											},
+											false );
 	if( hasClass( this.timelineColumn , "mini" ) )
 	{
+		var column_wrapper = document.querySelector("#column");
+		var timelines = column_wrapper.querySelectorAll(".timeline_column");
+			column_wrapper.style.width = ( column_wrapper.offsetWidth + 290 ) + "px";
 		removeClass( this.timelineColumn , "mini" );
 	}
 	else
 	{
 		addClass( this.timelineColumn , "mini" );
 	}
+	
 }
 
 timeline.prototype.close = function()
 {
 	document.querySelector( "#column" ).removeChild( this.timelineColumn );
-
-	var column_wrapper = document.querySelector("#column");
-	var timelines = column_wrapper.querySelectorAll(".timeline_column");
-		column_wrapper.style.width = ( ( timelines.length ) * 420 ) + "px";
-
+	fit_holizontal_width();
 	delete this;
 }
 
@@ -323,7 +429,6 @@ initialTimeline = function( data , target_id , cache )
 		create_tweet_element( data[i] , cache ).buildEntry( timeline );
 	}
 
-	count_api_rate( false );
 }
 
 updateTimeline = function( data , target_id , cache )
@@ -335,6 +440,27 @@ updateTimeline = function( data , target_id , cache )
 	{
 		create_tweet_element( data[i] , cache ).buildEntry( timeline , "insert" , insert_target );
 	}
+}
 
-	count_api_rate( false );
+initialSearchTimeline = function( data , target_id , cache )
+{
+	var timeline = document.getElementById( target_id );
+	var insert_target = timeline.querySelector(".read.more");
+
+	for( i = 0 ; i < data.results.length ; i++ )
+	{
+		create_search_element( data.results[i] ).buildEntry( timeline );
+	}
+}
+
+updateSearchTimeline = function( data , target_id , cache )
+{
+	window.console.log( data , target_id , cache );
+	var timeline = document.getElementById( target_id );
+	var insert_target = timeline.querySelector(".entry");
+
+	for( i = 0 ; i < data.results.length ; i++ )
+	{
+		create_search_element( data.results[i] ).buildEntry( timeline , "insert" , insert_target );
+	}
 }

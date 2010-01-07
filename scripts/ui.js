@@ -28,15 +28,7 @@ window_resize_starter = function()
 					window_resize( window_resize_token );
 				},
 				500);
-
-	if( window.innerWidth < 1260 )
-	{
-		document.querySelector("#search_column").style.display = "none";
-	}
-	else
-	{
-		document.querySelector("#search_column").style.display = "inline-block";
-	}
+	fit_holizontal_width();
 }
 
 window_resize = function( window_resize_token )
@@ -52,6 +44,23 @@ window_resize = function( window_resize_token )
 		}
 	}
 	return( false );
+}
+
+function fit_holizontal_width()
+{
+	var column_wrapper = document.querySelector("#column");
+	var timelines = column_wrapper.querySelectorAll(".timeline_column");
+	var total_width = 0;
+	for( var i = 0 ; i < timelines.length ; i++ )
+	{
+		if( timelines[i].style.display != "none" )
+		{
+			total_width += timelines[ i ].offsetWidth + 10;
+		}
+		//if( mbtweet.debug )window.console.log( timelines.length , total_width , timelines[ i ].offsetWidth );
+	}
+	column_wrapper.style.width = total_width + "px";
+	//if( mbtweet.debug )window.console.log( total_width , column_wrapper.style.width );
 }
 
 status_counter = function()
@@ -76,5 +85,12 @@ remove_unread = function( target_id )
 	}
 
 	//counting number of tweets.
-	timeline.parentNode.querySelector(".unread-counter").innerText = timeline.querySelectorAll(".unread").length + "/" + timeline.querySelectorAll(".entry:not(.conv)").length;
+	unread_counter( timeline.id );
+	//timeline.parentNode.querySelector(".unread-counter").innerText = timeline.querySelectorAll(".unread").length + "/" + timeline.querySelectorAll(".entry:not(.conv)").length;
+}
+
+unread_counter = function( timeline_id )
+{
+	var timeline = document.getElementById( timeline_id + "_column" );
+	timeline.querySelector(".unread-counter").innerText = timeline.querySelectorAll(".unread").length + "/" + timeline.querySelectorAll(".entry:not(.conv)").length;
 }

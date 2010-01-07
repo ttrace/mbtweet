@@ -44,23 +44,16 @@
 </header>
 	<div id="column_wrapper">
 		<div id="column">
-			<div id = "search_column" class = "timeline_column">
-				<div class = "timeline_header">
-					<input id = "serch_keyword" type="search" onchange="retreve_search( this )">
-					<span class="unread-counter">0</span>
-				</div>
-				<div id = "search" class = "timeline">
-				</div>
-			</div>
 		</div>
 	</div>
 <footer>
 	<div class="dock">
 		<div class = "home"		onclick = "var mention = new timeline('home');">Home</div>
 		<div class = "mention"	onclick = "var mention = new timeline('mention');">Mentions</div>
-		<div class = "favorite"	onclick = "var mention = new timeline('favorite');">Faborites</div>
+		<div class = "favorite"	onclick = "var mention = new timeline('favorite');">Favorites</div>
 		<!-- div class = "message"	onclick = "var mention = new timeline('message');">Messages</div -->
 		<div class = "your"		onclick = "var mention = new timeline('mine');">Yours</div>
+		<div class = "search"		onclick = "var mention = new timeline('search');">Search</div>
 	</div>
 </footer>
 </html>
