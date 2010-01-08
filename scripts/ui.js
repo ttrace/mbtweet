@@ -57,10 +57,8 @@ function fit_holizontal_width()
 		{
 			total_width += timelines[ i ].offsetWidth + 10;
 		}
-		//if( mbtweet.debug )window.console.log( timelines.length , total_width , timelines[ i ].offsetWidth );
 	}
 	column_wrapper.style.width = total_width + "px";
-	//if( mbtweet.debug )window.console.log( total_width , column_wrapper.style.width );
 }
 
 status_counter = function()
@@ -86,7 +84,6 @@ remove_unread = function( target_id )
 
 	//counting number of tweets.
 	unread_counter( timeline.id );
-	//timeline.parentNode.querySelector(".unread-counter").innerText = timeline.querySelectorAll(".unread").length + "/" + timeline.querySelectorAll(".entry:not(.conv)").length;
 }
 
 unread_counter = function( timeline_id )

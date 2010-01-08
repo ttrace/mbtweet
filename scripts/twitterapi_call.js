@@ -37,10 +37,6 @@ mbtweetOAuth.callAPI = function( action , method, parameter , mbtweet_method )
 	{
 		post_method( access_URL , mbtweet_method );
 	}
-// 	else if( method == "PIPES")
-// 	{
-// 		jsonp_fetch( "http://pipes.yahoo.com/pipes/pipe.run?_id=c61a07bae7f57ad13c74a0fec778c68c&_render=json&" + access_URL.replace(/(^.+json\?)/ , "") );	
-// 	}
 
  return true;
 };
@@ -70,7 +66,7 @@ retreveMine = function(data)
 	}
 }
 
-countRate = function(data)
+countRate = function( data )
 {
 /*
 hourly_limit: 150
@@ -131,120 +127,6 @@ updateSearchTimeline = function(data)
 	{
 		create_search_element( data.results[i] ).buildEntry( search_timeline , "insert" , insert_target );
 	}
-}
-
-create_tweet_element = function( data , cache )
-{
-	var tweet_data = data;
-	if( data.retweeted_status )
-	{
-		tweet_data.retweeted_status.id = tweet_data.id;
-		tweet_data.retweeted_status.favorited = false;
-		tweet_data = data.retweeted_status;
-	}
-	if( data.sender )
-	{
-		tweet_data.user = tweet_data.sender;
-	}
-	var newTweet = new tweet();
-		newTweet.status_id					 = tweet_data.id;
-		newTweet.created_at					 = tweet_data.created_at;
-		newTweet.in_reply_to_screen_name	 = tweet_data.in_reply_to_screen_name;
-		newTweet.in_reply_to_status_id		 = tweet_data.in_reply_to_status_id;
-		newTweet.in_reply_to_user_id		 = tweet_data.in_reply_to_user_id;
-		newTweet.favorited					 = tweet_data.favorited;
-		newTweet.geo						 = tweet_data.geo;
-		newTweet.source						 = tweet_data.source;
-		newTweet.text						 = tweet_data.text;
-		newTweet.truncated					 = tweet_data.truncated;
-
-		newTweet.screen_name				 = tweet_data.user.screen_name;
-		newTweet.profile_image_url			 = tweet_data.user.profile_image_url;
-
-		newTweet.user.created_at			 = tweet_data.user.created_at;
-		newTweet.user.description			 = tweet_data.user.description;
-		newTweet.user.favourites_count		 = tweet_data.user.favourites_count;
-		newTweet.user.followers_count		 = tweet_data.user.followers_count;
-		newTweet.user.following				 = tweet_data.user.following;
-		newTweet.user.friends_count			 = tweet_data.user.friends_count;
-		newTweet.user.geo_enabled			 = tweet_data.user.geo_enabled;
-		newTweet.user.user_id				 = tweet_data.user.id;
-		newTweet.user.location				 = tweet_data.user.location;
-		newTweet.user.name					 = tweet_data.user.name;
-		newTweet.user.notifications			 = tweet_data.user.notifications;
-		newTweet.user.user_protected		 = tweet_data.user.protected;
-		newTweet.user.screen_name			 = tweet_data.user.screen_name;
-		newTweet.user.statuses_count		 = tweet_data.user.statuses_count;
-		newTweet.user.time_zone				 = tweet_data.user.time_zone;
-		newTweet.user.utc_offset			 = tweet_data.user.utc_offset;
-		newTweet.user.url					 = tweet_data.user.url;
-		newTweet.user.verified				 = tweet_data.user.verified;
-		newTweet.user.profile_background_color		 = tweet_data.user.profile_background_color;
-		newTweet.user.profile_background_image_url	 = tweet_data.user.profile_background_image_url;
-		newTweet.user.profile_background_tile		 = tweet_data.user.profile_background_tile;
-		newTweet.user.profile_image_url				 = tweet_data.user.profile_image_url;
-		newTweet.user.profile_link_color			 = tweet_data.user.profile_link_color;
-		newTweet.user.profile_sidebar_border_color	 = tweet_data.user.profile_sidebar_border_color;
-		newTweet.user.profile_sidebar_fill_color	 = tweet_data.user.profile_sidebar_fill_color;
-		newTweet.user.profile_text_color			 = tweet_data.user.profile_text_color;
-
-		var user_json = JSON.stringify( newTweet.user );
-		mbdatabase.save_user( user_json );
-
-		var status_json = JSON.stringify( newTweet );
-//		window.console.log( cache )
-		if( cache )
-		{
-			mbdatabase.save_status( status_json );
-		}
-
-	if( data.retweeted_status )
-	{
-		newTweet.rt_user_name				 = data.user.screen_name;
-		newTweet.rt_profile_image_url		 = data.user.profile_image_url;
-	}
-	return( newTweet );
-}
-
-create_search_element = function( data )
-{
-	var tweet_data = data;
-/*
-//	search JSON.
-// {"text":"@twitterapi  http:\/\/tinyurl.com\/ctrefg",
-//      "to_user_id":396524,
-//      "to_user":"TwitterAPI",
-//      "from_user":"jkoum",
-//      "id":1478555574,   
-//      "from_user_id":1833773,
-//      "iso_language_code":"nl",
-//      "source":"<a href="http:\/\/twitter.com\/">twitter<\/a>",
-//      "profile_image_url":"http:\/\/s3.amazonaws.com\/twitter_production\/profile_images\/118412707\/2522215727_a5f07da155_b_normal.jpg",
-//      "created_at":"Wed, 08 Apr 2009 19:22:10 +0000"}
-*/
-	var newTweet = new tweet();
-		newTweet.status_id					 = tweet_data.id;
-		newTweet.created_at					 = tweet_data.created_at;
-	var source_string						 = tweet_data.source.replace(/\&lt;/g , "<");
-		source_string						 = source_string.replace(/\&gt;/g , ">");
-		source_string						 = source_string.replace(/\&quote;/g , '"');
-		newTweet.source						 = source_string;
-		
-		newTweet.text						 = tweet_data.text;
-
-		newTweet.user.user_id				 = tweet_data.from_user_id;
-		newTweet.user.screen_name			 = tweet_data.from_user;
-		newTweet.user.profile_image_url		 = tweet_data.profile_image_url;
-		
-		newTweet.screen_name				 = tweet_data.from_user;
-		newTweet.profile_image_url			 = tweet_data.profile_image_url;
-		newTweet.user.user_id				 = tweet_data.from_user_id;
-
-		newTweet.in_reply_to_screen_name	 = null;
-		newTweet.in_reply_to_status_id		 = null;
-		newTweet.in_reply_to_user_id		 = null;
-
-	return( newTweet );
 }
 
 place_timeline = function(data)

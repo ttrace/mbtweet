@@ -32,7 +32,6 @@ mbutil.defined_media_regexp =
 {
 	twitpic_carrier		: /(http\:\/\/twitpic.com\/[a-zA-Z0-9]+)/,
 	pikchur_carrier		: /(http\:\/\/pk.gd\/([a-zA-Z0-9]+))/,
-	twitvid_carrier		: /(http\:\/\/twitvid.com\/[a-zA-Z0-9]+)/,
 	movapic_carrier		: /http\:\/\/movapic.com\/pic\/([a-z0-9]+)/,
 	tweetphoto_carrier	: /http\:\/\/pic\.gd\/([a-zA-Z0-9]+)/,
 	yfrog_carrier		: /http\:\/\/yfrog.[a-z]+\/([a-zA-Z0-9]+)/,

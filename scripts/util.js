@@ -80,7 +80,7 @@ jsonp_fetch = function( access_URL , action , method , parameter , mbtweet_metho
 		loader.id	= loader_id;
 		loader.setAttribute('language','javascript'); 
 		loader.setAttribute('type', 'text/javascript');
-	
+
 	document.getElementsByTagName( "head" )[0].appendChild( loader );
 	
 	loader.addEventListener("error",

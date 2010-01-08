@@ -3,7 +3,7 @@ var mbtweet = {};
 mbtweet = 
 {
 	debug			: true ,
-	build			: 00004 ,
+	build			: 00005 ,
 	version			: "1.0" ,
 	bitly_token		: "",
 	currentSearch	: "",
@@ -65,6 +65,7 @@ init_mbtweet = function()
 	init_web_database();
 	init_shorten_url();
 	init_window_resize();
+	get_users_lists();
 
 	count_api_rate( { auth : true , main	: true} );
 	setTimeout( function(){ count_api_rate( { auth : false , main : true } ) } , 3000 );

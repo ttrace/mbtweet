@@ -7,7 +7,7 @@ mbtweet.timeline =
 					timeline_id	: "home",
 					api			: "https://api.twitter.com/1/statuses/home_timeline.json",
 					interval	: 60000,
-					count		: 200,
+					count		: 100,
 					auth		: true,
 					cache		: true,
 				},
@@ -16,7 +16,7 @@ mbtweet.timeline =
 					name		: "Mention",
 					timeline_id	: "mention",
 					api			: "https://twitter.com/statuses/mentions.json",
-					interval	: 180000,
+					interval	: 120000,
 					count		: 50,
 					auth		: true,
 					cache		: true,
@@ -85,6 +85,21 @@ new_user_timeline = function( target_link , myauth )
 	}
 }
 
+new_list_timeline = function( list )
+{
+	var myauth = false;
+	if( list._mode != "public" ) myauth = true;
+	if( !document.getElementById( "list_" + list._list_id ) )
+	{
+		var new_timeline = new timeline();
+			new_timeline.timeline_id = "list_" + list._list_id;
+			new_timeline.name = "List:" + list._list_name;
+			new_timeline.api = "https://api.twitter.com/1/" + list.user._screen_name + "/lists/" + list._list_id + "/statuses.json";
+			new_timeline.auth = myauth;
+			new_timeline.create();
+	}
+}
+
 new_search_timeline = function( query )
 {
 	var new_search_timeline					= new timeline();
@@ -101,7 +116,7 @@ new_search_timeline = function( query )
 		new_search_timeline.create();
 }
 
-function timeline( preset )
+timeline = function( preset )
 {
 	var self = this;
 	if( mbtweet.timeline[preset] && ( document.querySelectorAll( "#" + preset ).length == 0 ))
@@ -122,7 +137,8 @@ function timeline( preset )
 	}
 }
 
-timeline.prototype = {
+timeline.prototype = 
+{
 	get name ()
 	{
 		if (!("_name" in this))
@@ -284,9 +300,6 @@ timeline.prototype.create = function()
 	document.querySelector("#column").appendChild( timeline_column );
 
 	fit_holizontal_width();
-// 	var column_wrapper = document.querySelector("#column");
-// 	var timelines = column_wrapper.querySelectorAll(".timeline_column");
-// 		column_wrapper.style.width = ( ( timelines.length ) * 420 ) + "px";
 
 	window_resize( mbui.window_resize_token );
 
@@ -299,7 +312,6 @@ timeline.prototype.create = function()
 		this.search.init( this );
 	}
 }
-
 
 timeline.prototype.init = function()
 {
@@ -315,26 +327,8 @@ timeline.prototype.init = function()
 							{ auth	: this.auth }
 						);
 	var my_timeline = this;
-	setTimeout( function(){ count_api_rate( { auth : my_timeline.auth , main : false } ) } , 2000 );
+	setTimeout( function(){ count_api_rate( { auth : my_timeline.auth , main : false } ) } , 1000 );
 	setTimeout( function(){ my_timeline.update() } , this.interval );
-	return false;
-}
-
-search.prototype.init = function( timeline )
-{
-	var timeline_object = timeline.timeline;
-	eval( "initial" + timeline.timeline_id + "=function(data){initialSearchTimeline(data,'" + timeline.timeline_id + "' , " + timeline.cache + ")}" );
-
-	mbtweetOAuth.callAPI(	timeline.api ,
-							"GET",
-							[
-								["callback" , "initial" + timeline.timeline_id ],
-								["q" , this.query ],
-								["rpp" , "20"],
-							],
-							{ auth	: false }
-						);
-	setTimeout( function(){ timeline.search.update( timeline ) } , timeline.interval );
 	return false;
 }
 
@@ -358,6 +352,24 @@ timeline.prototype.update = function()
 		setTimeout( function(){ count_api_rate( { auth : my_timeline.auth , main : false } ) } , 2000 );
 		setTimeout( function(){ my_timeline.update() } , this.interval );
 	}
+	return false;
+}
+
+search.prototype.init = function( timeline )
+{
+	var timeline_object = timeline.timeline;
+	eval( "initial" + timeline.timeline_id + "=function(data){initialSearchTimeline(data,'" + timeline.timeline_id + "' , " + timeline.cache + ")}" );
+
+	mbtweetOAuth.callAPI(	timeline.api ,
+							"GET",
+							[
+								["callback" , "initial" + timeline.timeline_id ],
+								["q" , this.query ],
+								["rpp" , "20"],
+							],
+							{ auth	: false }
+						);
+	setTimeout( function(){ timeline.search.update( timeline ) } , timeline.interval );
 	return false;
 }
 

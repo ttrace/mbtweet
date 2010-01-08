@@ -515,6 +515,106 @@ user.prototype =
 
 }
 
+create_tweet_element = function( data , cache )
+{
+	var tweet_data = data;
+	if( data.retweeted_status )
+	{
+		tweet_data.retweeted_status.id = tweet_data.id;
+		tweet_data.retweeted_status.favorited = false;
+		tweet_data = data.retweeted_status;
+	}
+	if( data.sender )
+	{
+		tweet_data.user = tweet_data.sender;
+	}
+	var newTweet = new tweet();
+		newTweet.status_id					 = tweet_data.id;
+		newTweet.created_at					 = tweet_data.created_at;
+		newTweet.in_reply_to_screen_name	 = tweet_data.in_reply_to_screen_name;
+		newTweet.in_reply_to_status_id		 = tweet_data.in_reply_to_status_id;
+		newTweet.in_reply_to_user_id		 = tweet_data.in_reply_to_user_id;
+		newTweet.favorited					 = tweet_data.favorited;
+		newTweet.geo						 = tweet_data.geo;
+		newTweet.source						 = tweet_data.source;
+		newTweet.text						 = tweet_data.text;
+		newTweet.truncated					 = tweet_data.truncated;
+
+		newTweet.screen_name				 = tweet_data.user.screen_name;
+		newTweet.profile_image_url			 = tweet_data.user.profile_image_url;
+
+		newTweet.user.created_at			 = tweet_data.user.created_at;
+		newTweet.user.description			 = tweet_data.user.description;
+		newTweet.user.favourites_count		 = tweet_data.user.favourites_count;
+		newTweet.user.followers_count		 = tweet_data.user.followers_count;
+		newTweet.user.following				 = tweet_data.user.following;
+		newTweet.user.friends_count			 = tweet_data.user.friends_count;
+		newTweet.user.geo_enabled			 = tweet_data.user.geo_enabled;
+		newTweet.user.user_id				 = tweet_data.user.id;
+		newTweet.user.location				 = tweet_data.user.location;
+		newTweet.user.name					 = tweet_data.user.name;
+		newTweet.user.notifications			 = tweet_data.user.notifications;
+		newTweet.user.user_protected		 = tweet_data.user.protected;
+		newTweet.user.screen_name			 = tweet_data.user.screen_name;
+		newTweet.user.statuses_count		 = tweet_data.user.statuses_count;
+		newTweet.user.time_zone				 = tweet_data.user.time_zone;
+		newTweet.user.utc_offset			 = tweet_data.user.utc_offset;
+		newTweet.user.url					 = tweet_data.user.url;
+		newTweet.user.verified				 = tweet_data.user.verified;
+		newTweet.user.profile_background_color		 = tweet_data.user.profile_background_color;
+		newTweet.user.profile_background_image_url	 = tweet_data.user.profile_background_image_url;
+		newTweet.user.profile_background_tile		 = tweet_data.user.profile_background_tile;
+		newTweet.user.profile_image_url				 = tweet_data.user.profile_image_url;
+		newTweet.user.profile_link_color			 = tweet_data.user.profile_link_color;
+		newTweet.user.profile_sidebar_border_color	 = tweet_data.user.profile_sidebar_border_color;
+		newTweet.user.profile_sidebar_fill_color	 = tweet_data.user.profile_sidebar_fill_color;
+		newTweet.user.profile_text_color			 = tweet_data.user.profile_text_color;
+
+		var user_json = JSON.stringify( newTweet.user );
+		mbdatabase.save_user( user_json );
+
+		var status_json = JSON.stringify( newTweet );
+		if( cache )
+		{
+			mbdatabase.save_status( status_json );
+		}
+
+	if( data.retweeted_status )
+	{
+		newTweet.rt_user_name				 = data.user.screen_name;
+		newTweet.rt_profile_image_url		 = data.user.profile_image_url;
+	}
+	return( newTweet );
+}
+
+create_search_element = function( data )
+{
+	var tweet_data = data;
+	var newTweet = new tweet();
+		newTweet.status_id					 = tweet_data.id;
+		newTweet.created_at					 = tweet_data.created_at;
+	var source_string						 = tweet_data.source.replace(/\&lt;/g , "<");
+		source_string						 = source_string.replace(/\&gt;/g , ">");
+		source_string						 = source_string.replace(/\&quote;/g , '"');
+		newTweet.source						 = source_string;
+		
+		newTweet.text						 = tweet_data.text;
+
+		newTweet.user.user_id				 = tweet_data.from_user_id;
+		newTweet.user.screen_name			 = tweet_data.from_user;
+		newTweet.user.profile_image_url		 = tweet_data.profile_image_url;
+		
+		newTweet.screen_name				 = tweet_data.from_user;
+		newTweet.profile_image_url			 = tweet_data.profile_image_url;
+		newTweet.user.user_id				 = tweet_data.from_user_id;
+
+		newTweet.in_reply_to_screen_name	 = null;
+		newTweet.in_reply_to_status_id		 = null;
+		newTweet.in_reply_to_user_id		 = null;
+
+	return( newTweet );
+}
+
 tweet.prototype.buildEntry = function( target , append_mode )
 {
 	var conv_length = mbtweet.user.conv_length;
@@ -616,6 +716,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 		linked_source = linked_source.replace( /([^\/]|^)(www\.[\w\d:#@%\/;$\(\)~_\?\+-=\\\.&]+\.[\w\d:#@%\/;$\(\)~_\?\+-=\\\.&]+)/g , "<a href='http://$2' target='_blank'>$2</a>" );
 		linked_source = linked_source.replace(/blank\'\>([^\<]{28})[^\<]+\<\/a/g, "blank'>$1...</a");
 		linked_source = linked_source.replace(/#((([^\s\(\)\\\-\!\@\#\$\%\^\&\+\=\;\:\"\'\|\<\>\,\.\~\?]|[0-9a-zA-Z_])+[0-9a-zA-Z_]+){1,16}(\s+|$))/g ,"<a class='hashtag' href='" + window.location.protocol + "//twitter.com/search?q=%23$2' target='_blank'>#$2</a>$4");
+		linked_source = linked_source.replace(/[@＠]([0-9a-zA-Z\_\-]+\/[0-9a-zA-Z\_\-]+)/g,"@<a class='list' href='" + window.location.protocol + "//twitter.com/$1' target='_blank'>$1</a>");
 		linked_source = linked_source.replace(/[@＠]([0-9a-zA-Z\_\-]+)/g,"@<a class='sname' href='" + window.location.protocol + "//twitter.com/$1' target='_blank'>$1</a>");
 
 		string.innerHTML = linked_source.replace(/&amp;/g , "&amp;amp;");
@@ -626,17 +727,18 @@ tweet.prototype.buildEntry = function( target , append_mode )
 	for( var i = 0 ; i < sname_list.length ; i++ )
 	{
 		var load_with_auth = false;
-		if( hasClass( sname_list , "user-name" ) && this.user.user_protected )
+		if( hasClass( sname_list[i] , "user-name" ) && this.user.user_protected )
 		{
 			load_with_auth = true;
 		}
+		sname_list[i].load_with_auth = load_with_auth;
 		sname_list[i].addEventListener( "click" ,
 										function( event )
 										{
 											if( !event.shiftKey )  // Shift click openes Twitter Website
 											{
 												event.preventDefault();
-												new_user_timeline( event.target , load_with_auth );
+												new_user_timeline( event.target , event.target.load_with_auth );
 											}
 										},
 										false );
@@ -1022,7 +1124,7 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 
 			unread_counter( timeline.id );			
 			// fixsing view
-			if( entry_wrapper.offsetTop <= target_scrollTop + 1 )
+			if( entry_wrapper.offsetTop <= target_scrollTop + 4 )
 			{
 				timeline.scrollTop = target_scrollTop + entry_wrapper.offsetHeight + current_margin;
 
@@ -1037,6 +1139,7 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 						},
 						false );
 				}
+				unread_counter( timeline.id );
 			}
 		}
 		else
@@ -1051,7 +1154,6 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 		unread_counter( target.id );
 	}
 }
-
 
 load_conversation = function( conv_chain_id , in_reply_to_status_id , conv_length )
 {
