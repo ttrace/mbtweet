@@ -838,7 +838,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 
 		var geolocation_anchor				= document.createElement("A");
 			geolocation_anchor.className	= "geolocation";
-			geolocation_anchor.href			= "http://maps.google.com/?q=" + this.geo.coordinates[0] + "," + this.geo.coordinates[1] + "&ll=" + this.geo.coordinates[0] + "," + this.geo.coordinates[1] + "&z=14";
+			geolocation_anchor.href			= "http://maps.google.com/?q=" + this.geo.coordinates[0] + "," + this.geo.coordinates[1] + "&ll=" + this.geo.coordinates[0] + "," + this.geo.coordinates[1] + "&z=";
 			geolocation_anchor.target		= "_blank";
 			geolocation_anchor.innerText	= "➢";
 			

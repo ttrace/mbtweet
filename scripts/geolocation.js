@@ -27,19 +27,24 @@ insertGeoInfo = function( data , target_id )
 	{
 		var address_text_string = "";
 		var max_accuracy = { id : null , accuracy : 0 };
+		var zoom = 6;
 		for( var i = 0 ; i < data.Placemark.length ; i++ )
 		{
 			if( data.Placemark[i].AddressDetails.Accuracy >= max_accuracy.accuracy )
 			{
 				max_accuracy.id = i;
-				max_accuracy.accuracy = data.Placemark[i].AddressDetails.Accuracy;				
+				max_accuracy.accuracy = data.Placemark[i].AddressDetails.Accuracy;	
 			}
 		}
 		
 		var address_text = document.createElement("DIV");
 			address_text.className = "map-title";
 			address_text.innerText = data.Placemark[ max_accuracy.id ].address;
-		target_object.insertBefore( address_text , target_object.firstChild );		
+		target_object.insertBefore( address_text , target_object.firstChild );
+		zoom += max_accuracy.accuracy;
+		if(mbtweet.debug)window.console.log( zoom );
+
+		target_object.querySelector("a").href += zoom;
 	}
 	//if(mbtweet.debug)window.console.log( data , target_id);
 }
