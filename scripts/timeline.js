@@ -87,8 +87,8 @@ new_user_timeline = function( target_link , myauth )
 
 new_list_timeline = function( list )
 {
-	var myauth = false;
-	if( list._mode != "public" ) myauth = true;
+	var myauth = true;
+//	if( list._mode != "public" ) myauth = true;
 	if( !document.getElementById( "list_" + list._list_id ) )
 	{
 		var new_timeline = new timeline();
@@ -96,6 +96,8 @@ new_list_timeline = function( list )
 			new_timeline.name = "List:" + list._list_name;
 			new_timeline.api = "https://api.twitter.com/1/" + list.user._screen_name + "/lists/" + list._list_id + "/statuses.json";
 			new_timeline.auth = myauth;
+			new_timeline.cache	= true;
+			new_timeline.count	= 50;
 			new_timeline.create();
 	}
 }
@@ -323,6 +325,7 @@ timeline.prototype.init = function()
 							[
 								["callback" , "initial" + this.timeline_id ],
 								["count" , this.count ],
+								["per_page" , this.count ],
 							],
 							{ auth	: this.auth }
 						);
@@ -345,6 +348,7 @@ timeline.prototype.update = function()
 									["callback" , "update" + this.timeline_id ],
 									["since_id" , since_id],
 									["count" , this.count ],
+									["per_page" , this.count ],
 								],
 								{ auth	: this.auth }
 							);

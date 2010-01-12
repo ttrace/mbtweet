@@ -3,7 +3,7 @@ var mbtweet = {};
 mbtweet = 
 {
 	debug			: false ,
-	build			: 00005 ,
+	build			: 00006 ,
 	version			: "1.0" ,
 	bitly_token		: "",
 	currentSearch	: "",
@@ -92,7 +92,7 @@ function count_api_rate( option )
 							[
 								["callback" , callback_process ],
 							],
-							{ retry : true , auth	: option.auth }
+							{ method : "rate" , retry : true , auth	: option.auth }
 						);
 
 	if( option.main )

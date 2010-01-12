@@ -18,7 +18,7 @@ mbtweetOAuth.callAPI = function( action , method, parameter , mbtweet_method )
              message.parameters.push([ parameter[i][0], parameter[i][1] ]);
     }
     
-	if( !(mbtweet_method.auth == false) )
+	if( !(mbtweet_method.auth == false) || ( mbtweet.rate.ip < mbtweet.rate.auth ) && ( mbtweet_method && !( mbtweet_method.auth == false && mbtweet_method.method =="rate" )) )
 	{
 		OAuth.completeRequest( message, accessor );        
 		OAuth.SignatureMethod.sign( message, accessor );
