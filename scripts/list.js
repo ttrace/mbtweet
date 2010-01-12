@@ -164,7 +164,6 @@ get_users_lists = function( screen_name , target )
 
 get_users_subscrption_lists = function( screen_name , target )
 {
-	window.console.log( screen_name , target );
 	var target_id = "";
 	if( target )target_id = target.id;
 

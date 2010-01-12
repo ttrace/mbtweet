@@ -90,7 +90,7 @@ tweet.prototype = {
 	get geo ()
 	{
 		if (!("_geo" in this))
-				this._geo = {};
+				this._geo = null;
 		return this._geo;
 	},
 	
@@ -518,6 +518,8 @@ user.prototype =
 create_tweet_element = function( data , cache )
 {
 	var tweet_data = data;
+//	if(mbtweet.debug)if( tweet_data.geo )window.console.log( JSON.stringify(tweet_data.geo) , tweet_data.id );
+
 	if( data.retweeted_status )
 	{
 		tweet_data.retweeted_status.id = tweet_data.id;
@@ -535,7 +537,11 @@ create_tweet_element = function( data , cache )
 		newTweet.in_reply_to_status_id		 = tweet_data.in_reply_to_status_id;
 		newTweet.in_reply_to_user_id		 = tweet_data.in_reply_to_user_id;
 		newTweet.favorited					 = tweet_data.favorited;
+		// geolocation data type seems not fixed yet.
+//	if( tweet_data.geo )
+//	{
 		newTweet.geo						 = tweet_data.geo;
+//	}
 		newTweet.source						 = tweet_data.source;
 		newTweet.text						 = tweet_data.text;
 		newTweet.truncated					 = tweet_data.truncated;
@@ -819,8 +825,28 @@ tweet.prototype.buildEntry = function( target , append_mode )
 
 		meta_source = new Date( this.created_at ).toString().replace(/:[0-9][0-9]\s.+/,'') + " ";
 		meta_source += "from " + this.source + " ";
-	
+
 		meta.innerHTML = meta_source;
+
+	if( this.geo != null && this.geo != "null" && this.geo )
+	{
+//		if(mbtweet.debug)window.console.log( "in building tweet elements" , this.geo , this.status_id );
+
+		var geolocation						= document.createElement("DIV");
+			geolocation.className			= "geolocation";
+			geolocation.id			= entry_wrapper.id + "-geo";			
+
+		var geolocation_anchor				= document.createElement("A");
+			geolocation_anchor.className	= "geolocation";
+			geolocation_anchor.href			= "http://maps.google.com/?q=" + this.geo.coordinates[0] + "," + this.geo.coordinates[1] + "&ll=" + this.geo.coordinates[0] + "," + this.geo.coordinates[1] + "&z=14";
+			geolocation_anchor.target		= "_blank";
+			geolocation_anchor.innerText	= "➢";
+			
+			get_geolocation_info( geolocation.id , [ this.geo.coordinates[0] , this.geo.coordinates[1] ]);
+			
+			geolocation.appendChild( geolocation_anchor );
+			status_string_wrapper.insertBefore( geolocation , string );
+	}
 		
 	status_wrapper.appendChild( meta );
 
@@ -1182,7 +1208,7 @@ load_conversation = function( conv_chain_id , in_reply_to_status_id , conv_lengt
 						{
 							newTweet.favorited = false;							
 						}
-							newTweet.geo						 = status_row['geo'];
+							newTweet.geo						 = eval('(' + status_row['geo'] + ')');
 							newTweet.source						 = status_row['source'];
 							newTweet.text						 = status_row['text'];
 						if( status_row['truncated'] == "true")

@@ -2,8 +2,8 @@ var mbtweet = {};
 
 mbtweet = 
 {
-	debug			: false ,
-	build			: 00006 ,
+	debug			: true ,
+	build			: 00007 ,
 	version			: "1.0" ,
 	bitly_token		: "",
 	currentSearch	: "",
@@ -97,7 +97,7 @@ function count_api_rate( option )
 
 	if( option.main )
 	{
-		setTimeout( function(){ count_api_rate( { auth : option.auth , main : true } ) } , 60000 );
+		setTimeout( function(){ count_api_rate( { auth : option.auth , main : true } ) } , 600000 );
 	}
 }
 

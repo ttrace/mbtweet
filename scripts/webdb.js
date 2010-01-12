@@ -199,7 +199,7 @@ insert_status = function( tx , status )
 			status._in_reply_to_status_id + "",
 			status._in_reply_to_user_id + "",
 			status._favorited , 
-			status._geo , 
+			JSON.stringify( status._geo ) , 
 			status._source , 
 			status._text , 
 			status._truncated , 
