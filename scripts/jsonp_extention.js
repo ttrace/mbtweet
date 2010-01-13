@@ -55,7 +55,7 @@ has_media_url = function( url )
 // shorten url
 mbutil.defined_snipurl_regexp = 
 {
-	bitly_carrier		: /(http:\/\/|www\.)(bit.ly|j.mp)\/([a-zA-Z0-9]+)/,
+	bitly_carrier		: /(http:\/\/|www\.)(bit\.ly|j\.mp|tcrn\.ch|on\.wsj\.com|nyti\.ms|4sq\.com|mee\.bo)\/([a-zA-Z0-9]+)/,
 }
 
 has_shorten_url = function( url )
@@ -189,12 +189,12 @@ url_expander = function( target_element , shorten_url_carrier )
 	//make bit.ly receiver
 	var bitly_receiver = document.createElement('script');
 		bitly_receiver.id = "bitly_loader" + unique_id;
-		bitly_receiver.innerHTML = "var " + function_name + " = function(data){ expandResponse(data , '" + unique_id + "'); document.getElementById('" + bitly_receiver.id + "').parentNode.removeChild(document.getElementById('" + bitly_receiver.id + "')) }";
+		bitly_receiver.innerHTML = "var " + function_name + " = function(data){ expandResponse(data , '" + unique_id + "'); document.getElementById('" + bitly_receiver.id + "').parentNode.removeChild(document.getElementById('" + bitly_receiver.id + "'));delete this}";
 	document.getElementsByTagName("head")[0].appendChild( bitly_receiver );
 }
 
 expand_url = function( real_url, id ){
-	window.console.log( real_url, id );
+	//window.console.log( real_url, id );
 	var target = document.querySelector("#" + id);
 		target.parentNode.removeEventListener( "mouseover", arguments.callee , "false" );
 
