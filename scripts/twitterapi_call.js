@@ -111,7 +111,6 @@ reset_time_in_seconds: 1261737855
 retreveSearch = function( data )
 {
 	var search_timeline = document.querySelector("#search");
-	window.console.log( "search: " , data );
 	for( i = 0 ; i < data.results.length ; i++ )
 	{
 		create_search_element( data.results[i] ).buildEntry( search_timeline );

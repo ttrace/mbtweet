@@ -254,15 +254,22 @@ list_index = function( list )
 		list_anchor.title		= list.full_name;
 		list_anchor.target		= "_blank";
 		list_anchor.innerText	= list.list_name;
-		list_anchor.list		= list;
-		list_anchor.addEventListener(	"click" ,
+		list_index.list		= list;
+		list_index.addEventListener(	"click" ,
 										function( event )
 										{
 											if( !event.shiftKey )  // Shift click openes Twitter Website
 											{
 												event.preventDefault();
-												window.console.log( event.target.list );
-												new_list_timeline( event.target.list );
+												//window.console.log( event.target.list );
+												if( event.target.list )
+												{
+													new_list_timeline( event.target.list );
+												}
+												else
+												{
+													new_list_timeline( event.target.parentNode.list );
+												}
 											}
 										},
 										false );

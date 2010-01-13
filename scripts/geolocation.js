@@ -42,8 +42,6 @@ insertGeoInfo = function( data , target_id )
 			address_text.innerText = data.Placemark[ max_accuracy.id ].address;
 		target_object.insertBefore( address_text , target_object.firstChild );
 		zoom += max_accuracy.accuracy;
-		if(mbtweet.debug)window.console.log( zoom );
-
 		target_object.querySelector("a").href += zoom;
 	}
 	//if(mbtweet.debug)window.console.log( data , target_id);
