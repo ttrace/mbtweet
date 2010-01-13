@@ -81,6 +81,7 @@ new_user_timeline = function( target_link , myauth )
 			new_timeline.name = screen_name + "'s timeline";
 			new_timeline.api = "https://twitter.com/statuses/user_timeline/" + screen_name + ".json";
 			new_timeline.auth = myauth;
+			new_timeline.count = 50;
 			new_timeline.create();
 	}
 }
@@ -318,7 +319,7 @@ timeline.prototype.create = function()
 timeline.prototype.init = function()
 {
 	var timeline_object = this.timeline;
-	eval( "initial" + this.timeline_id + "=function(data){initialTimeline(data,'" + this.timeline_id + "' , " + this.cache + ")}" );
+	eval( "initial" + this.timeline_id + "=function(data){initialTimeline(data,'" + this.timeline_id + "' , " + this.cache + ");delete this}" );
 
 	mbtweetOAuth.callAPI(	this.api ,
 							"GET",
@@ -341,14 +342,14 @@ timeline.prototype.update = function()
 	{
 		var timeline_object = this.timeline;
 		var since_id = timeline_object.querySelector(".entry").id.replace(/.+\-([0-9]+)$/ , "$1") + "";
-		eval( "update" + this.timeline_id + "=function( data ){updateTimeline(data,'" + this.timeline_id + "' , " + this.cache + ")}" );
+		eval( "update" + this.timeline_id + "=function( data ){updateTimeline(data,'" + this.timeline_id + "' , " + this.cache + ");delete this}" );
 		mbtweetOAuth.callAPI(	this.api ,
 								"GET",
 								[
 									["callback" , "update" + this.timeline_id ],
 									["since_id" , since_id],
-									["count" , this.count ],
 									["per_page" , this.count ],
+									["count" , this.count ],
 								],
 								{ auth	: this.auth }
 							);
@@ -362,7 +363,7 @@ timeline.prototype.update = function()
 search.prototype.init = function( timeline )
 {
 	var timeline_object = timeline.timeline;
-	eval( "initial" + timeline.timeline_id + "=function(data){initialSearchTimeline(data,'" + timeline.timeline_id + "' , " + timeline.cache + ")}" );
+	eval( "initial" + timeline.timeline_id + "=function(data){initialSearchTimeline(data,'" + timeline.timeline_id + "' , " + timeline.cache + ");delete this}" );
 
 	mbtweetOAuth.callAPI(	timeline.api ,
 							"GET",

@@ -106,7 +106,7 @@ jsonp_fetch = function( access_URL , action , method , parameter , mbtweet_metho
 	
 	loader.addEventListener("load" ,
 							function( event ){
-								if( mbtweet.debug )window.console.log( "Loading jsonp" , event , event.target.type );
+//								if( mbtweet.debug )window.console.log( "Loading jsonp" , event , event.target.type );
 // 								if( !event.target )
 // 								{
 // 									window.console.log( "Loading jsonp is failed" , this.type );

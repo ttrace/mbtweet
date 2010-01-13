@@ -151,7 +151,7 @@ get_users_lists = function( screen_name , target )
 	var target_id = "";
 	if( target )target_id = target.id;
 
-	eval( screen_name + "_s_list=function(data){retreveLists(data,'" + screen_name + "','" + target_id + "')}" );
+	eval( screen_name + "_s_list=function(data){retreveLists(data,'" + screen_name + "','" + target_id + "');delete this;}" );
 	mbtweetOAuth.callAPI(	"http://api.twitter.com/1/" + screen_name + "/lists.json" ,
 							"GET",
 							[
@@ -164,11 +164,10 @@ get_users_lists = function( screen_name , target )
 
 get_users_subscrption_lists = function( screen_name , target )
 {
-	window.console.log( screen_name , target );
 	var target_id = "";
 	if( target )target_id = target.id;
 
-	eval( screen_name + "_s_list=function(data){retreveLists(data,'" + screen_name + "','" + target_id + "','subscribe')}" );
+	eval( screen_name + "_s_list=function(data){retreveLists(data,'" + screen_name + "','" + target_id + "','subscribe');delete this}" );
 	mbtweetOAuth.callAPI(	"http://api.twitter.com/1/" + screen_name + "/lists/subscriptions.json" ,
 							"GET",
 							[

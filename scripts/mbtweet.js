@@ -97,7 +97,7 @@ function count_api_rate( option )
 
 	if( option.main )
 	{
-		setTimeout( function(){ count_api_rate( { auth : option.auth , main : true } ) } , 60000 );
+		setTimeout( function(){ count_api_rate( { auth : option.auth , main : true } ) } , 600000 );
 	}
 }
 
