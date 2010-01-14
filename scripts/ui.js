@@ -81,6 +81,10 @@ remove_unread = function( target_id )
 	for( var i = 0 ; i < target_elements.length ; i++)
 	{
 		removeClass( target_elements[i] , "unread");
+		if( i > 50 )
+		{
+			target_elements[i].style.display = "none";
+		}
 	}
 
 	//counting number of tweets.

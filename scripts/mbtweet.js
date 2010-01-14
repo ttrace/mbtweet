@@ -218,7 +218,7 @@ quote_this = function( in_reply_to_screen_name , in_reply_to_status_id , status_
 	var status_editor 		= document.querySelector("#status");
 	var status_id_container = document.querySelector("#post_in_reply_to_status_id");
 	var quote_url 			= "http://twitter.com/" + in_reply_to_screen_name + "/status/" + in_reply_to_status_id;
-	status_editor.value = "“" + status_string + "” (via @" + in_reply_to_screen_name + " " + quote_url + " )";
+	status_editor.value = "“" + status_string + "” (via @" + in_reply_to_screen_name + " " + quote_url + ")";
 	status_id_container.value = "";
 	status_editor.focus();
 	status_editor.setSelectionRange( 0 , 0 );

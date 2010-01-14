@@ -16,7 +16,7 @@ mbtweet.timeline =
 					name		: "Mention",
 					timeline_id	: "mention",
 					api			: "https://twitter.com/statuses/mentions.json",
-					interval	: 120000,
+					interval	: 60000,
 					count		: 50,
 					auth		: true,
 					cache		: true,
@@ -472,7 +472,7 @@ initialSearchTimeline = function( data , target_id , cache )
 
 updateSearchTimeline = function( data , target_id , cache )
 {
-	window.console.log( data , target_id , cache );
+	//window.console.log( data , target_id , cache );
 	var timeline = document.getElementById( target_id );
 	var insert_target = timeline.querySelector(".entry");
 
