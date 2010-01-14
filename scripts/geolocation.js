@@ -36,13 +36,33 @@ insertGeoInfo = function( data , target_id )
 				max_accuracy.accuracy = data.Placemark[i].AddressDetails.Accuracy;	
 			}
 		}
+		zoom += max_accuracy.accuracy;
 		
 		var address_text = document.createElement("DIV");
 			address_text.className = "map-title";
 			address_text.innerText = data.Placemark[ max_accuracy.id ].address;
+
+		var address_map_url = "http://maps.google.com/maps/api/staticmap?";
+			address_map_url += "&key=" + googlemap_key;
+			address_map_url += "&center=" + data.name;
+			address_map_url += "&zoom=" + zoom;
+			address_map_url += "&format=PNG";
+			address_map_url += "&sensor=false";
+			address_map_url += "&markers=color:red|" + data.name;
+			address_map_url += "&size=200x200";
+
+		var address_map = document.createElement("IMG");
+			address_map.className	= "map";
+			address_map.src = address_map_url;
+			
+			address_text.appendChild( address_map );
+		
 		target_object.insertBefore( address_text , target_object.firstChild );
-		zoom += max_accuracy.accuracy;
 		target_object.querySelector("a").href += zoom;
 	}
 	//if(mbtweet.debug)window.console.log( data , target_id);
+}
+
+insertMap = function( )
+{
 }
