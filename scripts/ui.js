@@ -64,8 +64,9 @@ function fit_holizontal_width()
 status_counter = function()
 {
 	var status_editor		= document.querySelector("#status");
+	var hashtag_editor		= document.querySelector("#hashtag");
 	var counter				= document.querySelector("#counter");
-	var counter_length		= 140 - status_editor.value.length;
+	var counter_length		= 140 - status_editor.value.length - hashtag_editor.value.length;
 		counter.innerText	= counter_length;
 }
 

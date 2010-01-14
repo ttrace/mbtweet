@@ -242,13 +242,11 @@ list_index = function( list )
 		list_index.className	= "list-index";
 		list_index.id			= "list_index_" + list.list_id;
 
-//	if( mbtweet.user.screen_name != list.user.screen_name )
-//	{
-		var	list_icon			= document.createElement("IMG");
-			list_icon.className	= "list-icon";
-			list_icon.src		= list.user.profile_image_url;
-			list_index.appendChild( list_icon );
-//	}
+	var	list_icon				= document.createElement("IMG");
+		list_icon.className		= "list-icon";
+		list_icon.src			= list.user.profile_image_url;
+		list_index.appendChild( list_icon );
+
 	var list_anchor				= document.createElement("A");
 		list_anchor.href		= "http://twitter.com" + list.uri;
 		list_anchor.title		= list.full_name;
@@ -261,15 +259,14 @@ list_index = function( list )
 											if( !event.shiftKey )  // Shift click openes Twitter Website
 											{
 												event.preventDefault();
-												//window.console.log( event.target.list );
-												if( event.target.list )
+												var link_index = event.target;
+												if( !event.target.list )
 												{
-													new_list_timeline( event.target.list );
+													link_index = event.target.parentNode;
 												}
-												else
-												{
-													new_list_timeline( event.target.parentNode.list );
-												}
+												new_list_timeline( link_index.list );
+												addClass( link_index , "active" );
+												setTimeout( function(){ removeClass( link_index , "active" ) }, 500);
 											}
 										},
 										false );

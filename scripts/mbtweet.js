@@ -154,6 +154,10 @@ post_tweet = function( form , event)
 {
 	event.preventDefault();
 	var posting_status = form.status.value + "";
+	if( form.hashtag.value != "")
+	{
+		posting_status = posting_status + " " + form.hashtag.value;
+	}
 	var posting_in_reply_to_stats_id = form.post_in_reply_to_status_id.value + "";
 	mbtweetOAuth.callAPI(	"https://twitter.com/statuses/update.xml",
 							"POST",

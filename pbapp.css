@@ -44,6 +44,7 @@ a:hover
 {
 	width: 100%;
 	overflow	:hidden;
+	clear		: both;
 }
 
 #column
@@ -340,12 +341,18 @@ header
 
 #post #status
 {
-	width		: 420px;
+	width		: 400px;
 	height		: 40px;
-	max-width	: 420px;
-	min-width	: 420px;
+	max-width	: 400px;
+	min-width	: 400px;
 	min-height	: 24px;
 	padding		: 3px;
+	float		: left;
+}
+
+#post #hashtag
+{
+	vertical-align	: top;
 }
 
 #post #counter
@@ -500,7 +507,7 @@ a.sname:visited
 	height	: 36px;
 }
 
-.entry a.thumbnail
+.entry div.thumbnail
 {
 	display		: block;
 	position	: absolute;
@@ -511,9 +518,9 @@ a.sname:visited
 	text-align	: right;
 }
 
-.entry img.thumbnail
+.entry a.thumbnail
 {
-/*	position	: absolute; */
+	display		:	inline-block;
 	border		: 6px white solid;
 	max-width		: 100px;
 	max-height		: 100px;
@@ -522,13 +529,16 @@ a.sname:visited
 	-webkit-transform-origin	: 100% 0%;
 	-webkit-transform	: rotate(15deg) scale(0.3 ,0.3) translate(-100px,0px);
 
-/*	-webkit-transition-property			: -webkit-transform;
-	-webkit-transition-duration			: 0.2s;
-	-webkit-transition-timing-function:	: ease-in; */
 	z-index	: 999;
 }
 
-.entry img.thumbnail:hover
+.entry img.thumbnail
+{
+	max-width		: 100px;
+	max-height		: 100px;
+}
+
+.entry a.thumbnail:hover
 {
 	-webkit-animation: popPicture 0.25s 0.0s ease-in 1 alternate;
 
@@ -1069,8 +1079,8 @@ footer #my_lists:hover .lists,
 	background	: -webkit-gradient(	linear,
 					left top,
 					left bottom,
-					from( rgb( 120, 120, 120) ),
-					to( rgb(30, 30, 30) )
+					from( rgba( 120, 120, 120 , 0.5) ),
+					to( rgba(30, 30, 30 , 0.5) )
 					);
 	-webkit-box-shadow	: 0px 3px 6px rgba( 0 , 0 , 0 , 0.5);
 }
@@ -1094,6 +1104,29 @@ footer #my_lists:hover .lists,
 .list-index a:hover
 {
 	text-decoration	: none;
+}
+
+.list-index.active
+{
+	-webkit-animation: menuBlink 0.2s linear 2;
+}
+
+@-webkit-keyframes menuBlink
+{
+	0%
+	{
+		background-color	: rgb( 120, 120, 120);
+	}
+
+	50%
+	{
+		background-color	: rgb( 180, 180, 180);
+	}
+	
+	100%
+	{
+		background-color	: rgb( 180, 180, 180);
+	}
 }
 
 /*

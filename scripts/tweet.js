@@ -780,13 +780,16 @@ tweet.prototype.buildEntry = function( target , append_mode )
 				media_blank.className = "thumbnail_blank";
 			status_string_wrapper.insertBefore( media_blank , status_string_wrapper.firstChild );
 
-			var media_wrapper = document.createElement("A");
+			var media_wrapper = document.createElement("DIV");
 				media_wrapper.className = "thumbnail";
-				media_wrapper.target = "_blank";
+			var media_anchor = document.createElement("A");
+				media_anchor.className = "thumbnail";
+				media_anchor.target = "_blank";
 			var media_thumbnail = document.createElement("IMG");
 				media_thumbnail.className = "thumbnail";
 				
-			media_wrapper.appendChild( media_thumbnail );
+			media_anchor.appendChild( media_thumbnail );
+			media_wrapper.appendChild( media_anchor );
 			entry_wrapper.insertBefore( media_wrapper , icon_wrapper );
 			
 			setTimeout( function()

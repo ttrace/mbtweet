@@ -370,7 +370,7 @@ search.prototype.init = function( timeline )
 							[
 								["callback" , "initial" + timeline.timeline_id ],
 								["q" , this.query ],
-								["rpp" , "20"],
+								["rpp" , "50"],
 							],
 							{ auth	: false }
 						);
