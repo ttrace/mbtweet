@@ -117,7 +117,7 @@ retreveSearch = function( data )
 	}
 }
 
-updateSearchTimeline = function(data)
+updateInitSearchTimeline = function(data)
 {
 	var search_timeline = document.querySelector("#search");
 	var insert_target = document.querySelector("#search > .entry");

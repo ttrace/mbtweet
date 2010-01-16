@@ -122,7 +122,7 @@ retreve_search = function( input_element )
 									[
 										["callback" , "retreveSearch"],
 										["q" , query],
-										["rpp" , "20"]
+										["rpp" , "50"]
 									],
 									{ auth : false }
 								);
@@ -139,7 +139,7 @@ update_search = function()
 		mbtweetOAuth.callAPI(	"http://search.twitter.com/search.json" ,
 								"GET",
 								[
-									["callback" , "updateSearchTimeline"],
+									["callback" , "updateInitSearchTimeline"],
 									["q" , mbtweet.currentSearch],
 									["since_id" , since_id],
 									["rpp" , "100"]
@@ -250,9 +250,14 @@ legacy_retweet = function( in_reply_to_screen_name , in_reply_to_status_id , sta
 	var status_editor 		= document.querySelector("#status");
 	var status_id_container = document.querySelector("#post_in_reply_to_status_id");
 	var quote_url 			= "http://twitter.com/" + in_reply_to_screen_name + "/status/" + in_reply_to_status_id;
+	if( status_editor.value != ("@" + in_reply_to_screen_name + " ") )
+	{
+		if(mbtweet.debug)window.console.log( "regacy RT" ,status_editor.value, ("@" + in_reply_to_screen_name),status_editor.value );
+		status_id_container.value = "";	
+	}
 	status_editor.value = "RT @" + in_reply_to_screen_name + ": "+ status_string;
-	status_id_container.value = "";
 	status_editor.focus();
+	if(mbtweet.debug)window.console.log( "regacy RT" , status_id_container.value );
 	status_editor.setSelectionRange( status_editor.value.length , status_editor.value.length );
 }
 

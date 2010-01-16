@@ -390,6 +390,7 @@ search.prototype.update = function( timeline )
 								"GET",
 								[
 									["callback" , "update" + timeline.timeline_id ],
+									["since_id" , since_id],
 									["q" , this.query ],
 									["rpp" , "100"],
 								],
