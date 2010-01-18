@@ -3,7 +3,7 @@ var mbtweet = {};
 mbtweet = 
 {
 	debug			: true ,
-	build			: 00008 ,
+	build			: 00009 ,
 	version			: "1.0" ,
 	bitly_token		: "",
 	currentSearch	: "",
@@ -25,6 +25,8 @@ mbtweet =
 		ip_reset	: 0,
 	}
 }
+
+
 
 var mbtweetOAuth = {};
 
