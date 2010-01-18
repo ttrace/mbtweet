@@ -533,12 +533,12 @@ tweet.prototype.buildEntry = function( target , append_mode )
 											{
 												if( event.eventPhase == 1 )
 												{
-													if( event.target.parentNode.tweet )
+													if( event.target.parentNode.tweet && !hasClass( event.target , "thumbnail" ) )
 													{
 														event.target.parentNode.tweet.popMeta();
 														event.stopPropagation();
 													}
-													else if( event.target.parentNode.parentNode.tweet )
+													else if( event.target.parentNode.parentNode.tweet && !hasClass( event.target , "thumbnail" ) )
 													{
 														event.target.parentNode.parentNode.tweet.popMeta();
 														event.stopPropagation();

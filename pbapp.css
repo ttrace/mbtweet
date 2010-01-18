@@ -516,6 +516,7 @@ a.sname:visited
 	width		: 100px;
 	height		: 36px;
 	text-align	: right;
+	z-index	: 999;
 }
 
 .entry a.thumbnail
@@ -529,7 +530,6 @@ a.sname:visited
 	-webkit-transform-origin	: 100% 0%;
 	-webkit-transform	: rotate(15deg) scale(0.3 ,0.3) translate(-100px,0px);
 
-	z-index	: 999;
 }
 
 .entry img.thumbnail
@@ -555,7 +555,7 @@ a.sname:visited
 
 	90%
 	{
-		-webkit-transform	: rotate(0deg) scale(1.2 , 1.2) translate( -20px , -20px );
+		-webkit-transform	: rotate(0deg) scale(1.2 , 1.2) translate( 0px , -20px );
 	}
 	
 	100%
@@ -661,6 +661,7 @@ a.sname:visited
 	-webkit-border-top-left-radius		: 0px 0px;
 	-webkit-border-top-right-radius		: 0px 0px;
 
+	-webkit-animation: popAction 0.2s ease-in 1;	
 
 }
 
@@ -672,18 +673,12 @@ a.sname:visited
 		opacity		: 0;
 	}
 	
-	50%
-	{
-		-webkit-transform	: translate( 0px, 0px);
-		opacity		: 0.5;
-	}
-	
 	100%
 	{
+		-webkit-transform	: translate( 0px, 0px);
 		opacity		: 1;
 	}
 }
-
 
 .entry .action a
 {
