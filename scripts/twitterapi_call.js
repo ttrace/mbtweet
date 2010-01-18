@@ -75,9 +75,10 @@ reset_time: "Fri Dec 25 10:44:15 +0000 2009"
 reset_time_in_seconds: 1261737855
 */
 	var hourly_rate_index = document.querySelector(".hourly-rate");
-		hourly_rate_index.style.width = data.hourly_limit + "px";
+		hourly_rate_index.style.width = "150px";
 	var remaining_hits_index = document.querySelector(".rate");
-		remaining_hits_index.style.width = data.remaining_hits + "px";
+//		remaining_hits_index.style.width = data.remaining_hits + "px";
+		remaining_hits_index.style.width = ( data.remaining_hits / data.hourly_limit ) * 150 + "px";
 		remaining_hits_index.innerText = data.remaining_hits;
 	var reset_time_in_seconds = document.querySelector(".reset-time");
 	var time = new Date( data.reset_time_in_seconds * 1000 );
@@ -96,9 +97,9 @@ reset_time: "Fri Dec 25 10:44:15 +0000 2009"
 reset_time_in_seconds: 1261737855
 */
 	var hourly_rate_index = document.querySelector(".hourly-rate.no-auth");
-		hourly_rate_index.style.width = data.hourly_limit + "px";
+		hourly_rate_index.style.width = "150px";
 	var remaining_hits_index = document.querySelector(".rate.no-auth");
-		remaining_hits_index.style.width = data.remaining_hits + "px";
+		remaining_hits_index.style.width = ( data.remaining_hits / data.hourly_limit ) * 150 + "px";
 		remaining_hits_index.innerText = data.remaining_hits;
 	var reset_time_in_seconds = document.querySelector(".reset-time.no-auth");
 	var time = new Date( data.reset_time_in_seconds * 1000 );

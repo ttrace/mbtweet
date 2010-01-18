@@ -527,8 +527,8 @@ tweet.prototype.buildEntry = function( target , append_mode )
 	}
 		
 	status_wrapper.appendChild( meta );
-	status_string_wrapper.tweet = this;
-	status_string_wrapper.addEventListener(	"mouseover",
+	status_wrapper.tweet = this;
+	status_wrapper.addEventListener(	"mouseover",
 											function( event )
 											{
 												if( event.eventPhase == 1 )
@@ -540,7 +540,7 @@ tweet.prototype.buildEntry = function( target , append_mode )
 													}
 													else if( event.target.parentNode.parentNode.tweet )
 													{
-														target.parentNode.parentNode.tweet.popMeta();
+														event.target.parentNode.parentNode.tweet.popMeta();
 														event.stopPropagation();
 													}
 												}
@@ -671,146 +671,139 @@ tweet.prototype.remove_action = function( event )
 
 tweet.prototype.popMeta = function()
 {
-	var other_menu = document.querySelectorAll( ".action" );
-	if( other_menu.length > 0)
-	{
-		for( var i = 0 ; i < other_menu.length ; i++)
-		{
-			other_menu[i].parentNode.removeChild( other_menu[i] );
-		}
-	}
 	var entry_wrapper = this.entry_wrapper;
-	// action menu build
-	var action = document.createElement("DIV");
-		action.className = "action";
 
-	var user_name = this.user.screen_name + "";
-	var status_id_string = this.status_id + "";
-	var status_text_string = this.text + "";
-	var tweet_id_string		= entry_wrapper.id + ""; 
-
-
-	// favorite menu build
-	var fave_status = this.favorited;
-	var favorite = document.createElement("A");
-		favorite.className = "favorite";
-		favorite.addEventListener("click" ,
-								function( event )
-								{
-									favorite_this( status_id_string , tweet_id_string , fave_status );
-								},
-								false );
-	if( this.favorited == false)
+	if( entry_wrapper.querySelector('.u-status').querySelectorAll(".action").length == 0 )
+	{
+		var other_menu = document.querySelectorAll( ".action" );
+		if( other_menu.length > 0)
 		{
-			favorite.innerText = "★";
+			for( var i = 0 ; i < other_menu.length ; i++)
+			{
+				other_menu[i].parentNode.removeChild( other_menu[i] );
+			}
 		}
-		else
-		{
-			favorite.innerText = "☆";
-		}
-		action.appendChild( favorite );
-
-	// Translate via menu build
-	var translate			= document.createElement("A");
-		translate.className	= "translate";
-		translate.addEventListener("click" ,
+		// action menu build
+		var action = document.createElement("DIV");
+			action.className = "action";
+	
+		var user_name = this.user.screen_name + "";
+		var status_id_string = this.status_id + "";
+		var status_text_string = this.text + "";
+		var tweet_id_string		= entry_wrapper.id + ""; 
+	
+	
+		// favorite menu build
+		var fave_status = this.favorited;
+		var favorite = document.createElement("A");
+			favorite.className = "favorite";
+			favorite.addEventListener("click" ,
 									function( event )
 									{
-										translate_this( tweet_id_string , status_text_string )
+										favorite_this( status_id_string , tweet_id_string , fave_status );
 									},
 									false );
-		translate.innerText = "Translate";
-		action.appendChild( translate );
-
-
-	// Quote via menu build
-	var quote			= document.createElement("A");
-		quote.className	= "quote";
-
-	if( this.user.user_protected == false)
-		{
-			quote.addEventListener("click" ,
-									function( event )
-									{
-										event.preventDefault();
-										quote_this( user_name , status_id_string , status_text_string );
-									},
-									false );
-		}
-		// alerting notice for protected user.
-		else
-		{
-			var alert_msg = user_name + " is protected.\nTake care for retweeting " + user_name + "'s tweet.";
-			quote.addEventListener("click" ,
-									function( event )
-									{
-										event.preventDefault();
-										alert( alert_msg );
-										quote_this( user_name , status_id_string , status_text_string );
-									},
-									false );		
-		}
-		quote.innerText = "Quote";
-		action.appendChild( quote );
-
-	// retweet menu build
-	var retweet = document.createElement("A");
-		retweet.className = "retweet dimm";
-	if( this.user.user_protected == false)
-		{
-			retweet.className = "retweet";
-			retweet.addEventListener("click" ,
-									function( event )
-									{
-										if( !event.shiftKey )
+		if( this.favorited == false)
+			{
+				favorite.innerText = "★";
+			}
+			else
+			{
+				favorite.innerText = "☆";
+			}
+			action.appendChild( favorite );
+	
+		// Translate via menu build
+		var translate			= document.createElement("A");
+			translate.className	= "translate";
+			translate.addEventListener("click" ,
+										function( event )
 										{
-											retweet_this( tweet_id_string );
+											translate_this( tweet_id_string , status_text_string )
+										},
+										false );
+			translate.innerText = "Translate";
+			action.appendChild( translate );
+	
+	
+		// Quote via menu build
+		var quote			= document.createElement("A");
+			quote.className	= "quote";
+	
+		if( this.user.user_protected == false)
+			{
+				quote.addEventListener("click" ,
+										function( event )
+										{
+											event.preventDefault();
+											quote_this( user_name , status_id_string , status_text_string );
+										},
+										false );
+			}
+			// alerting notice for protected user.
+			else
+			{
+				var alert_msg = user_name + " is protected.\nTake care for retweeting " + user_name + "'s tweet.";
+				quote.addEventListener("click" ,
+										function( event )
+										{
+											event.preventDefault();
+											alert( alert_msg );
+											quote_this( user_name , status_id_string , status_text_string );
+										},
+										false );		
+			}
+			quote.innerText = "Quote";
+			action.appendChild( quote );
+	
+		// retweet menu build
+		var retweet = document.createElement("A");
+			retweet.className = "retweet dimm";
+		if( this.user.user_protected == false)
+			{
+				retweet.className = "retweet";
+				retweet.addEventListener("click" ,
+										function( event )
+										{
+											if( !event.shiftKey )
+											{
+												retweet_this( tweet_id_string );
+											}
+											else
+											{
+												legacy_retweet( user_name , status_id_string , status_text_string );
+											}
+										},
+										false );
+				retweet.innerText = "ReTweet";
+				action.appendChild( retweet );
+			}
+	
+		// reply menu build
+		var reply			= document.createElement("A");
+			reply.className	= "reply";
+			reply.href		= "http://twitter.com/" + this.user.screen_name + "";
+	
+		var user_name_list = this.text.match( /[@＠]([a-zA-Z0-9_]+)/g );
+			reply.addEventListener("click" ,
+									function( event )
+									{
+										event.preventDefault();
+										if( event.shiftKey ) // reply all @[screen_name]
+										{
+											reply_to( user_name , status_id_string , user_name_list );
 										}
 										else
 										{
-											legacy_retweet( user_name , status_id_string , status_text_string );
+											reply_to( user_name , status_id_string );									
 										}
 									},
 									false );
-			retweet.innerText = "ReTweet";
-			action.appendChild( retweet );
-		}
-
-	// reply menu build
-	var reply			= document.createElement("A");
-		reply.className	= "reply";
-		reply.href		= "http://twitter.com/" + this.user.screen_name + "";
-
-	var user_name_list = this.text.match( /[@＠]([a-zA-Z0-9_]+)/g );
-		reply.addEventListener("click" ,
-								function( event )
-								{
-									event.preventDefault();
-									if( event.shiftKey ) // reply all @[screen_name]
-									{
-										reply_to( user_name , status_id_string , user_name_list );
-									}
-									else
-									{
-										reply_to( user_name , status_id_string );									
-									}
-								},
-								false );
-		reply.innerText = "Reply";
-		action.appendChild( reply );
-
-// 		action.addEventListener(	"mouseout",
-// 												function( event )
-// 												{
-// 													if( hasClass( event.target , "action") )
-// 													{
-// 														event.target.parentNode.querySelector(".u-string").tweet.remove_action();
-// 													}
-// 												},
-// 												false
-// 												);	
-
+			reply.innerText = "Reply";
+			action.appendChild( reply );
+	
 		entry_wrapper.querySelector(".u-status").appendChild( action );
+	}
 }
 
 /*
