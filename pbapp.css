@@ -647,8 +647,8 @@ a.sname:visited
 	z-index		: 1;
 	width 		: 328px;
 	height		: 21px;
-	margin		: -14px 0px 0px 46px;
-	opacity		: 0;
+	margin		: -14px 0px 0px 4px;
+	opacity		: 1.0;
 	text-align	: center;
 
 /*
@@ -673,9 +673,11 @@ a.sname:visited
 */
 }
 
-.u-status:hover + .action,
-.action:hover
+.action.pop
+/*.u-status:hover + .action,
+.action:hover*/
 {
+	display				: block;
 	opacity				: 1.0;
 /*	-webkit-animation	: popAction 0.3s linear 1; */
 }
