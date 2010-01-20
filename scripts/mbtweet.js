@@ -2,7 +2,7 @@ var mbtweet = {};
 
 mbtweet = 
 {
-	debug			: true ,
+	debug			: false ,
 	build			: 00010 ,
 	version			: "1.0" ,
 	bitly_token		: "",
@@ -75,7 +75,7 @@ init_mbtweet = function()
 	var home = new timeline( "home" );
 	var mention = new timeline( "mention" );
 
-	mbtweetOAuth.callAPI(	"https://twitter.com/statuses/user_timeline.json" ,
+	mbtweetOAuth.callAPI(	"https://api.twitter.com/1/statuses/user_timeline.json" ,
 							"GET",
 							[
 								["callback" , "retreveMine"],
@@ -89,7 +89,7 @@ function count_api_rate( option )
 {
 	var callback_process = "countRate";
 	if( option.auth == false) callback_process = "countNoAuthRate";
-	mbtweetOAuth.callAPI(	"https://twitter.com/account/rate_limit_status.json" ,
+	mbtweetOAuth.callAPI(	"https://api.twitter.com/1/account/rate_limit_status.json" ,
 							"GET",
 							[
 								["callback" , callback_process ],

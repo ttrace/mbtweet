@@ -15,7 +15,7 @@ mbtweet.timeline =
 				{
 					name		: "Mention",
 					timeline_id	: "mention",
-					api			: "https://twitter.com/statuses/mentions.json",
+					api			: "https://api.twitter.com/1/statuses/mentions.json",
 					interval	: 60000,
 					count		: 50,
 					auth		: true,
