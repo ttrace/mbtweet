@@ -231,7 +231,7 @@ create_list_menu = function( users_lists )
 	
 	if( mbtweet.user.screen_name == users_lists.screen_name )
 	{
-		document.querySelector("#my_lists").appendChild( menu_wrapper );
+		document.querySelector("#my_lists").insertBefore( menu_wrapper , document.querySelector("#my_lists").firstChild );
 	}
 	return( menu_wrapper );
 }

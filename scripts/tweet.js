@@ -502,8 +502,11 @@ tweet.prototype.buildEntry = function( target , append_mode )
 	var meta_source;
 
 		meta_source = new Date( this.created_at ).toString().replace(/:[0-9][0-9]\s.+/,'') + " ";
+	if( this.source )
+	{
+		// tweet.source is not exist on direct messages
 		meta_source += "from " + this.source + " ";
-
+	}
 		meta.innerHTML = meta_source;
 
 	if( this.geo != null && this.geo != "null" && this.geo )
@@ -823,7 +826,6 @@ tweet.prototype.popMeta = function()
 		entry_wrapper.querySelector(".u-status").appendChild( action );
 	}
 }
-
 
 /*
 	status handling functions
