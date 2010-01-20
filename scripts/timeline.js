@@ -44,7 +44,7 @@ mbtweet.timeline =
 	message		:
 				{
 					name		: "Messages",
-					timeline_id	: "message",
+					timeline_id	: "messages",
 					api			: "https://twitter.com/direct_messages.json",
 					interval	: 180000,
 					count		: 20,
@@ -298,7 +298,7 @@ timeline.prototype.create = function()
 		timeline.className = "timeline";
 		timeline.id = this.timeline_id;
 	timeline_column.appendChild( timeline );
-		this.timeline = timeline;
+		this.timeline = timeline;		
 
 	document.querySelector("#column").appendChild( timeline_column );
 

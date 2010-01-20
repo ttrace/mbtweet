@@ -2,8 +2,8 @@ var mbtweet = {};
 
 mbtweet = 
 {
-	debug			: false ,
-	build			: 00009 ,
+	debug			: true ,
+	build			: 00010 ,
 	version			: "1.0" ,
 	bitly_token		: "",
 	currentSearch	: "",
@@ -137,7 +137,12 @@ update_search = function()
 {
 	if( document.querySelectorAll("#search").length != 0 )
 	{
-		var since_id = document.querySelector("#search > .entry").id.replace(/[a-zA-Z0-9_]+\-/ , "") + "";
+		var latest_entry = document.querySelectorAll("#search > .entry")[0];
+		var since_id	= null;
+		if( latest_entry )
+		{
+			since_id = latest_entry.id.replace(/[a-zA-Z0-9_]+\-/ , "") + "";
+		}
 		mbtweetOAuth.callAPI(	"http://search.twitter.com/search.json" ,
 								"GET",
 								[
@@ -211,6 +216,18 @@ reply_to = function( in_reply_to_screen_name , in_reply_to_status_id )
 	}
 	status_editor.value += " ";
 	status_id_container.value = in_reply_to_status_id;
+	status_editor.focus();
+	status_editor.setSelectionRange(status_editor.value.length, status_editor.value.length);
+}
+
+reply_to_message = function( in_reply_to_screen_name )
+{
+	var status_editor = document.querySelector("#status");
+	var status_id_container = document.querySelector("#post_in_reply_to_status_id");
+	status_editor.value = "D " + in_reply_to_screen_name + " ";
+
+	status_editor.value += " ";
+	status_id_container.value = "";
 	status_editor.focus();
 	status_editor.setSelectionRange(status_editor.value.length, status_editor.value.length);
 }

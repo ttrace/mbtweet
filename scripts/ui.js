@@ -83,7 +83,8 @@ remove_unread = function( target_id )
 		removeClass( target_elements[i] , "unread");
 		if( i > 50 )
 		{
-			target_elements[i].style.display = "none";
+			target_elements[i].parentNode.removeChild( target_elements[i] );
+//			target_elements[i].style.display = "none";
 		}
 	}
 
