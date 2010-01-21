@@ -5,7 +5,8 @@ mbtweet.timeline =
 				{
 					name		: "Home",
 					timeline_id	: "home",
-					api			: "https://api.twitter.com/1/statuses/home_timeline.json",
+//					api			: "https://api.twitter.com/1/statuses/home_timeline.json",
+					api			: "https://twitter.com/statuses/home_timeline.json",
 					interval	: 60000,
 					count		: 100,
 					auth		: true,
@@ -15,7 +16,8 @@ mbtweet.timeline =
 				{
 					name		: "Mention",
 					timeline_id	: "mention",
-					api			: "https://api.twitter.com/1/statuses/mentions.json",
+//					api			: "https://api.twitter.com/1/statuses/mentions.json",
+					api			: "https://twitter.com/statuses/mentions.json",
 					interval	: 60000,
 					count		: 50,
 					auth		: true,
@@ -79,7 +81,7 @@ new_user_timeline = function( target_link , myauth )
 		var new_timeline = new timeline();
 			new_timeline.timeline_id = screen_name;
 			new_timeline.name = screen_name + "'s timeline";
-			new_timeline.api = "https://twitter.com/statuses/user_timeline/" + screen_name + ".json";
+			new_timeline.api = "https://api.twitter.com/1/statuses/user_timeline/" + screen_name + ".json";
 			new_timeline.auth = myauth;
 			new_timeline.count = 50;
 			new_timeline.create();

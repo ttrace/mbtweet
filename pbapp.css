@@ -1067,14 +1067,36 @@ footer .lists
 	background-color	: rgba( 0 , 0 , 0 , 0.65);
 	-webkit-box-shadow	: 0px 3px 6px rgba( 0 , 0 , 0 , 0.5);
 	-webkit-border-radius	: 6px;
+	z-index	: 999;
 }
 
 footer #my_lists:hover .lists,
 .lists:hover
 {
 	display	: inline-block;
-	z-index	: 999;
+	-webkit-animation: popMenu 0.3s linear 1;
 }
+
+@-webkit-keyframes popMenu
+{
+	0%
+	{
+		height	: 10px;
+		-webkit-transform	: scale( 0% , 100%);
+	}
+
+	50%
+	{
+		height	: 10px;
+		-webkit-transform	: scale( 100% , 100%);
+	}
+
+	100%
+	{
+		height	: inherit;
+	}
+}
+
 
 .list-index
 {
