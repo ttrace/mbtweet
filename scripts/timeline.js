@@ -5,7 +5,7 @@ mbtweet.timeline =
 				{
 					name		: "Home",
 					timeline_id	: "home",
-//					api			: "https://api.twitter.com/1/statuses/home_timeline.json",
+					spare_api	: "https://api.twitter.com/1/statuses/home_timeline.json",
 					api			: "https://twitter.com/statuses/home_timeline.json",
 					interval	: 60000,
 					count		: 100,
@@ -16,7 +16,7 @@ mbtweet.timeline =
 				{
 					name		: "Mention",
 					timeline_id	: "mention",
-//					api			: "https://api.twitter.com/1/statuses/mentions.json",
+					spare_api	: "https://api.twitter.com/1/statuses/mentions.json",
 					api			: "https://twitter.com/statuses/mentions.json",
 					interval	: 60000,
 					count		: 50,
@@ -37,6 +37,7 @@ mbtweet.timeline =
 				{
 					name		: "Your Timeline",
 					timeline_id	: "mine",
+					spare_api	: "https://api.twitter.com/1/statuses/user_timeline.json",
 					api			: "https://twitter.com/statuses/user_timeline.json",
 					interval	: 180000,
 					count		: 100,
@@ -47,6 +48,7 @@ mbtweet.timeline =
 				{
 					name		: "Messages",
 					timeline_id	: "messages",
+					spare_api	: "https://api.twitter.com/1/direct_messages.json",
 					api			: "https://twitter.com/direct_messages.json",
 					interval	: 180000,
 					count		: 20,
@@ -95,7 +97,7 @@ new_list_timeline = function( list )
 	if( !document.getElementById( "list_" + list._list_id ) )
 	{
 		var new_timeline = new timeline();
-			new_timeline.timeline_id = "list_" + list._list_id;
+			new_timeline.timeline_id = "list_" + list._list_id + "_" + guid().replace( /\-/g , '');
 			new_timeline.name = "List:" + list._list_name;
 			new_timeline.api = "https://api.twitter.com/1/" + list.user._screen_name + "/lists/" + list._list_id + "/statuses.json";
 			new_timeline.auth = myauth;
@@ -105,7 +107,7 @@ new_list_timeline = function( list )
 	}
 }
 
-new_search_timeline = function( query )
+new_search_timeline = function( query , language )
 {
 	var new_search_timeline					= new timeline();
 		new_search_timeline.timeline_id		= "search_" + guid().replace(/\-/g , "");
@@ -117,7 +119,10 @@ new_search_timeline = function( query )
 		new_search_timeline.cache			= mbtweet.timeline.search.cache;
 		new_search_timeline.search			= new search();
 		new_search_timeline.search.query	= query;
-		
+		if( language != "")
+		{
+			new_search_timeline.search.lang	= language;
+		}
 		new_search_timeline.create();
 }
 
@@ -126,9 +131,10 @@ timeline = function( preset )
 	var self = this;
 	if( mbtweet.timeline[preset] && ( document.querySelectorAll( "#" + preset ).length == 0 ))
 	{
-		this.timeline_id	= mbtweet.timeline[preset].timeline_id;
+		this.timeline_id	= mbtweet.timeline[preset].timeline_id + "_" + guid().replace( /\-/g , '');
 		this.name			= mbtweet.timeline[preset].name;
 		this.api			= mbtweet.timeline[preset].api;
+		this.spare_api		= mbtweet.timeline[preset].spare_api;
 		this.interval		= mbtweet.timeline[preset].interval;
 		this.count			= mbtweet.timeline[preset].count;
 		this.auth			= mbtweet.timeline[preset].auth;
@@ -173,12 +179,30 @@ timeline.prototype =
 	{
 		if (!("_api" in this))
 				this._api = "";
+		if ( this.auth && mbtweet.rate.auth < 5)
+		{
+			if(mbtweet.debug)window.console.log( this.auth , mbtweet.rate.auth , "Rate is shortning", this.timeline_id );
+			this._api = this._spare_api;
+		}
 		return this._api;
 	},
 	
 	set api ( x )
 	{
 		this._api = x;
+	},
+
+	// base URL for fetching timelines
+	get spare_api ()
+	{
+		if (!("_api" in this))
+				this._spare_api = "";
+		return this._spare_api;
+	},
+	
+	set spare_api ( x )
+	{
+		this._spare_api = x;
 	},
 
 	// fetching interval
@@ -262,6 +286,18 @@ search.prototype =
 	set query ( x )
 	{
 		this._query = x;
+	},
+
+	get lang ()
+	{
+		if (!("_lang" in this))
+				this._lang = "";
+		return this._lang;
+	},
+	
+	set lang ( x )
+	{
+		this._lang = x;
 	},
 }
 
@@ -384,6 +420,7 @@ search.prototype.init = function( timeline )
 							[
 								["callback" , "initial" + timeline.timeline_id ],
 								["q" , this.query ],
+								["lang" , this.lang ],
 								["rpp" , "50"],
 							],
 							{ auth	: false }
@@ -406,6 +443,7 @@ search.prototype.update = function( timeline )
 									["callback" , "update" + timeline.timeline_id ],
 									["since_id" , since_id],
 									["q" , this.query ],
+									["lang" , this.lang ],
 									["rpp" , "100"],
 								],
 								{ auth	: false }
@@ -441,7 +479,6 @@ timeline.prototype.shrink = function()
 	{
 		addClass( this.timelineColumn , "mini" );
 	}
-	
 }
 
 timeline.prototype.close = function()
