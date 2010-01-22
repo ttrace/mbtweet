@@ -805,6 +805,23 @@ tweet.prototype.popMeta = function()
 										false );
 				reply.innerText = "Reply";
 				action.appendChild( reply );
+			
+			// delete menu build
+			if( this.user.screen_name == mbtweet.user.screen_name )
+			{
+				var destroy			= document.createElement("A");
+					destroy.className = "destroy";
+				destroy.innerText = "Delete";
+				destroy.addEventListener("click" ,
+										function( event )
+										{
+											event.preventDefault();
+											destroy_this( status_id_string , tweet_id_string );
+										},
+										false );
+
+				action.appendChild( destroy );		
+			}
 		}
 		else // direct messages
 		{

@@ -298,12 +298,29 @@ favorite_this = function( status_id_string , tweet_id_string , fave_status )
 		favorited = true;
 		method_url = "http://twitter.com/favorites/destroy/" + favorite_id + ".xml";	
 	}
-	window.console.log([ "favorite", favorite_id, tweet_id_string , favorited ]);
+	if( mbtweet.debug )window.console.log([ "favorite", favorite_id, tweet_id_string , favorited ]);
 	mbtweetOAuth.callAPI(	method_url ,
 							"POST",
 							[
 							],
 							[ "favorite" , tweet_id_string , favorited ]
+						);
+	return true;
+}
+
+destroy_this = function( status_id_string , tweet_id_string )
+{
+	var status_id = status_id_string;
+	var target_tweet	= document.querySelector( "#" + tweet_id_string );
+
+	method_url = "http://twitter.com/statuses/destroy/" + status_id + ".xml";
+	if( mbtweet.debug )window.console.log([ "destroy", status_id_string, tweet_id_string ]);
+
+	mbtweetOAuth.callAPI(	method_url ,
+							"POST",
+							[
+							],
+							[ "destroy" , status_id_string ]
 						);
 	return true;
 }

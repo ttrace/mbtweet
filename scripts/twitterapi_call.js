@@ -204,6 +204,13 @@ catch_post = function( event , api_method )
 				fave_button.innerText = "★";
 			}
 
+		case "destroy":
+			var destroy_entries = document.querySelectorAll( "[id$='" + api_method[1] + "']" );
+			for( var i = 0 ; i < destroy_entries.length ; i++ )
+			{
+				if(mbtweet.debug)window.console.log("destroy =" , api_method[1] , destroy_entries);
+				destroy_entries[i].parentNode.removeChild( destroy_entries[i] );
+			}
 			break;
 		
 		default:
