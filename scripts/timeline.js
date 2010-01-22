@@ -231,6 +231,18 @@ timeline.prototype =
 	{
 		this._auth = x;
 	},
+
+	get icon ()
+	{
+		if (!("_icon" in this))
+				this._icon = "";
+		return this._icon;
+	},
+	
+	set icon ( x )
+	{
+		this._icon = x;
+	},
 }
 
 search = function()
