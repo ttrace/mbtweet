@@ -438,6 +438,11 @@ tweet.prototype.buildEntry = function( target , append_mode )
 													event.preventDefault();
 													new_search_timeline( event.target.innerText );
 												}
+												else
+												{
+													event.preventDefault();
+													new_search_timeline( event.target.innerText , mbtweet.user.language );												
+												}
 											},
 											false );
 	}
