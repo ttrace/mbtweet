@@ -44,6 +44,39 @@ mbtweet.timeline =
 					auth		: true,
 					cache		: true,
 				},
+	rt_by_me	:
+				{
+					name		: "ReTweets by You",
+					timeline_id	: "rtOfme",
+					spare_api	: "https://api.twitter.com/1/statuses/retweeted_by_me.json",
+					api			: "https://twitter.com/statuses/retweeted_by_me.json",
+					interval	: 600000,
+					count		: 50,
+					auth		: true,
+					cache		: false,
+				},
+	rt_to_me	:
+				{
+					name		: "ReTweets by Others",
+					timeline_id	: "rtOfme",
+					spare_api	: "https://api.twitter.com/1/statuses/retweeted_to_me.json",
+					api			: "https://twitter.com/statuses/retweeted_to_me.json",
+					interval	: 600000,
+					count		: 50,
+					auth		: true,
+					cache		: false,
+				},
+	rt_of_me	:
+				{
+					name		: "Your Tweet, ReTweeted",
+					timeline_id	: "rtOfme",
+					spare_api	: "https://api.twitter.com/1/statuses/retweets_of_me.json",
+					api			: "https://twitter.com/statuses/retweets_of_me.json",
+					interval	: 600000,
+					count		: 50,
+					auth		: true,
+					cache		: false,
+				},
 	message		:
 				{
 					name		: "Messages",
@@ -94,7 +127,8 @@ new_list_timeline = function( list )
 {
 	var myauth = true;
 //	if( list._mode != "public" ) myauth = true;
-	if( !document.getElementById( "list_" + list._list_id ) )
+//	if( !document.getElementById( "list_" + list._list_id ) )
+	if( document.querySelectorAll( "[id^='list_" + list._list_id + "']" ).length == 0 )
 	{
 		var new_timeline = new timeline();
 			new_timeline.timeline_id = "list_" + list._list_id + "_" + guid().replace( /\-/g , '');
@@ -129,9 +163,13 @@ new_search_timeline = function( query , language )
 timeline = function( preset )
 {
 	var self = this;
-	if( mbtweet.timeline[preset] && ( document.querySelectorAll( "#" + preset ).length == 0 ))
+	if( mbtweet.timeline[preset] && ( document.querySelectorAll( "[id^='" + preset + "']" ).length == 0 ))
 	{
 		this.timeline_id	= mbtweet.timeline[preset].timeline_id + "_" + guid().replace( /\-/g , '');
+		if( mbtweet.timeline[preset].timeline_id == "search")
+		{
+			this.timeline_id = "search";
+		}
 		this.name			= mbtweet.timeline[preset].name;
 		this.api			= mbtweet.timeline[preset].api;
 		this.spare_api		= mbtweet.timeline[preset].spare_api;
@@ -315,7 +353,8 @@ timeline.prototype.create = function()
 		timeline_header.innerHTML = this.name;
 	timeline_column.appendChild( timeline_header );
 	
-	if( this.timeline_id == "search" )
+	//if( this.timeline_id.match(/^search/ )
+	if( this.search && this.search.query == "" )
 	{
 		var search_field		= document.createElement("INPUT");
 			search_field.id		= "search_keyword";

@@ -19,8 +19,8 @@ mbtweet =
 	},
 	rate :
 	{
-		auth		: 0,
-		ip			: 0,
+		auth		: 150,
+		ip			: 150,
 		auth_reset	: 0,
 		ip_reset	: 0,
 	}
