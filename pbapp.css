@@ -1044,7 +1044,7 @@ footer > div.dock > section > div img
 }
 
 footer > div.dock > section > div img:hover,
-.lists:hover + img
+.dock-menu:hover + img
 {
 	width	: 52px;
 	height	: 52px;
@@ -1054,15 +1054,15 @@ footer > div.dock > section > div img:hover,
 /*
 	list part
 */
-.lists
+.dock-menu
 {
 }
 
-footer .lists
+footer .dock-menu
 {
 	position	: absolute;
-	bottom		: 20px;
-	margin-left	: 40px;
+	bottom		: 50px;
+	margin-left	: 0px;
 	padding		: 6px 0px;
 	border		: 2px white solid;
 	width		: 230px;
@@ -1076,11 +1076,11 @@ footer .lists
 	z-index	: 999;
 }
 
-footer #my_lists:hover .lists,
-.lists:hover
+footer .dock-icon:hover .dock-menu,
+.dock-menu:hover
 {
 	display	: inline-block;
-	-webkit-animation: popMenu 0.3s linear 1;
+	-webkit-animation: popMenu 0.4s linear 1;
 }
 
 @-webkit-keyframes popMenu
@@ -1088,29 +1088,32 @@ footer #my_lists:hover .lists,
 	0%
 	{
 		height	: 10px;
-		-webkit-transform	: scale( 0% , 100%);
+		width	: 10px;
+		overflow-y	: hidden;
 	}
 
 	50%
 	{
 		height	: 10px;
-		-webkit-transform	: scale( 100% , 100%);
+		width	: inherit;
+		overflow-y	: hidden;
 	}
 
 	100%
 	{
 		height	: inherit;
+		width	: inherit;
+		overflow-y	: auto;
 	}
 }
 
-
-.list-index
+.dock-menu-index
 {
 	padding		: 2px 6px;
 	text-align	:	left;
 }
 
-.list-index:hover
+.dock-menu-index:hover
 {
 	background	: -webkit-gradient(	linear,
 					left top,
@@ -1131,18 +1134,19 @@ footer #my_lists:hover .lists,
 	-webkit-border-radius	: 4px;
 }
 
-.list-index a
+.dock-menu-index,
+.dock-menu-index a
 {
 	color		: white;
 	margin-left	: 4px;
 }
 
-.list-index a:hover
+.dock-menu-index a:hover
 {
 	text-decoration	: none;
 }
 
-.list-index.active
+.dock-menu-index.active
 {
 	-webkit-animation: menuBlink 0.2s linear 2;
 }

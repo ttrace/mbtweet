@@ -221,7 +221,7 @@ create_list_menu = function( users_lists )
 {
 	var lists = users_lists.lists;
 	var menu_wrapper			= document.createElement("DIV");
-		menu_wrapper.className	= "lists";
+		menu_wrapper.className	= "dock-menu";
 		menu_wrapper.id			= "index_of_" + users_lists.screen_name + "_s_lists";
 
 	for( var i = 0 ; i < lists.length ; i++ )
@@ -239,7 +239,7 @@ create_list_menu = function( users_lists )
 list_index = function( list )
 {
 	var list_index 				= document.createElement("DIV");
-		list_index.className	= "list-index";
+		list_index.className	= "dock-menu-index";
 		list_index.id			= "list_index_" + list.list_id;
 
 	var	list_icon				= document.createElement("IMG");

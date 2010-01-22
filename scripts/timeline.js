@@ -47,7 +47,7 @@ mbtweet.timeline =
 	rt_by_me	:
 				{
 					name		: "ReTweets by You",
-					timeline_id	: "rtOfme",
+					timeline_id	: "rtByme",
 					spare_api	: "https://api.twitter.com/1/statuses/retweeted_by_me.json",
 					api			: "https://twitter.com/statuses/retweeted_by_me.json",
 					interval	: 600000,
@@ -58,7 +58,7 @@ mbtweet.timeline =
 	rt_to_me	:
 				{
 					name		: "ReTweets by Others",
-					timeline_id	: "rtOfme",
+					timeline_id	: "rtTome",
 					spare_api	: "https://api.twitter.com/1/statuses/retweeted_to_me.json",
 					api			: "https://twitter.com/statuses/retweeted_to_me.json",
 					interval	: 600000,
@@ -144,8 +144,8 @@ new_list_timeline = function( list )
 new_search_timeline = function( query , language )
 {
 	var new_search_timeline					= new timeline();
-		new_search_timeline.timeline_id		= "search_" + guid().replace(/\-/g , "");
-		new_search_timeline.name			= "Search " + query;
+		new_search_timeline.timeline_id		= "hashtag_" + guid().replace(/\-/g , "");
+		new_search_timeline.name			= "Search Hashtag" + query;
 		new_search_timeline.api				= mbtweet.timeline.search.api;
 		new_search_timeline.interval		= mbtweet.timeline.search.interval;
 		new_search_timeline.count			= mbtweet.timeline.search.count;

@@ -66,8 +66,16 @@
 				<img src="images/messages_icn.png">
 			</div>
 			<div class = "your"		onclick = "var mention = new timeline('mine');">Yours</div>
-			<div class = "" id = "my_lists">
+			<div class = "lists dock-icon" id = "my_lists">
 				<img src="images/lists_icn.png">
+			</div>
+			<div class = "retweets dock-icon">
+				<div class="dock-menu">
+					<div class="dock-menu-index" onclick = "var mention = new timeline('rt_by_me');">ReTweets by You</div>
+					<div class="dock-menu-index" onclick = "var mention = new timeline('rt_to_me');">ReTweets by Others</div>
+					<div class="dock-menu-index" onclick = "var mention = new timeline('rt_of_me');">Your Tweet, ReTweeted</div>
+				</div>
+				<img src="images/rt_icn.png">
 			</div>
 			<div class = "search"		onclick = "var mention = new timeline('search');">
 				<img src="images/search_icn.png">
