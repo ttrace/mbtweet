@@ -763,7 +763,7 @@ tweet.prototype.popMeta = function()
 			// retweet menu build
 			var retweet = document.createElement("A");
 				retweet.className = "retweet dimm";
-			if( this.user.user_protected == false)
+			if( this.user.user_protected == false && this.user.screen_name != mbtweet.user.screen_name )
 				{
 					retweet.className = "retweet";
 					retweet.addEventListener("click" ,
