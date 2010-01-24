@@ -93,6 +93,7 @@ mbtweet.timeline =
 					name		: "Search",
 					timeline_id	: "search",
 					api			: "http://search.twitter.com/search.json",
+					spare_api	: "http://search.twitter.com/search.json",
 					interval	: 60000,
 					count		: 100,
 					auth		: false,
@@ -117,6 +118,7 @@ new_user_timeline = function( target_link , myauth )
 			new_timeline.timeline_id = screen_name;
 			new_timeline.name = screen_name + "'s timeline";
 			new_timeline.api = "https://api.twitter.com/1/statuses/user_timeline/" + screen_name + ".json";
+			new_timeline.spare_api = new_timeline.api;
 			new_timeline.auth = myauth;
 			new_timeline.count = 50;
 			new_timeline.create();
@@ -134,6 +136,7 @@ new_list_timeline = function( list )
 			new_timeline.timeline_id = "list_" + list._list_id + "_" + guid().replace( /\-/g , '');
 			new_timeline.name = "List:" + list._list_name;
 			new_timeline.api = "https://api.twitter.com/1/" + list.user._screen_name + "/lists/" + list._list_id + "/statuses.json";
+			new_timeline.spare_api = new_timeline.api;
 			new_timeline.auth = myauth;
 			new_timeline.cache	= true;
 			new_timeline.count	= 50;
