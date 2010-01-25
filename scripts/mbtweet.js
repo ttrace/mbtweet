@@ -67,6 +67,8 @@ init_mbtweet = function()
 	init_shorten_url();
 	init_window_resize();
 	get_users_lists();
+	get_users_lists();
+	get_saved_search();
 
 	count_api_rate( { auth : true , main	: true} );
 	setTimeout( function(){ count_api_rate( { auth : false , main : true } ) } , 3000 );

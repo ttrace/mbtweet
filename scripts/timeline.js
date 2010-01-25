@@ -148,7 +148,14 @@ new_search_timeline = function( query , language )
 {
 	var new_search_timeline					= new timeline();
 		new_search_timeline.timeline_id		= "hashtag_" + guid().replace(/\-/g , "");
-		new_search_timeline.name			= "Search Hashtag" + query;
+		if( query.match(/^\#/) )
+		{
+			new_search_timeline.name			= "Search Hashtag: " + query;
+		}
+		else
+		{
+			new_search_timeline.name			= "Search: " + query;		
+		}
 		new_search_timeline.api				= mbtweet.timeline.search.api;
 		new_search_timeline.interval		= mbtweet.timeline.search.interval;
 		new_search_timeline.count			= mbtweet.timeline.search.count;
