@@ -203,6 +203,7 @@ catch_post = function( event , api_method )
 				removeClass( fave_entry , "favorited");
 				fave_button.innerText = "★";
 			}
+			break;
 
 		case "destroy":
 			var destroy_entries = document.querySelectorAll( "[id$='" + api_method[1] + "']" );
