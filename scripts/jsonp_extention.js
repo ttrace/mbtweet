@@ -56,6 +56,7 @@ has_media_url = function( url )
 mbutil.defined_snipurl_regexp = 
 {
 	bitly_carrier		: /(http:\/\/|www\.)(bit\.ly|j\.mp|tcrn\.ch|on\.wsj\.com|nyti\.ms|4sq\.com|mee\.bo)\/([a-zA-Z0-9]+)/,
+	am6_carrier			: /(http:\/\/|www\.)(am6\.jp)\/([a-zA-Z0-9]+)/,
 }
 
 has_shorten_url = function( url )
@@ -182,6 +183,13 @@ url_expander = function( target_element , shorten_url_carrier )
 		real_url_holder.id = unique_id;
 	target_element.appendChild( real_url_holder );
 	var url_alias = target_element.href;
+	
+	if(mbtweet.debug)window.console.log( shorten_url_carrier )
+	if( shorten_url_carrier == "am6_carrier" )
+	{
+		url_alias = url_alias.replace( /am6\.jp/ , "bit.ly");
+	}
+
 	var function_name = unique_id;
 
 	BitlyClient.expand( url_alias , function_name );
