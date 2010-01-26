@@ -183,7 +183,7 @@ catch_post = function( event , api_method )
 
 		case "retweet":
 			var retweet_button = document.querySelector( "#" + api_method[1] + " .retweet" );
-				retweet_button.innerText = "Retweeted";
+					retweet_button.innerText = "Retweeted";
 				retweet_button.className = "retweet dimm";
 			break;
 		

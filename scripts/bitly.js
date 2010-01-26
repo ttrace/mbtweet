@@ -42,7 +42,7 @@ shorten_url	= function( target )
 		}
 		else
 		{
-			var url_detection_regexp = /((http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)\s/;
+			var url_detection_regexp = /((http|https):\/\/(\w+:{0,1}\w*@)?([^\s\)\"\'”]+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)\s/;
 			//var url_detection_regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?\s/g;
 		}
 		var shorten_url_detector = /bit\.ly|j.mp|tinyurl\.com|is\.gd|turl\/nl|ff\/.im\/|twitpic\.com|twitvid\.com|pic\.gd|movapic\.com|yfrog\.com|www\.bcphotoshare\.com|bkite\.com|tiny12\.com|tumblr\.com|flic\.kr|www\.flickr\.com|bctiny\.com|f\.hatena\.ne\.jp|www.youtube.com\/watch\?v\=[a-zA-Z0-9\_]{8,15}/;
@@ -56,8 +56,8 @@ shorten_url	= function( target )
 				{
 					window.console.log( i , match_url );
 					//window.console.log( match_url[i] , match_url[i].match( url_detection_regexp )[1] );
-					//BitlyClient.shorten( match_url[i].match( url_detection_regexp )[1] , 'bitly_shorten_URL');
-					BitlyClient.shorten( match_url[i] , 'bitly_shorten_URL');
+					BitlyClient.shorten( match_url[i].match( url_detection_regexp )[1] , 'bitly_shorten_URL');
+					//BitlyClient.shorten( match_url[i] , 'bitly_shorten_URL');
 				}
 			}
 		}
