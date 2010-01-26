@@ -277,7 +277,7 @@ legacy_retweet = function( in_reply_to_screen_name , in_reply_to_status_id , sta
 	status_editor.value = "RT @" + in_reply_to_screen_name + ": "+ status_string;
 	status_editor.focus();
 	if(mbtweet.debug)window.console.log( "regacy RT" , status_id_container.value );
-	status_editor.setSelectionRange( status_editor.value.length , status_editor.value.length );
+	status_editor.setSelectionRange( 0 , 0 );
 }
 
 favorite_this = function( status_id_string , tweet_id_string , fave_status )
