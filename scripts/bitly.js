@@ -55,9 +55,9 @@ shorten_url	= function( target )
 				if( !match_url[i].match(shorten_url_detector) && match_url[i].length >= 30 )
 				{
 					window.console.log( i , match_url );
-					window.console.log( match_url[i] , match_url[i].match( url_detection_regexp )[1] );
-					BitlyClient.shorten( match_url[i].match( url_detection_regexp )[1] , 'bitly_shorten_URL');
-					//BitlyClient.shorten( match_url[i] , 'bitly_shorten_URL');
+					//window.console.log( match_url[i] , match_url[i].match( url_detection_regexp )[1] );
+					//BitlyClient.shorten( match_url[i].match( url_detection_regexp )[1] , 'bitly_shorten_URL');
+					BitlyClient.shorten( match_url[i] , 'bitly_shorten_URL');
 				}
 			}
 		}
