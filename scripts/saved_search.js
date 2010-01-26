@@ -143,10 +143,10 @@ search_index = function( search )
 		search_anchor.innerText	= search.name;
 		search_anchor.target	= "_blank";
 		search_anchor.mysearch	= search;
-			window.console.log( search_anchor.mysearch , search );
 		search_anchor.addEventListener(	"click" ,
 										function( event )
 										{
+											event.stopPropagation();
 											if( !event.shiftKey )  // Shift click openes Twitter Website
 											{
 												event.preventDefault();

@@ -1132,13 +1132,14 @@ footer .dock-icon:hover .dock-menu,
 	max-height	: 16px;
 	float		: left;
 	-webkit-border-radius	: 4px;
+	margin-right	: 4px;
 }
 
 .dock-menu-index,
 .dock-menu-index a
 {
-	color		: white;
-	margin-left	: 4px;
+	color			: white;
+	padding-left	: 4px;
 }
 
 .dock-menu-index a:hover

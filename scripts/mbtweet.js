@@ -3,7 +3,7 @@ var mbtweet = {};
 mbtweet = 
 {
 	debug			: false ,
-	build			: 00012 ,
+	build			: 00013 ,
 	version			: "1.0" ,
 	bitly_token		: "",
 	currentSearch	: "",
@@ -67,7 +67,6 @@ init_mbtweet = function()
 	init_shorten_url();
 	init_window_resize();
 	get_users_lists();
-	get_users_lists();
 	get_saved_search();
 
 	count_api_rate( { auth : true , main	: true} );
@@ -129,14 +128,14 @@ retreve_search = function( input_element )
 									],
 									{ auth : false }
 								);
-			setTimeout( function(){ update_search() } , 60000 );
+			setTimeout( function(){ update_search( query ) } , 60000 );
 		}
 	}
 }
 
-update_search = function()
+update_search = function( update_query )
 {
-	if( document.querySelectorAll("#search").length != 0 )
+	if( document.querySelectorAll("#search").length != 0 && mbtweet.currentSearch == update_query )
 	{
 		var latest_entry = document.querySelectorAll("#search > .entry")[0];
 		var since_id	= null;
@@ -148,13 +147,13 @@ update_search = function()
 								"GET",
 								[
 									["callback" , "updateInitSearchTimeline"],
-									["q" , mbtweet.currentSearch],
+									["q" , update_query ],
 									["since_id" , since_id],
 									["rpp" , "100"]
 								],
 								{ auth : false }
 							);
-		setTimeout( function(){ update_search() } , 60000 );
+		setTimeout( function(){ update_search( update_query ) } , 60000 );
 	}
 }
 

@@ -154,7 +154,7 @@ new_search_timeline = function( query , language )
 		}
 		else
 		{
-			new_search_timeline.name			= "Search: " + query;		
+			new_search_timeline.name			= "Search " + query;		
 		}
 		new_search_timeline.api				= mbtweet.timeline.search.api;
 		new_search_timeline.interval		= mbtweet.timeline.search.interval;
@@ -173,7 +173,7 @@ new_search_timeline = function( query , language )
 timeline = function( preset )
 {
 	var self = this;
-	if( mbtweet.timeline[preset] && ( document.querySelectorAll( "[id^='" + preset + "']" ).length == 0 ))
+	if( mbtweet.timeline[preset] && ( document.querySelectorAll( "#column [id^='" + preset + "']" ).length == 0 ))
 	{
 		this.timeline_id	= mbtweet.timeline[preset].timeline_id + "_" + guid().replace( /\-/g , '');
 		if( mbtweet.timeline[preset].timeline_id == "search")
