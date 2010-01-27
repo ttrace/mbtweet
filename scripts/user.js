@@ -329,3 +329,116 @@ user.prototype =
 
 }
 
+create_user_element = function( data , cache , cursor )
+{
+	var user_data = data;
+	var newUser	= new user();
+
+		newUser.created_at			 = user_data.created_at;
+		newUser.description			 = user_data.description;
+		newUser.favourites_count	 = user_data.favourites_count;
+		newUser.followers_count		 = user_data.followers_count;
+		newUser.following			 = user_data.following;
+		newUser.friends_count		 = user_data.friends_count;
+		newUser.geo_enabled			 = user_data.geo_enabled;
+		newUser.user_id				 = user_data.id;
+		newUser.location			 = user_data.location;
+		newUser.name				 = user_data.name;
+		newUser.notifications		 = user_data.notifications;
+		newUser.user_protected		 = user_data.protected;
+		newUser.screen_name			 = user_data.screen_name;
+		newUser.statuses_count		 = user_data.statuses_count;
+		newUser.time_zone			 = user_data.time_zone;
+		newUser.utc_offset			 = user_data.utc_offset;
+		newUser.url					 = user_data.url;
+		newUser.verified				 = user_data.verified;
+		newUser.profile_background_color		 = user_data.profile_background_color;
+		newUser.profile_background_image_url	 = user_data.profile_background_image_url;
+		newUser.profile_background_tile		 = user_data.profile_background_tile;
+		newUser.profile_image_url				 = user_data.profile_image_url;
+		newUser.profile_link_color			 = user_data.profile_link_color;
+		newUser.profile_sidebar_border_color	 = user_data.profile_sidebar_border_color;
+		newUser.profile_sidebar_fill_color	 = user_data.profile_sidebar_fill_color;
+		newUser.profile_text_color			 = user_data.profile_text_color;
+
+	// later cache-able codes
+
+	return( newUser );
+}
+
+user.prototype.buildUserInfo = function( target , append_mode )
+{
+	var entry_wrapper = document.createElement("DIV");
+		entry_wrapper.className = "entry";
+		entry_wrapper.id = target.id + "-" + this.user_id;
+	this.entry_wrapper = entry_wrapper;
+
+	var icon_wrapper = document.createElement("DIV");
+		icon_wrapper.className = "icon_wrapper";
+	entry_wrapper.appendChild( icon_wrapper );
+
+	var icon = document.createElement("DIV");
+		icon.className = "icon";
+		icon.style.backgroundImage = "url(" + this.profile_image_url + ")";
+	icon_wrapper.appendChild( icon );
+
+	var status_wrapper = document.createElement("DIV");
+		status_wrapper.className = "u-status";
+	entry_wrapper.appendChild( status_wrapper );
+
+	var status_string_wrapper = document.createElement("DIV");
+		status_string_wrapper.className = "u-string";
+	status_wrapper.appendChild( status_string_wrapper );
+		
+	var user_name = document.createElement("A");
+		user_name.className = "user-name";
+		user_name.href = "http://twitter.com/" + this.screen_name;
+		user_name.innerText = this.screen_name;
+		user_name.title = this.name;
+		user_name.target = "_blank";
+	status_string_wrapper.appendChild( user_name );
+
+	var string = document.createElement("SPAN");
+		string.className = "status-text";
+	var linked_source = this.description;
+// 		string.innerHTML = anchor_HTML(linked_source);
+		linked_source += "<br><b>Following: </b>" + this.friends_count;
+		linked_source += "<br><b>Followers: </b>" + this.followers_count;
+		linked_source += "<br><b>Tweets: </b>" + this.statuses_count;
+		linked_source += "<br><b>Location: </b>" + this.location;
+ 		string.innerHTML = linked_source;
+	status_string_wrapper.appendChild( string );
+
+	var sname_list = status_string_wrapper.querySelectorAll("a.user-name , a.sname");
+	for( var i = 0 ; i < sname_list.length ; i++ )
+	{
+		var load_with_auth = false;
+		if( hasClass( sname_list[i] , "user-name" ) && this.user_protected )
+		{
+			load_with_auth = true;
+		}
+		sname_list[i].load_with_auth = load_with_auth;
+		sname_list[i].addEventListener( "click" ,
+										function( event )
+										{
+											if( !event.shiftKey )  // Shift click openes Twitter Website
+											{
+												event.preventDefault();
+												new_user_timeline( event.target , event.target.load_with_auth );
+											}
+										},
+										false );
+	}
+
+	var meta = document.createElement("DIV");
+		meta.className = "status-meta";
+	var meta_source = "Created at " + new Date( this.created_at ).toString().replace(/:[0-9][0-9]\s.+/,'');
+		meta.innerHTML = meta_source;
+	status_wrapper.appendChild( meta );
+
+	var append_status_id = this.status_id;
+	var option = arguments[2];
+		option.cursor = cursor;
+
+	append_status( append_status_id , entry_wrapper , target , "insert" , option );
+}

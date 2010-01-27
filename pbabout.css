@@ -1,6 +1,7 @@
 body
 {
 	height	: 100%;
+	padding	: 0.5em 1.25em;
 }
 
 .current-process
@@ -24,4 +25,10 @@ iframe
 	height			: 120px;
 	width			: 550px;
 	margin			: 5px auto;
+}
+
+pre
+{
+	margin		: 0px 1em;
+	font-family	: monospace;
 }

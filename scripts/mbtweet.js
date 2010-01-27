@@ -2,8 +2,8 @@ var mbtweet = {};
 
 mbtweet = 
 {
-	debug			: true ,
-	build			: 00014 ,
+	debug			: false ,
+	build			: 00015 ,
 	version			: "1.0" ,
 	bitly_token		: "",
 	currentSearch	: "",
@@ -14,13 +14,14 @@ mbtweet =
 	},
 	user :
 	{
+		profile_image	: "",
 		language	: navigator.language.substr(0,2),
 		conv_length	: 2,
 	},
 	rate :
 	{
-		auth		: 150,
-		ip			: 150,
+		auth		: 0,
+		ip			: 0,
 		auth_reset	: 0,
 		ip_reset	: 0,
 	}

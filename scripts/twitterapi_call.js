@@ -60,6 +60,8 @@ formEncode_noOAuth = function formEncode( parameters ) {
 
 retreveMine = function(data)
 {
+	mbtweet.user.profile_image = data[0].user.profile_image_url;
+	document.querySelector(".dock .user-icon").src = mbtweet.user.profile_image;
 	for( i = 0 ; i < data.length ; i++ )
 	{
 		create_tweet_element( data[i] , true );

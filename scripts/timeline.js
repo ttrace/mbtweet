@@ -44,6 +44,28 @@ mbtweet.timeline =
 					auth		: true,
 					cache		: true,
 				},
+	following	:
+				{
+					name		: "Your Following",
+					timeline_id	: "following",
+					spare_api	: "https://api.twitter.com/1/statuses/friends.json",
+					api			: "https://twitter.com/statuses/friends.json",
+					interval	: 1800000,
+					cursor		: -1,
+					auth		: true,
+					cache		: true,
+				},
+	followwers	:
+				{
+					name		: "Your Followers",
+					timeline_id	: "followers",
+					spare_api	: "https://api.twitter.com/1/statuses/followers.json",
+					api			: "https://twitter.com/statuses/followers.json",
+					interval	: 1800000,
+					cursor		: -1,
+					auth		: true,
+					cache		: true,
+				},
 	rt_by_me	:
 				{
 					name		: "ReTweets by You",
@@ -185,6 +207,10 @@ timeline = function( preset )
 		this.spare_api		= mbtweet.timeline[preset].spare_api;
 		this.interval		= mbtweet.timeline[preset].interval;
 		this.count			= mbtweet.timeline[preset].count;
+		if( mbtweet.timeline[preset].cursor )
+		{
+			this.cursor		= mbtweet.timeline[preset].cursor;
+		}
 		this.auth			= mbtweet.timeline[preset].auth;
 		this.cache			= mbtweet.timeline[preset].cache;
 		if( preset == "search" )
@@ -396,8 +422,32 @@ timeline.prototype.create = function()
 	var timeline = document.createElement("DIV");
 		timeline.className = "timeline";
 		timeline.id = this.timeline_id;
+
+	var timeline_readmore = document.createElement("DIV");
+		timeline_readmore.className = "read-more";
+		timeline_readmore.innerText = "Load next page";
+		timeline_readmore.addEventListener(	"click",
+											function( event )
+											{
+												var cursor = event.target.cursor;
+												if( !event.shiftKey )
+												{
+													self.loadCursor( cursor );
+												}
+												else
+												{
+													event.target.timeline = self;
+													self.loadCursor( cursor , "eternal" );
+												}
+											},
+											false);
+	if( this.timeline_id.match(/^follow/) )
+	{
+		timeline.appendChild( timeline_readmore );
+	}
 	timeline_column.appendChild( timeline );
-		this.timeline = timeline;		
+	
+	this.timeline = timeline;		
 
 	document.querySelector("#column").appendChild( timeline_column );
 
@@ -420,24 +470,58 @@ timeline.prototype.init = function()
 	var timeline_object = this.timeline;
 	eval( "initial" + this.timeline_id + "=function(data){initialTimeline(data,'" + this.timeline_id + "' , " + this.cache + ");delete this}" );
 
-	mbtweetOAuth.callAPI(	this.api ,
-							"GET",
-							[
-								["callback" , "initial" + this.timeline_id ],
-								["count" , this.count ],
-								["per_page" , this.count ],
-							],
-							{ auth	: this.auth }
-						);
+	if( !this.cursor )
+	{
+		mbtweetOAuth.callAPI(	this.api ,
+								"GET",
+								[
+									["callback" , "initial" + this.timeline_id ],
+									["count" , this.count ],
+									["per_page" , this.count ],
+								],
+								{ auth	: this.auth }
+							);
+	}
+	else
+	{
+		mbtweetOAuth.callAPI(	this.api ,
+								"GET",
+								[
+									["callback" , "initial" + this.timeline_id ],
+									["cursor" , this.cursor ],
+								],
+								{ auth	: this.auth }
+							);	
+	}
 	var my_timeline = this;
 	setTimeout( function(){ count_api_rate( { auth : my_timeline.auth , main : false } ) } , 1000 );
 	setTimeout( function(){ my_timeline.update() } , this.interval );
 	return false;
 }
 
+timeline.prototype.loadCursor = function( cursor , option )
+{
+	var timeline_object = this.timeline;
+	eval( "initial" + this.timeline_id + "=function(data){initialTimeline(data,'" + this.timeline_id + "' , " + this.cache + ");delete this}" );
+
+	if( option == "eternal" )
+	{
+		eval( "initial" + this.timeline_id + "=function(data){initialTimeline(data,'" + this.timeline_id + "' , " + this.cache + ",'eternal');delete this}" );
+	}
+	mbtweetOAuth.callAPI(	this.api ,
+							"GET",
+							[
+								["callback" , "initial" + this.timeline_id ],
+								["cursor" , cursor ],
+							],
+							{ auth	: this.auth }
+						);
+	return false;
+}
+
 timeline.prototype.update = function()
 {
-	if( document.getElementById( this.timeline.id ) )
+	if( document.getElementById( this.timeline.id )  && !this.timeline_id.match(/^follow/) )
 	{
 		var timeline_object = this.timeline;
 		var since_id = timeline_object.querySelector(".entry").id.replace(/.+\-([0-9]+)$/ , "$1") + "";
@@ -540,13 +624,28 @@ timeline.prototype.close = function()
 initialTimeline = function( data , target_id , cache )
 {
 	var timeline = document.getElementById( target_id );
-	var insert_target = timeline.querySelector(".read.more");
+	var insert_target = timeline.querySelector(".read-more");
 
-	for( i = 0 ; i < data.length ; i++ )
+	if( !target_id.match(/^(following|followers)/) )
 	{
-		create_tweet_element( data[i] , cache ).buildEntry( timeline );
+		for( i = 0 ; i < data.length ; i++ )
+		{
+			create_tweet_element( data[i] , cache ).buildEntry( timeline );
+		}
 	}
-
+	else
+	{
+		cursor = data.next_cursor;
+		for( i = 0 ; i < data.users.length ; i++ )
+		{
+			create_user_element( data.users[i] , cache , cursor ).buildUserInfo( timeline , "insert" , insert_target );
+		}
+		if( arguments[3] == "eternal" && cursor != 0 )
+		{
+//			window.console.log( insert_target.timeline , cursor );
+			insert_target.timeline.loadCursor( cursor , "eternal" );
+		}
+	}
 }
 
 updateTimeline = function( data , target_id , cache )

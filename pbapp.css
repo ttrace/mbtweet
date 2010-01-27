@@ -218,6 +218,21 @@ a:hover
 									);
 }
 
+.timeline .read-more
+{
+	width		: 100%;
+	padding		: 4px 0px;
+	background	:-webkit-gradient(	linear,
+									left top,
+									left bottom,
+									from( rgb( 255, 255, 255 ) ),
+									color-stop( 0.3 , rgb( 200, 200, 200) ),
+									to( rgb( 160, 160, 160) )
+									);
+	-webkit-border-radius	: 8px;
+	cursor	:pointer;
+}
+
 /* timeline shrinked*/
 .timeline_column.shrink
 {
