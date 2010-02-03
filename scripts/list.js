@@ -265,12 +265,12 @@ list_index = function( list )
 													link_index = event.target.parentNode;
 												}
 												new_list_timeline( link_index.list );
-												addClass( link_index , "active" );
-												setTimeout( function()
-													{
-														removeClass( link_index , "active" );
-														
-													}, 500);
+												//addClass( link_index , "active" );
+												//setTimeout( function()
+												//	{
+												//		removeClass( link_index , "active" );
+												//		
+												//	}, 500);
 											}
 										},
 										false );

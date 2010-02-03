@@ -396,7 +396,30 @@ timeline.prototype.create = function()
 			search_field.id		= "search_keyword";
 			search_field.type	= "search";
 			search_field.addEventListener(	"change",
-											function(){ retreve_search( search_field ) },
+											function( event )
+											{
+												if( event.target.shiftKey == true )
+												{
+													retreve_search( search_field , mbtweet.user.language );
+												}
+												else
+												{
+													retreve_search( search_field );
+												}
+											},
+											false);
+			search_field.addEventListener(	"keydown",
+											function( event )
+											{
+												if( event.shiftKey )
+												{
+													event.target.shiftKey = true;
+												}
+												else
+												{
+													event.target.shiftKey = false;												
+												}
+											},
 											false);
 		timeline_header.appendChild( search_field );			
 	}

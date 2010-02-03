@@ -3,6 +3,7 @@
 <head>
 	<title>mbtweet</title>
 	<meta http-equiv="content-type" content="text/html, text/javascript; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="chrome=1">
 	<link rel="stylesheet"	href="pbapp.css">
 	<script src="./scripts/localstorage.js" 	></script>
 	<script src="./scripts/mbtweet.js"			></script>
@@ -43,7 +44,11 @@
 		<textarea id="status" tabindex="0"></textarea>
 		<input name="post_status" id="post_status" type="submit" value="tweet!">
 		<input id="hashtag" name="hashtag" type="text" value="" onchange="status_counter()" placeholder="hashtag">
+		<div id="reply_link_object">
+			<input name="reply_link" id="reply_link" type="checkbox" value="false" onchange="remove_in_reply_to()"><label for="reply_link">conversation</label>
+		</div>
 		<input name="post_in_reply_to_status_id" id="post_in_reply_to_status_id" type="hidden" value="">
+		<input name="in_reply_to" id="in_reply_to" type="hidden" value="">
 		</form>
 	</div>
 </header>
@@ -71,7 +76,7 @@
 					<div class="dock-menu-index" onclick = "var mention = new timeline('following');return false;">Your following</div>
 					<div class="dock-menu-index" onclick = "var mention = new timeline('followwers');">Your follower</div>
 				</div>
-				<img class = "user-icon" src="images/user_base.png" onclick = "var mention = new timeline('mine');">
+				<img class = "user-icon" src="images/home_icn.png" onclick = "var mention = new timeline('mine');">
 			</div>
 			<div class = "lists dock-icon" id = "my_lists">
 				<img src="images/lists_icn.png">

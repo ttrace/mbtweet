@@ -393,14 +393,6 @@ tweet.prototype.buildEntry = function( target , append_mode )
 		string.className = "status-text";
 
 	var linked_source = this.text;
-// 		linked_source = linked_source.replace( mbutil.isUrlRegexp		, "<a href='$1' target='_blank'>$1</a>$6");
-// 		linked_source = linked_source.replace( /([^\/]|^)(www\.[\w\d:#@%\/;$\(\)~_\?\+-=\\\.&]+\.[\w\d:#@%\/;$\(\)~_\?\+-=\\\.&]+)/g , "<a href='http://$2' target='_blank'>$2</a>" );
-// 		linked_source = linked_source.replace(/blank\'\>([^\<]{28})[^\<]+\<\/a/g, "blank'>$1...</a");
-// 		linked_source = linked_source.replace(/#((([^\s\(\)\\\!\@\#\$\%\^\&\+\=\;\:\"\'\|\<\>\,\.\~\?]|[0-9a-zA-Z_\-])+[0-9a-zA-Z_\-]+){1,16}([^0-9a-zA-Z_\-\'\"\>]|\s|$))/g ,"<a class='hashtag' href='" + window.location.protocol + "//twitter.com/search?q=%23$2' target='_blank'>#$2</a>$4");
-// 		linked_source = linked_source.replace(/[@＠]([0-9a-zA-Z\_\-]+\/[0-9a-zA-Z\_\-]+)/g,"@<a class='list' href='" + window.location.protocol + "//twitter.com/$1' target='_blank'>$1</a>");
-// 		linked_source = linked_source.replace(/[@＠]([0-9a-zA-Z\_\-]+)/g,"@<a class='sname' href='" + window.location.protocol + "//twitter.com/$1' target='_blank'>$1</a>");
-// 
-// 		string.innerHTML = linked_source.replace(/&amp;/g , "&amp;amp;");
  		string.innerHTML = anchor_HTML(linked_source);
 	status_string_wrapper.appendChild( string );
 

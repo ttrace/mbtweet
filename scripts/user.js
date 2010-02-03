@@ -400,12 +400,23 @@ user.prototype.buildUserInfo = function( target , append_mode )
 
 	var string = document.createElement("SPAN");
 		string.className = "status-text";
-	var linked_source = this.description;
+	var linked_source = "";
+	if( this.description )
+	{
+		linked_source += this.description;
+	}
 // 		string.innerHTML = anchor_HTML(linked_source);
-		linked_source += "<br><b>Following: </b>" + this.friends_count;
-		linked_source += "<br><b>Followers: </b>" + this.followers_count;
+	if( this.following && target.id.match(/^followers/) )
+	{
+		linked_source += "<br><b>Following</b>" ;
+	}
+		linked_source += "<br><b>number of Following : </b>" + this.friends_count;
+		linked_source += "<br><b>number of Followers : </b>" + this.followers_count;
 		linked_source += "<br><b>Tweets: </b>" + this.statuses_count;
+	if( this.location )
+	{
 		linked_source += "<br><b>Location: </b>" + this.location;
+	}
  		string.innerHTML = linked_source;
 	status_string_wrapper.appendChild( string );
 

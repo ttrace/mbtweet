@@ -2,8 +2,8 @@ var mbtweet = {};
 
 mbtweet = 
 {
-	debug			: false ,
-	build			: 00015 ,
+	debug			: true ,
+	build			: 00016 ,
 	version			: "1.0" ,
 	bitly_token		: "",
 	currentSearch	: "",
@@ -21,7 +21,7 @@ mbtweet =
 	rate :
 	{
 		auth		: 0,
-		ip			: 0,
+		ip			: 20,
 		auth_reset	: 0,
 		ip_reset	: 0,
 	}
@@ -46,6 +46,12 @@ mbtweetOAuth =
 init_mbtweet = function()
 {
 	restore_mb_settings();
+
+	if( mbtweetOAuth.accessToken == "" || mbtweetOAuth.accessTokenSecret == "")
+	{
+		location.href = location.pathname + "auth.html";
+	}
+
 /*
 //	auto updater with using App Cache on HTML5
 // Safari 4 can't run...
@@ -105,7 +111,7 @@ function count_api_rate( option )
 }
 
 
-retreve_search = function( input_element )
+retreve_search = function( input_element , search_language )
 {
 	if( mbtweet.debug )window.console.log("retreve_search:" , input_element);
 	if( query != mbtweet.currentSearch )
@@ -125,16 +131,17 @@ retreve_search = function( input_element )
 									[
 										["callback" , "retreveSearch"],
 										["q" , query],
+										["lang" , search_language],
 										["rpp" , "50"]
 									],
 									{ auth : false }
 								);
-			setTimeout( function(){ update_search( query ) } , 60000 );
+			setTimeout( function(){ update_search( query , search_language ) } , 60000 );
 		}
 	}
 }
 
-update_search = function( update_query )
+update_search = function( update_query , search_language )
 {
 	if( document.querySelectorAll("#search").length != 0 && mbtweet.currentSearch == update_query )
 	{
@@ -149,12 +156,13 @@ update_search = function( update_query )
 								[
 									["callback" , "updateInitSearchTimeline"],
 									["q" , update_query ],
+									["lang" , search_language],
 									["since_id" , since_id],
 									["rpp" , "100"]
 								],
 								{ auth : false }
 							);
-		setTimeout( function(){ update_search( update_query ) } , 60000 );
+		setTimeout( function(){ update_search( update_query , search_language ) } , 60000 );
 	}
 }
 
@@ -200,6 +208,10 @@ reply_to = function( in_reply_to_screen_name , in_reply_to_status_id )
 {
 	var status_editor = document.querySelector("#status");
 	var status_id_container = document.querySelector("#post_in_reply_to_status_id");
+	var reply_to_container = document.querySelector("#in_reply_to");
+		reply_to_container.value = "@" + in_reply_to_screen_name;
+	var reply_link = document.querySelector("#reply_link");
+		reply_link.checked = true;
 	status_editor.value = "@" + in_reply_to_screen_name;
 
 	if( arguments[2] )
@@ -221,13 +233,21 @@ reply_to = function( in_reply_to_screen_name , in_reply_to_status_id )
 	status_editor.setSelectionRange(status_editor.value.length, status_editor.value.length);
 }
 
+remove_in_reply_to = function()
+{
+	var status_id_container = document.querySelector("#post_in_reply_to_status_id");
+		status_id_container.value = "";
+
+	var reply_link = document.querySelector("#reply_link");
+		reply_link.checked = false;
+}
+
 reply_to_message = function( in_reply_to_screen_name )
 {
 	var status_editor = document.querySelector("#status");
 	var status_id_container = document.querySelector("#post_in_reply_to_status_id");
 	status_editor.value = "D " + in_reply_to_screen_name + " ";
 
-	status_editor.value += " ";
 	status_id_container.value = "";
 	status_editor.focus();
 	status_editor.setSelectionRange(status_editor.value.length, status_editor.value.length);

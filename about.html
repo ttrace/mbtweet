@@ -5,12 +5,38 @@
 	<meta http-equiv="content-type" content="text/html, text/javascript; charset=utf-8">
 	<link rel="stylesheet"	href="pbapp.css">
 	<link rel="stylesheet"	href="pbabout.css">
+	<script src="./scripts/mbtweet.js"			></script>
+	<script src="./scripts/twitterapi_call.js" 	></script>
+	<script src="./scripts/tweet.js"			></script>
+	<script src="./scripts/user.js"				></script>
+	<script src="./scripts/util.js"				></script>
+	<script src="./scripts/timeline.js"			></script>
+	<script src="./scripts/language.js"			></script>
+	<script src="./scripts/ui.js"				></script>
+	<script src="./scripts/bitly.js"			></script>
+	<script src="./scripts/jsonp_extention.js"	></script>
+	<script src="./scripts/geolocation.js"		></script>
+	<script src="./scripts/oauth.js"			></script>
+
+	<script>
+		init_page = function()
+		{
+			new_search_timeline("twitter");
+		}
+	</script>
 </head>
-<body>
+<body onload="init_page()">
 <h1>mbtweet</h1>
 <p>
 mbtweet is currentry alpha stage.
 </p>
+
+<div id="column_wrapper">
+	<div id="column">
+
+	</div>
+</div>
+
 
 <h2>Install</h2>
 <p>

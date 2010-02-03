@@ -180,6 +180,7 @@ catch_post = function( event , api_method )
 		case "status_update":
 			document.querySelector("#status").value = "";
 			document.querySelector("#post_in_reply_to_status_id").value = "";
+			remove_in_reply_to();
 			status_counter();
 			break;
 

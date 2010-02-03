@@ -5,13 +5,22 @@ init_shorten_url = function()
 									function(e)
 									{
 										status_counter();
-										shorten_url(e.target , "withspace");
+										var reply_to = document.querySelector("#in_reply_to").value;
+										if( !e.target.value.match( new RegExp(reply_to) ) )
+										{
+											remove_in_reply_to();
+										}
+										if( e.keyCode == 32 )
+										{
+											shorten_url(e.target , "withspace");
+										}
 										mbtweet.bitly_token = guid();
 										var bitly_token_temp = mbtweet.bitly_token;
 										setTimeout(function(e)
 										{
 											shorten_url( document.querySelector("#status") , "all" , (bitly_token_temp + ""));
 										} , 1500);
+										if(mbtweet.debug)window.console.log(bitly_token_temp);
 									} ,
 									true );
 
@@ -32,7 +41,8 @@ init_shorten_url = function()
 
 shorten_url	= function( target )
 {
-	if( !arguments[2] || arguments[2] == mbtweet.bitly_token)
+	if(mbtweet.debug)window.console.log( arguments[2] , mbtweet.bitly_token );
+	if( arguments[1] == "whitespace" || arguments[2] == mbtweet.bitly_token)
 	{
 		var original_string = target.value;
 		var url_detection_regexp_num = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/^”\)]))?/g;
