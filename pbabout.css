@@ -32,3 +32,9 @@ pre
 	margin		: 0px 1em;
 	font-family	: monospace;
 }
+
+#column_wrapper
+{
+	width	: 420px;
+	float	: right;
+}

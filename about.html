@@ -22,28 +22,65 @@
 		init_page = function()
 		{
 			new_search_timeline("twitter");
+			var sections = document.querySelectorAll("section.localize");
+			for( var j = 0 ; j < sections.length ; j++ )
+			{
+				var translation_parts = sections[j].querySelectorAll("*[lang]");
+				var removed_parts_number = translation_parts.length;
+				for( var i = 0 ; i < translation_parts.length ; i++ )
+				{
+					if( translation_parts[i].lang != mbtweet.user.language )
+					{
+						translation_parts[i].style.display = "none";
+						removed_parts_number--;
+					}
+					if( removed_parts_number == 0)
+					{
+						translation_parts[0].style.display = "";
+					}
+				}
+			}
 		}
 	</script>
 </head>
 <body onload="init_page()">
 <h1>mbtweet</h1>
-<p>
-mbtweet is currentry alpha stage.
-</p>
-
 <div id="column_wrapper">
+	sample
 	<div id="column">
 
 	</div>
 </div>
 
-
-<h2>Install</h2>
-<p>
-Follow instruction at <a href="auth.html" target="_blank">mbtweet authentication page</a>.<br>
-mbtweet app works with OAuth on Twitter API authentication.<br>
-mbtweet app runs on latest WebKit browsers (Safari 4 and Chrome 4 beta).
+<section class="localize">
+<p lang="en"">
+Twitter client application mbtweet is currentry alpha development stage.<br>
+mbtweet is pure HTML5 Web Application.
 </p>
+<p lang="ja">
+Twitterクライアント「mbtweet」は現在α版です。<br>
+mbtweetはHTML5で作成されたHTML Webアプリケーションです。
+</p>
+</section>
+
+<section class="localize">
+	<section lang="en">
+	<h2>Install</h2>
+	<p>
+	Follow instruction at <a href="auth.html" target="_blank">mbtweet authentication page</a>.<br>
+	mbtweet app works with OAuth on Twitter API authentication.<br>
+	mbtweet app runs on latest WebKit browsers (Safari 4 and Chrome 4 beta).
+	</p>
+	</section>
+	<section lang="ja">
+	<h2>インストール</h2>
+	<p>
+	<a href="auth.html" target="_blank">mbtweet認証ページ</a>から認証を行ってください。<br>
+	mbtweet app works with OAuth on Twitter API authentication.<br>
+	mbtweet app runs on latest WebKit browsers (Safari 4 and Chrome 4 beta).
+	</p>
+	</section>
+<section>
 
 <h2>Features</h2>
 <ol>
