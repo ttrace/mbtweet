@@ -3,7 +3,7 @@ var mbtweet = {};
 mbtweet = 
 {
 	debug			: false ,
-	build			: 00016 ,
+	build			: 00017 ,
 	version			: "1.0" ,
 	bitly_token		: "",
 	currentSearch	: "",
@@ -47,10 +47,16 @@ init_mbtweet = function()
 {
 	restore_mb_settings();
 
-	if( mbtweetOAuth.accessToken == "" || mbtweetOAuth.accessTokenSecret == "")
+	if( !mbtweetOAuth.accessToken.match(/^[0-9]{4,4}/) || mbtweetOAuth.accessTokenSecret == "")
 	{
+		alert("mbtweet requires OAuth authentication with Twitter.com");
 		location.href = location.pathname + "auth.html";
 	}
+
+	if(window.opera&&!window.console)
+	{
+		console={log:opera.postError};
+	};
 
 /*
 //	auto updater with using App Cache on HTML5
@@ -71,6 +77,7 @@ init_mbtweet = function()
 */
 
 	init_web_database();
+	init_status_editor();
 	init_shorten_url();
 	init_window_resize();
 	get_users_lists();

@@ -41,6 +41,8 @@
 	<div id = "post">
 		<div id="counter">140</div>
 		<form onSubmit="post_tweet(this , event); return(false);">
+		<div id="post_editor" contenteditable="true" style="display:none;">
+		</div>
 		<textarea id="status" tabindex="0"></textarea>
 		<input name="post_status" id="post_status" type="submit" value="tweet!">
 		<input id="hashtag" name="hashtag" type="text" value="" onchange="status_counter()" placeholder="hashtag">

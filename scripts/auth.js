@@ -25,6 +25,25 @@ mbtweetOAuth =
 
 init_auth = function()
 {
+	var sections = document.querySelectorAll("section.localize");
+	for( var j = 0 ; j < sections.length ; j++ )
+	{
+		var translation_parts = sections[j].querySelectorAll("*[lang]");
+		var removed_parts_number = translation_parts.length;
+		for( var i = 0 ; i < translation_parts.length ; i++ )
+		{
+			if( translation_parts[i].lang != mbtweet.user.language )
+			{
+				translation_parts[i].style.display = "none";
+				removed_parts_number--;
+			}
+			if( removed_parts_number == 0)
+			{
+				translation_parts[0].style.display = "";
+			}
+		}
+	}
+
 	var captured_oauth_token = "";
 	if( location.search.match(/\?oauth_token/) )
 	{
@@ -70,7 +89,7 @@ open_pbtweet = function()
 		mbtweetOAuth.accessTokenSecret	= key_list[1].match(/oauth_token_secret\=(.+)/)[1];
 		mbtweet.user.screen_name		= key_list[3].match(/screen_name\=(.+)/)[1];
 		save_storage_Changes();
-		location.href = "http://taiyolab.com/pbtweet_app/";
+		location.href = "http://taiyolab.com/mbtweet/";
 	}
 	else
 	{

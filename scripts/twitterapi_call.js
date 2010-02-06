@@ -62,6 +62,9 @@ retreveMine = function(data)
 {
 	mbtweet.user.profile_image = data[0].user.profile_image_url;
 	document.querySelector(".dock .user-icon").src = mbtweet.user.profile_image;
+	document.querySelector("body").style.backgroundImage = "url(" + data[0].user.profile_background_image_url + ")";
+	document.querySelector("body").style.backgroundColor = "#" + data[0].user.profile_background_color;
+	if(mbtweet.debug)window.console.log(data[0].user);
 	for( i = 0 ; i < data.length ; i++ )
 	{
 		create_tweet_element( data[i] , true );

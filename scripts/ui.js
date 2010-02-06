@@ -4,19 +4,38 @@ mbui = {
 	
 init_window_resize = function()
 {
-	var timeline_css_list = getMatchedCSSRules( document.querySelector(".timeline") , '')
-	for( key in timeline_css_list )
-	{
-		if( timeline_css_list[key].selectorText == ".timeline")
-		{
-			mbui = {
-					timeline_css_height : timeline_css_list[key].style,
-					window_resize_token	: "init",
-					}
-		}
-	}
+// 	var timeline_css_list = getMatchedCSSRules( document.querySelector(".timeline") , '')
+// 	for( key in timeline_css_list )
+// 	{
+// 		if( timeline_css_list[key].selectorText == ".timeline")
+// 		{
+// 			mbui = {
+// 					timeline_css_height : timeline_css_list[key].style,
+// 					window_resize_token	: "init",
+// 					}
+// 		}
+// 	}
 	window.addEventListener ( 'resize' , function(){ window_resize_starter() } , true);	
 	window_resize( "init" );
+}
+
+init_status_editor = function()
+{
+	var editor = document.querySelector("#post_editor");
+		editor.addEventListener(	"DOMSubtreeModified",
+									function()
+									{
+										status_editor_update();
+									},
+									false);
+}
+
+status_editor_update = function()
+{
+	var editor = document.querySelector("#post_editor");
+	var status_form = document.querySelector("#status");
+		status_form.value = editor.innerText;
+	if(mbtweet.debug)window.console.log(editor.innerText);
 }
 
 window_resize_starter = function()

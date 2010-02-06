@@ -248,12 +248,12 @@ create_tweet_element = function( data , cache )
 		newTweet.user.profile_sidebar_fill_color	 = tweet_data.user.profile_sidebar_fill_color;
 		newTweet.user.profile_text_color			 = tweet_data.user.profile_text_color;
 
-		var user_json = JSON.stringify( newTweet.user );
-		mbdatabase.save_user( user_json );
-
-		var status_json = JSON.stringify( newTweet );
-		if( cache )
+		if( cache && mbdatabase.db != false )
 		{
+			var user_json = JSON.stringify( newTweet.user );
+			var status_json = JSON.stringify( newTweet );
+
+			mbdatabase.save_user( user_json );
 			mbdatabase.save_status( status_json );
 		}
 
@@ -949,73 +949,76 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 load_conversation = function( conv_chain_id , in_reply_to_status_id , conv_length )
 {
 //	if( mbtweet.debug ) window.console.log( conv_chain_id , in_reply_to_status_id , conv_length );
-	mbdatabase.db.transaction(
-		function( tx ){
-			tx.executeSql(
-				"SELECT status_id , status_data.created_at , status_data.in_reply_to_screen_name , status_data.in_reply_to_status_id , status_data.in_reply_to_user_id , status_data.favorited , status_data.geo , status_data.source , status_data.text , status_data.truncated , status_data.screen_name , status_data.profile_image_url , user_data.user_protected , user_data.name FROM status_data, user_data WHERE ( status_id = ? AND status_data.screen_name = user_data.screen_name) LIMIT 1",
-				[ in_reply_to_status_id + "" ],
-				function( tx , result )
-				{
-					if( result.rows.length > 0)
+	if( mbdatabase.db != false)
+	{
+		mbdatabase.db.transaction(
+			function( tx ){
+				tx.executeSql(
+					"SELECT status_id , status_data.created_at , status_data.in_reply_to_screen_name , status_data.in_reply_to_status_id , status_data.in_reply_to_user_id , status_data.favorited , status_data.geo , status_data.source , status_data.text , status_data.truncated , status_data.screen_name , status_data.profile_image_url , user_data.user_protected , user_data.name FROM status_data, user_data WHERE ( status_id = ? AND status_data.screen_name = user_data.screen_name) LIMIT 1",
+					[ in_reply_to_status_id + "" ],
+					function( tx , result )
 					{
-						var status_row = result.rows.item(0);
-						var newTweet = new tweet();
-							newTweet.user = new user();
-							newTweet.status_id					 = status_row['status_id'];
-							newTweet.created_at					 = status_row['created_at'];
-							newTweet.in_reply_to_screen_name	 = status_row['in_reply_to_screen_name'];
-							newTweet.in_reply_to_status_id		 = status_row['in_reply_to_status_id'];
-							newTweet.in_reply_to_user_id		 = status_row['in_reply_to_user_id'];
-						if( status_row['favorited'] == "true")
+						if( result.rows.length > 0)
 						{
-							newTweet.favorited = true;
+							var status_row = result.rows.item(0);
+							var newTweet = new tweet();
+								newTweet.user = new user();
+								newTweet.status_id					 = status_row['status_id'];
+								newTweet.created_at					 = status_row['created_at'];
+								newTweet.in_reply_to_screen_name	 = status_row['in_reply_to_screen_name'];
+								newTweet.in_reply_to_status_id		 = status_row['in_reply_to_status_id'];
+								newTweet.in_reply_to_user_id		 = status_row['in_reply_to_user_id'];
+							if( status_row['favorited'] == "true")
+							{
+								newTweet.favorited = true;
+							}
+							else
+							{
+								newTweet.favorited = false;							
+							}
+								newTweet.geo						 = eval('(' + status_row['geo'] + ')');
+								newTweet.source						 = status_row['source'];
+								newTweet.text						 = status_row['text'];
+							if( status_row['truncated'] == "true")
+							{
+								newTweet.truncated = true;
+							}
+							else
+							{
+								newTweet.truncated = false;							
+							}
+								newTweet.user.screen_name			 = status_row['screen_name'];
+								newTweet.user.name					 = status_row['name'];
+								newTweet.user.profile_image_url		 = status_row['profile_image_url'];
+							if( status_row['user_protected'] == "true")
+							{
+								newTweet.user.user_protected = true;
+							}
+							else
+							{
+								newTweet.user.user_protected = false;							
+							}
+							
+							var conv_container = document.querySelectorAll( "#" + conv_chain_id );
+							//if( mbtweet.debug ) window.console.log( conv_chain_id , "conv" , conv_length  );
+	
+							if( conv_container.length != 0 )
+							{
+								newTweet.buildEntry( conv_container[0] , "conv" , conv_length );
+							}
 						}
 						else
 						{
-							newTweet.favorited = false;							
+							//if( mbtweet.debug ) window.console.log( "not found " , in_reply_to_status_id  );					
 						}
-							newTweet.geo						 = eval('(' + status_row['geo'] + ')');
-							newTweet.source						 = status_row['source'];
-							newTweet.text						 = status_row['text'];
-						if( status_row['truncated'] == "true")
-						{
-							newTweet.truncated = true;
-						}
-						else
-						{
-							newTweet.truncated = false;							
-						}
-							newTweet.user.screen_name			 = status_row['screen_name'];
-							newTweet.user.name					 = status_row['name'];
-							newTweet.user.profile_image_url		 = status_row['profile_image_url'];
-						if( status_row['user_protected'] == "true")
-						{
-							newTweet.user.user_protected = true;
-						}
-						else
-						{
-							newTweet.user.user_protected = false;							
-						}
-						
-						var conv_container = document.querySelectorAll( "#" + conv_chain_id );
-						//if( mbtweet.debug ) window.console.log( conv_chain_id , "conv" , conv_length  );
-
-						if( conv_container.length != 0 )
-						{
-							newTweet.buildEntry( conv_container[0] , "conv" , conv_length );
-						}
-					}
-					else
+					},
+					function( tx , error)
 					{
-						//if( mbtweet.debug ) window.console.log( "not found " , in_reply_to_status_id  );					
+						if( mbtweet.debug ) window.console.log( "on loading conversation:" , error );
 					}
-				},
-				function( tx , error)
-				{
-					if( mbtweet.debug ) window.console.log( "on loading conversation:" , error );
-				}
-			);
-		}
-	);
+				);
+			}
+		);
+	}
 	return false;
 }

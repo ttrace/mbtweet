@@ -15,22 +15,57 @@
 
 </head>
 <body onload="init_auth()">
-<div>
-	mbtweet Authentication on OAuth
+<section class="localize">
+<div lang="en">
+	<h2>mbtweet Authentication on OAuth</h2>
+	<p>
+	mbtweet is OAuth client application.<br>To install your OAuth key, follow description on this page.<br>mbtweet does not store any personal information on this server. All information is stored on your computer.
+	</p>
 </div>
+<div lang="ja">
+	<h2>mbtweet: OAuth認証ステップ</h2>
+	<p>mbtweetはTwitterのOAuth認証を用いるクライアントアプリケーションです。<br>mbtweetのOAuthの認証は3段階に分かれています。画面に表示される指示に従って認証を行ってください。<br>
+	なお、ここで表示されるキーなどは全てあなたがお使いのコンピュータのみに保存され、taiyolab.comには一切の情報が残りません。</p>
+</div>
+</section>
+
 <div id = "post">
 	<form method="GET" action="javascript:request_token()">
 		<div id = "start">
-			1. <input type="submit" value = "start authentication">
+			<section class="localize">
+			1.	<input type="submit" value = "start authentication" lang="en">
+				<input type="submit" value = "認証ステップの開始" lang="ja">
+			</section>
 		</div>
 		<div id = "post_key">
+			<section class="localize">
+			<span lang="en">
 			2. Copy all bellow oauth keys text and paste into "OAuth token and token secres". And click "Go Twitter OAuth authenticate Page!"<br>
-			OAuth token and token secret: <input type="text" name="keys">
-			<input type="button" value = "Go Twitter OAuth authenticate Page!" onclick="jump_to_auth_page();">
+			OAuth token and token secret: 
+			</span>
+			<span lang="ja">
+			2. ページ下部のフィールドに出てきたテキストを「全て」コピーして、OAuthトークンの入力にペーストして「Twitter.comのOAuth認証ページへジャンプ」ボタンをクリックしてください。<br>
+			OAuthトークンの入力: 
+			</span>
+			</section>
+			<input type="text" name="keys">
+			<section class="localize">
+				<input type="button" value = "Go Twitter OAuth authenticate Page!" onclick="jump_to_auth_page();" lang="en">
+				<input type="button" value = "Twitter.comのOAuth認証ページへジャンプ" onclick="jump_to_auth_page();" lang="ja">
+			</section>
+
 		</div>
 		<div id = "go_pbtweet">
-			3. Copy all text and paste into "activate keys" text field and click "Open mbtweet".<input type="text" name="pbkey">
-			activate keys <input type="button" value = "Open mbtweet" onclick="open_pbtweet();">
+			<section class="localize">
+				<span lang="en">
+					3. Copy all text and paste into "activate keys" text field and click "Open mbtweet". <br>Install OAuth keys
+				</span>
+				<span lang="ja">
+					3. ページ下部のフィールドに現れたテキストを「全て」コピー、「OAuthキー」入力欄にペーストして「mbtweetを開く」をクリックしてください。<br>OAuthキー
+				</span>
+			</section>
+			<input type="text" name="pbkey">
+			<input type="button" value = "Open mbtweet" onclick="open_pbtweet();">
 		</div>
 	</form>
 </div>

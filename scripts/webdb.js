@@ -1,8 +1,11 @@
 function init_web_database()
 {
 	mbdatabase = new mbdata();
-	mbdatabase.open_database();	
-	mbdatabase.init_table();	
+	mbdatabase.open_database();
+	if( mbdatabase.db != false )
+	{
+		mbdatabase.init_table();
+	}
 }
 
 mbdata = function()
@@ -39,12 +42,14 @@ mbdata.prototype.open_database = function(  )
 			this.db = openDatabase( mbtweet.database.name, mbtweet.database.version , "database pbedit image datarray" , 200000 );
 			if (!this.db)
 			{
-					alert("Some problem occurs. It may your database storage size limitation is too small for this application\nデータベースストレージ用の容量が不足しているなどの問題が発生しました。");
+				alert("Some problem occurs. It may your database storage size limitation is too small for this application\nデータベースストレージ用の容量が不足しているなどの問題が発生しました。");
+				this.db = false;
 			}
 		}
 		else	//not in case that not support Web Database API
 		{
-			alert("Your browser does not support HTML5 Web Database API.");
+			alert("Your browser does not support HTML5 Web SQL API.");
+			this.db = false;
 		}
 
 	}

@@ -9,13 +9,13 @@ body
 /*	background-color	: rgb(90 , 90 , 90); */
 	margin				: 0px;
 	height				: 100%;
-	background	: -webkit-gradient(	linear,
+/*	background	: -webkit-gradient(	linear,
 									left bottom,
 									left top,
 									from( rgb(240, 240, 240) ),
 									color-stop( 0.75, rgb( 240, 240, 240 ) ),
 									to( rgb(150, 150, 150) )
-									);
+									); */
 	background-repeat : no-repeat;
 }
 
@@ -93,14 +93,14 @@ a:hover
 	position : relative;
 
 	height		: 500px;
-	background-color: rgb( 240 , 240 , 240 );
+	background-color: rgba( 250 , 250 , 250 , 0.6);
 
 	overflow-y	: scroll;
 	overflow-x	: hidden;
 
 	border-width	: 0px 0px 6px 0px;
 	border-style	: none solid solid solid;
-	border-color	: rgb( 240 , 240 , 240 );
+	border-color	: rgba( 250 , 250 , 250 , 0.6);
 	padding			: 0px 0px 0px 0px;
 
 	-webkit-background-clip				:padding-box;
@@ -120,7 +120,7 @@ a:hover
 	background	: -webkit-gradient(	linear,
 									left bottom,
 									left top,
-									from( rgb( 80, 80, 80) ),
+									from( rgba( 50 , 50 , 50 , 0.6) ),
 									color-stop( 0.75, rgb( 150, 150, 150) ),
 									color-stop( 0.95, rgb( 190, 190, 190 ) ),
 									to( rgb( 70, 70, 70) )
@@ -1291,4 +1291,12 @@ div.geolocation .map-title img
 div.geolocation:hover .map-title img
 {
 	display:block;
+}
+
+div#post_editor
+{
+	width	: 200px;
+	height	: 80px;
+	-webkit-user-select	: auto;
+	background-color	: white;
 }
