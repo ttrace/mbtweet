@@ -56,10 +56,19 @@ window_resize = function( window_resize_token )
 	{
 		var timeline_list = document.querySelectorAll(".timeline");
 		var collumn_wrapper = document.querySelector("#column");
+		var api_rate_counter = document.querySelector(".api-rate");
 		for( var i = 0 ; i < timeline_list.length ; i++ )
 		{
 			collumn_wrapper.style.height	= window.innerHeight - 60 + "px";
 			timeline_list[i].style.height	= window.innerHeight - 105 + "px";
+		}
+		if( window.innerWidth <= 870 )
+		{
+			api_rate_counter.style.display = "none";
+		}
+		else
+		{
+			api_rate_counter.style.display = "block";
 		}
 	}
 	return( false );
@@ -122,10 +131,10 @@ anchor_HTML = function( linked_source )
 	linked_source = linked_source.replace( mbutil.isUrlRegexp		, "<a href='$1' target='_blank'>$1</a>$6");
 	linked_source = linked_source.replace( /([^\/]|^)(www\.[\w\d:#@%\/;$\(\)~_\?\+-=\\\.&]+\.[\w\d:#@%\/;$\(\)~_\?\+-=\\\.&]+)/g , "<a href='http://$2' target='_blank'>$2</a>" );
 	linked_source = linked_source.replace(/blank\'\>([^\<]{28})[^\<]+\<\/a/g, "blank'>$1...</a");
-	linked_source = linked_source.replace(/(^|[^\/])#((([^\s\(\)\\\!\@\#\$\%\^\&\+\=\;\:\"\'\|\<\>\,\.\~\?]|[0-9a-zA-Z_\-])+[0-9a-zA-Z_\-]+){1,16})/g ,"$1<a class='hashtag' href='" + window.location.protocol + "//twitter.com/search?q=%23$3' target='_blank'>#$3</a>");
+	linked_source = linked_source.replace(/(^|[^\S\/])#((([^\s\(\)\\\!\@\#\$\%\^\&\+\=\;\:\"\'\|\<\>\,\.\~\?]|[0-9a-zA-Z_\-])+[0-9a-zA-Z_\-]+){1,16})/g ,"$1<a class='hashtag' href='" + window.location.protocol + "//twitter.com/search?q=%23$3' target='_blank'>#$3</a>");
 	linked_source = linked_source.replace(/[@＠]([0-9a-zA-Z\_\-]+\/[0-9a-zA-Z\_\-]+)/g,"@<a class='list' href='" + window.location.protocol + "//twitter.com/$1' target='_blank'>$1</a>");
 	linked_source = linked_source.replace(/[@＠]([0-9a-zA-Z\_\-]+)/g,"@<a class='sname' href='" + window.location.protocol + "//twitter.com/$1' target='_blank'>$1</a>");
 
-	linked_source = linked_source.replace(/&amp;/g , "&amp;amp;");
+//	linked_source = linked_source.replace(/&amp;/g , "&amp;amp;");
 	return( linked_source );
 }

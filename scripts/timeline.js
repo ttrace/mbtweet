@@ -665,7 +665,6 @@ initialTimeline = function( data , target_id , cache )
 		}
 		if( arguments[3] == "eternal" && cursor != 0 )
 		{
-//			window.console.log( insert_target.timeline , cursor );
 			insert_target.timeline.loadCursor( cursor , "eternal" );
 		}
 	}
