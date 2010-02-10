@@ -150,8 +150,6 @@ new_user_timeline = function( target_link , myauth )
 new_list_timeline = function( list )
 {
 	var myauth = true;
-//	if( list._mode != "public" ) myauth = true;
-//	if( !document.getElementById( "list_" + list._list_id ) )
 	if( document.querySelectorAll( "[id^='list_" + list._list_id + "']" ).length == 0 )
 	{
 		var new_timeline = new timeline();
@@ -449,6 +447,9 @@ timeline.prototype.create = function()
 	var timeline_readmore = document.createElement("DIV");
 		timeline_readmore.className = "read-more";
 		timeline_readmore.innerText = "Load next page";
+
+	if( this.timeline_id.match(/^follow/) )
+	{
 		timeline_readmore.addEventListener(	"click",
 											function( event )
 											{
@@ -464,13 +465,32 @@ timeline.prototype.create = function()
 												}
 											},
 											false);
-	if( this.timeline_id.match(/^follow/) )
-	{
-		timeline.appendChild( timeline_readmore );
 	}
+	else if( this.search )
+	{
+		timeline_readmore.addEventListener(	"click",
+											function( event )
+											{
+												var cursor = event.target.cursor;
+													self.loadMaxSearch();
+											},
+											false);	
+	}
+	else
+	{
+		timeline_readmore.addEventListener(	"click",
+											function( event )
+											{
+												var cursor = event.target.cursor;
+													self.loadMax();
+											},
+											false);
+	}
+		timeline.appendChild( timeline_readmore );
+
 	timeline_column.appendChild( timeline );
 	
-	this.timeline = timeline;		
+	this.timeline = timeline;
 
 	document.querySelector("#column").appendChild( timeline_column );
 
@@ -490,7 +510,6 @@ timeline.prototype.create = function()
 
 timeline.prototype.init = function()
 {
-	var timeline_object = this.timeline;
 	eval( "initial" + this.timeline_id + "=function(data){initialTimeline(data,'" + this.timeline_id + "' , " + this.cache + ");delete this}" );
 
 	if( !this.cursor )
@@ -522,9 +541,46 @@ timeline.prototype.init = function()
 	return false;
 }
 
+timeline.prototype.loadMax = function()
+{
+	var max_id = (this.timeline.max_id);
+	window.console.log( max_id , this.timeline.max_id );
+	eval( "initial" + this.timeline_id + "=function(data){initialTimeline(data,'" + this.timeline_id + "' , " + this.cache + ",'removefirst');delete this}" );
+
+	mbtweetOAuth.callAPI(	this.api ,
+							"GET",
+							[
+								["callback" , "initial" + this.timeline_id ],
+								["max_id" , max_id ],
+								["count" , this.count ],
+								["per_page" , this.count ],
+							],
+							{ auth	: this.auth }
+						);
+	return false;
+}
+
+timeline.prototype.loadMaxSearch = function()
+{
+	var max_id = (this.timeline.max_id);
+	eval( "initial" + this.timeline_id + "=function(data){initialSearchTimeline(data,'" + this.timeline_id + "' , " + this.cache + ",'removefirst');delete this}" );
+
+	mbtweetOAuth.callAPI(	this.api ,
+							"GET",
+							[
+								["callback" , "initial" + this.timeline_id ],
+								["q" , this.search.query ],
+								["lang" , this.search.lang ],
+								["rpp" , "50"],
+								["max_id" , max_id ],
+							],
+							{ auth	: false }
+						);
+	return false;
+}
+
 timeline.prototype.loadCursor = function( cursor , option )
 {
-	var timeline_object = this.timeline;
 	eval( "initial" + this.timeline_id + "=function(data){initialTimeline(data,'" + this.timeline_id + "' , " + this.cache + ");delete this}" );
 
 	if( option == "eternal" )
@@ -568,7 +624,7 @@ timeline.prototype.update = function()
 
 search.prototype.init = function( timeline )
 {
-	var timeline_object = timeline.timeline;
+//	var timeline_object = timeline.timeline;
 	eval( "initial" + timeline.timeline_id + "=function(data){initialSearchTimeline(data,'" + timeline.timeline_id + "' , " + timeline.cache + ");delete this}" );
 
 	mbtweetOAuth.callAPI(	timeline.api ,
@@ -651,15 +707,20 @@ initialTimeline = function( data , target_id , cache )
 
 	if( !target_id.match(/^(following|followers)/) )
 	{
-		for( i = 0 ; i < data.length ; i++ )
+		var max_id = "";
+		var i = 0;
+		if( arguments[3] == "removefirst" ) i = 1;
+		for( i ; i < data.length ; i++ )
 		{
+			max_id = data[i].id;
 			create_tweet_element( data[i] , cache ).buildEntry( timeline );
 		}
+		timeline.max_id = max_id;
 	}
 	else
 	{
 		cursor = data.next_cursor;
-		for( i = 0 ; i < data.users.length ; i++ )
+		for( var i = 0 ; i < data.users.length ; i++ )
 		{
 			create_user_element( data.users[i] , cache , cursor ).buildUserInfo( timeline , "insert" , insert_target );
 		}
@@ -668,6 +729,20 @@ initialTimeline = function( data , target_id , cache )
 			insert_target.timeline.loadCursor( cursor , "eternal" );
 		}
 	}
+	
+	if( target_id.match(/^messages/) )
+	{
+		eval( "initial" + timeline.id + "=function(data){insertSortTimeline(data,'" + timeline.id + "');delete this}" );
+		mbtweetOAuth.callAPI(	"http://twitter.com/direct_messages/sent.json" ,
+								"GET",
+								[
+									["callback" , "initial" + timeline.id ],
+									["count" , mbtweet.timeline.message.count ],
+									["per_page" , mbtweet.timeline.message.count ],
+								],
+								{ auth	: mbtweet.timeline.message.auth }
+							);		
+	}
 }
 
 updateTimeline = function( data , target_id , cache )
@@ -675,21 +750,37 @@ updateTimeline = function( data , target_id , cache )
 	var timeline = document.getElementById( target_id );
 	var insert_target = timeline.querySelector(".entry");
 
-	for( i = 0 ; i < data.length ; i++ )
+	for( var i = 0 ; i < data.length ; i++ )
 	{
 		create_tweet_element( data[i] , cache ).buildEntry( timeline , "insert" , insert_target );
 	}
 }
 
+insertSortTimeline = function( data , target_id , cache )
+{
+	var timeline = document.getElementById( target_id );
+	var insert_target = timeline.querySelector(".entry");
+
+	for( var i = 0 ; i < data.length ; i++ )
+	{
+		create_tweet_element( data[i] , cache ).buildEntry( timeline , "sort" , insert_target );
+	}
+}
+
 initialSearchTimeline = function( data , target_id , cache )
 {
+	var max_id = "";
 	var timeline = document.getElementById( target_id );
 	var insert_target = timeline.querySelector(".read.more");
 
-	for( i = 0 ; i < data.results.length ; i++ )
+	var i = 0;
+	if( arguments[3] == "removefirst" ) i = 1;
+	for( i ; i < data.results.length ; i++ )
 	{
+		max_id = data.results[i].id;
 		create_search_element( data.results[i] ).buildEntry( timeline );
 	}
+	timeline.max_id = max_id;
 }
 
 updateSearchTimeline = function( data , target_id , cache )
@@ -698,7 +789,7 @@ updateSearchTimeline = function( data , target_id , cache )
 	var timeline = document.getElementById( target_id );
 	var insert_target = timeline.querySelector(".entry");
 
-	for( i = 0 ; i < data.results.length ; i++ )
+	for( var i = 0 ; i < data.results.length ; i++ )
 	{
 		create_search_element( data.results[i] ).buildEntry( timeline , "insert" , insert_target );
 	}

@@ -243,19 +243,34 @@ a:hover
 
 .timeline .read-more
 {
-	width		: 100%;
+	width		: 280px;
+	margin		: 4px auto;
 	padding		: 4px 0px;
+	font-weight	: bold;
+	color		: rgb( 120 , 120 , 120) ;
+	border		: 1px solid	rgb( 120 , 120 , 120);
 	background-color		: rgb( 200, 200, 200);
-	background	:-webkit-gradient(	linear,
+	background				:-webkit-gradient(	linear,
 									left top,
 									left bottom,
 									from( rgb( 255, 255, 255 ) ),
-									color-stop( 0.3 , rgb( 200, 200, 200) ),
-									to( rgb( 160, 160, 160) )
+									color-stop( 0.3 , rgb( 240, 240, 240) ),
+									to( rgb( 240, 240, 240) )
 									);
 	border-radius			: 8px;
 	-webkit-border-radius	: 8px;
 	cursor	:pointer;
+	box-shadow	: 0px 3px 3px rgba( 0, 0, 0, 0.5);
+	-webkit-box-shadow	: 0px 3px 3px rgba( 0, 0, 0, 0.5);
+	background-clip			: padding-box;
+	-webkit-background-clip	: padding-box;
+}
+
+.timeline .read-more:hover
+{
+	color		: rgb( 70 , 70 , 70);
+	box-shadow	: 0px 3px 3px rgba( 0, 0, 0, 0.75);
+	-webkit-box-shadow	: 0px 3px 3px rgba( 0, 0, 0, 0.75);	
 }
 
 /* timeline shrinked*/
@@ -427,6 +442,72 @@ header
 	margin			: 0px;
 }
 
+.entry.animation
+{
+	opacity	:0;
+}
+
+@-webkit-keyframes appearEntry
+{
+	0%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -5px);
+	}
+
+	10%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+	}
+
+	100%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+	}
+}
+
+.entry.animation:nth-child(0)
+{
+	-webkit-animation: appearEntry 2s 0s ease-in 1 alternate;
+}
+
+.entry.animation:nth-child(1)
+{
+	-webkit-animation: appearEntry 2s 0.1s ease-in 1 alternate;
+}
+
+.entry.animation:nth-child(2)
+{
+	-webkit-animation: appearEntry 2s 0.2s ease-in 1 alternate;
+}
+
+.entry.animation:nth-child(3)
+{
+	-webkit-animation: appearEntry 2s 0.3s ease-in 1 alternate;
+}
+
+.entry.animation:nth-child(4)
+{
+	-webkit-animation: appearEntry 2s 0.4s ease-in 1 alternate;
+}
+
+.entry.animation:nth-child(5)
+{
+	-webkit-animation: appearEntry 2s 0.5s ease-in 1 alternate;
+}
+
+.entry.animation:nth-child(6)
+{
+	-webkit-animation: appearEntry 2s 0.6s ease-in 1 alternate;
+}
+
+.entry.animation:nth-child(7)
+{
+	-webkit-animation: appearEntry 2s 0.7s ease-in 1 alternate;
+}
+
 .timeline > .entry
 {
 	border-bottom	: 1px solid rgba( 200 , 200 , 200 , 0.5 );
@@ -590,6 +671,19 @@ a.sname:visited
 	
 	-webkit-transform-origin	: 100% 0%;
 	-webkit-transform	: rotate(15deg) scale(0.3 ,0.3) translate(-100px,0px);
+	-webkit-animation: appearThumb 0.2s ease-in 1;
+}
+
+@-webkit-keyframes appearThumb
+{
+	0%
+	{
+		-webkit-transform	: rotate(0deg) scale(1 , 1) translate( -20px , -20px );
+	}
+	100%
+	{
+		-webkit-transform	: rotate(15deg) scale(0.3 ,0.3) translate(-100px,0px);
+	}
 }
 
 .entry img.thumbnail
@@ -699,7 +793,7 @@ a.sname:visited
 
 .entry .rt-icon
 {
-	position	: absolute;
+	/*position	: absolute;*/
 	display		: block;
 	margin-left	: 24px;
 	margin-top	: -18px;
@@ -1022,16 +1116,17 @@ api-rate">
 */
 .api-rate
 {
-	position	:absolute;
+	position	: absolute;
+	padding		: 4px;
 }
 
 .api-rate .hourly-rate
 {
-	height	: 6px;
+	height	: 10px;
 	width	: 150px;
-	border-radius	: 3px;
-	-webkit-border-radius	: 3px;
-	background-color	: rgb(40, 40, 40);
+	border-radius			: 5px;
+	-webkit-border-radius	: 5px;
+	background-color		: rgb(40, 40, 40);
 	background	: -webkit-gradient(	linear,
 					left top,
 					left bottom,
@@ -1042,20 +1137,25 @@ api-rate">
 
 .api-rate .rate
 {
-	height	: 6px;
-	width	: 150px;
-	font-size	: 8px;
-	line-height	: 6px;
-	text-align	: right;
-	padding-right:	2px;
-	border-radius	: 3px;
-	-webkit-border-radius	: 3px;
+	height			: 10px;
+	width			: 150px;
+	font-size		: 10px;
+	font-weight		: bold;
+	color			: white;
+	line-height		: 8px;
+	text-align		: right;
+	padding-right	: 4px;
+	text-shadow		: 0px 0px 1px rgba( 0,0,0,0.5);
+	border-radius	: 5px;
+	-webkit-border-radius	: 5px;
 	background-color	: rgb(220, 60, 60);
 	background	: -webkit-gradient(	linear,
 					left top,
 					left bottom,
-					from( rgb(220, 60, 60) ),
-					to( rgb(90, 0, 0) )
+					from( rgb(240, 240, 240) ),
+					color-stop(0.4, rgb(220, 60, 30)),
+					color-stop(0.7, rgb(90, 20, 0)),
+					to( rgb(160, 40, 20) )
 					);
 					
 	-webkit-animation: rateSlider 2s ease-in infinite;	
@@ -1067,14 +1167,16 @@ api-rate">
 	background	: -webkit-gradient(	linear,
 					left top,
 					left bottom,
-					from( rgb(220, 180, 60) ),
-					to( rgb(90, 70, 0) )
+					from( rgb(240, 240, 240) ),
+					color-stop(0.4, rgb(220, 180, 60)),
+					color-stop(0.7, rgb(150, 120, 30)),
+					to( rgb(180, 160, 50) )
 					);
 }
 
 .api-rate .reset-time
 {
-	font-size: 8px;
+	font-size: 10px;
 }
 
 @-webkit-keyframes rateSlider
@@ -1237,6 +1339,14 @@ footer .dock-icon:hover .dock-menu,
 	padding-left	: 4px;
 }
 
+#saved_search .dock-menu-index a:after
+{
+	font-family	: keytop;
+	font-size	: 10px;
+	float		:right;
+	content		: "S";
+}
+
 .dock-menu-index a:hover
 {
 	text-decoration	: none;
@@ -1276,6 +1386,13 @@ footer .dock-icon:hover .dock-menu,
 	border-radius	: 4px;
 	-webkit-border-radius	: 4px;
 	margin-right	: 4px;
+}
+
+
+@font-face {
+  font-family: keytop;
+  src: url(keytop.ttf);
+  unicode-range: U+0030-007A;
 }
 
 

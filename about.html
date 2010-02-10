@@ -46,7 +46,11 @@
 <body onload="init_page()">
 <h1>mbtweet</h1>
 <div id="column_wrapper">
-	sample
+	<section>
+	<div lang="en">sample search timeline</div>
+	<div lang="ja">検索タイムラインのサンプル</div>
+	</section>
+
 	<div id="column">
 
 	</div>
@@ -82,38 +86,80 @@ mbtweetはHTML5で作成されたHTML Webアプリケーションです。
 	</section>
 <section>
 
-<h2>Features</h2>
-<ol>
-<li>
-Preset timelines.<br>Home, Mentions, Favorites, ReTweets, saved Searches and your subscribed lists launcher on Dock.
-</li>
-<li>
-Conversation chains.<br>mbtweet is capable of showing conversation chains with considering in_reply_to_status_id's.
-</li>
-<li>
-Media supports.<br>mbtweet shows thumbnail images on tweets.
-</li>
-<li>
-Pure HTML5 Application.<br>mbtweet has no server process.  All program runs inside on your launchng Web browser.  All your activity and personal data are handled only with your browser , media services and twitter servers.
-</li>
-<li>
-Multi column interface.
-</li>
-<li>
-Geolocation viewer
-</li>
-<li>
-API Rate monitor
-</li>
-<li>
-Legacy RT.<br>Clicking "ReTweet" buton with holding Shift-key serves old style RT.
-</li>
-</ol>
+<section class="localize">
+	<section lang="en">
+		<h2>Features</h2>
+		<ol>
+		<li>
+		Multi colmn timelines.<br>mbtweet shows multi column timelines in browser window. All timelines fetches latest statuses in some minutes.
+		</li>
+		<li>
+		Preset timelines.<br>Home, Mentions, Favorites, ReTweets, saved Searches and your subscribed lists launcher on Dock.
+		</li>
+		<li>
+		Conversation chains.<br>mbtweet is capable of showing conversation chains with considering in_reply_to_status_id's.
+		</li>
+		<li>
+		Media supports.<br>mbtweet shows thumbnail images on tweets.
+		</li>
+		<li>
+		Pure HTML5 Application.<br>mbtweet has no server process.  All program runs inside on your launchng Web browser.  All your activity and personal data are handled only with your browser , media services and twitter servers.
+		</li>
+		<li>
+		Geolocation viewer
+		</li>
+		<li>
+		API Rate monitor
+		</li>
+		<li>
+		Local language search<br>mbtweet shows your local language search with <span class="shiftkey">S</span>+clicking saved search menu, hashtags and <span class="shiftkey">S</span>+Return on search column.
+		</li>
+		<li>
+		Legacy RT.<br>Clicking "ReTweet" buton with holding <span class="shiftkey">S</span> serves old style RT.
+		</li>
+		</ol>
+	</section>
+	<section lang="ja">
+		<h2>機能</h2>
+		<ol>
+		<li>
+		マルチコラムタイムライン<br>mbtweet shows multi column timelines in browser window. All timelines fetches latest statuses in some minutes.
+		</li>
+		<li>
+		プリセットタイムライン<br>Home, Mentions, Favorites, ReTweets, saved Searches and your subscribed lists launcher on Dock.
+		</li>
+		<li>
+		会話チェーン<br>mbtweet is capable of showing conversation chains with considering in_reply_to_status_id's.
+		</li>
+		<li>
+		メディアサポート<br>mbtweet shows thumbnail images on tweets.
+		</li>
+		<li>
+		HTML5 Webアプリケーション<br>mbtweetは独自のサーバプロセスを一切持ちません。mbtweetで扱う全ての個人情報とステータス、タイムライン表示に用いている情報は、Twitterのサーバやメディアサービスの提供サーバとあなたのブラウザが直接取得しています。
+		</li>
+		<li>
+		位置情報サポート
+		</li>
+		<li>
+		Twitter API残数表示
+		</li>
+		<li>
+		ローカル言語で検索<br><span class="shiftkey">S</span>+ハッシュタグをクリック、<span class="shiftkey">S</span>+保存された検索項目を選択、検索コラムで<span class="shiftkey">S</span>+Returnとすることで、ブラウザの設定言語に絞り込み検索を行います。
+		</li>
+		<li>
+		旧RTスタイル<br>Clicking "ReTweet" buton with holding <span class="shiftkey">S</span>+ReTweet serves old style RT.
+		</li>
+		</ol>
+	</section>
+</section>
 
 <h2>History</h2>
 
+<section class="localize">
+<h2 lang="en">License</h2>
+<h2 lang="ja">ライセンス</h2>
+</section>
 
-<h2>License</h2>
 <pre>
 mbtweet app components are published under MIT License.
 Copyright © 2010 Taiyo Fujii.

@@ -48,7 +48,7 @@ mbdata.prototype.open_database = function(  )
 		}
 		else	//not in case that not support Web Database API
 		{
-			alert("Your browser does not support HTML5 Web SQL API.");
+			alert("Your browser does not support Web SQL Database API.");
 			this.db = false;
 		}
 

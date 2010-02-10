@@ -127,6 +127,21 @@ jsonp_fetch = function( access_URL , action , method , parameter , mbtweet_metho
 	return( false );
 }
 
+is_in_view = function( target_column , target_object )
+{
+	var colmn_view_top		= target_column.scrollTop;
+	var colmn_view_bottom	= target_column.offsetHeight;
+	var target_top			= target_object.offsetTop;
+	if( target_top >= colmn_view_top && target_top < colmn_view_bottom)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 // following codes are used after twitter support XHR2.
 // function __jsonp_fetch( access_URL , action , method , parameter , mbtweet_method )
 // {

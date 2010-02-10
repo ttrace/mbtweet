@@ -209,17 +209,18 @@ create_tweet_element = function( data , cache )
 		newTweet.in_reply_to_status_id		 = tweet_data.in_reply_to_status_id;
 		newTweet.in_reply_to_user_id		 = tweet_data.in_reply_to_user_id;
 		newTweet.favorited					 = tweet_data.favorited;
-		// geolocation data type seems not fixed yet.
-//	if( tweet_data.geo )
-//	{
 		newTweet.geo						 = tweet_data.geo;
-//	}
 		newTweet.source						 = tweet_data.source;
 		newTweet.text						 = tweet_data.text;
 		newTweet.truncated					 = tweet_data.truncated;
 
 		newTweet.screen_name				 = tweet_data.user.screen_name;
 		newTweet.profile_image_url			 = tweet_data.user.profile_image_url;
+
+		if( data.recipient_screen_name )
+		{
+			newTweet.recipient_screen_name		 = tweet_data.recipient_screen_name;
+		}
 
 		newTweet.user.created_at			 = tweet_data.user.created_at;
 		newTweet.user.description			 = tweet_data.user.description;
@@ -386,6 +387,21 @@ tweet.prototype.buildEntry = function( target , append_mode )
 			rt_user_name.title = this.rt_user_name;
 			rt_user_name.target = "_blank";
 		status_string_wrapper.appendChild( rt_user_name );
+	}
+
+	if( this.recipient_screen_name && this.user.screen_name == mbtweet.user.screen_name )
+	{
+		var recipient_connect = document.createElement("span");
+			recipient_connect.innerText = " > ";
+		status_string_wrapper.appendChild( recipient_connect );
+
+		var recipient_name = document.createElement("A");
+			recipient_name.className = "user-name";
+			recipient_name.href = "http://twitter.com/" + this.recipient_screen_name;
+			recipient_name.innerText = this.recipient_screen_name;
+			recipient_name.title = this.recipient_screen_name;
+			recipient_name.target = "_blank";
+		status_string_wrapper.appendChild( recipient_name );	
 	}
 	
 	// string build
@@ -787,7 +803,12 @@ tweet.prototype.popMeta = function()
 				reply.className	= "reply";
 				reply.href		= "http://twitter.com/" + this.user.screen_name + "";
 		
-			var user_name_list = this.text.match( /[@＠]([a-zA-Z0-9_]+)/g );
+			var user_name_list = [];
+				user_name_list = this.text.match( /[@＠]([a-zA-Z0-9_]+)/g );
+			if( user_name_list == null )
+			{
+				user_name_list = [ "@" + user_name ];
+			}
 				reply.addEventListener("click" ,
 										function( event )
 										{
@@ -824,20 +845,53 @@ tweet.prototype.popMeta = function()
 		}
 		else // direct messages
 		{
-			// reply menu build
-			var reply			= document.createElement("A");
-				reply.className	= "reply";
-				reply.href		= "http://twitter.com/" + this.user.screen_name + "";
-		
-				reply.addEventListener("click" ,
+			// Translate via menu build
+			var translate			= document.createElement("A");
+				translate.className	= "translate";
+				translate.addEventListener("click" ,
+											function( event )
+											{
+												translate_this( tweet_id_string , status_text_string )
+											},
+											false );
+				translate.innerText = "Translate";
+				action.appendChild( translate );
+
+			if( this.user.screen_name == mbtweet.user.screen_name )
+			{
+				// delete menu build
+				var destroy			= document.createElement("A");
+					destroy.className = "destroy";
+				destroy.innerText = "Delete";
+				destroy.addEventListener("click" ,
 										function( event )
 										{
 											event.preventDefault();
-											reply_to_message( user_name );									
+											destroy_this_message( status_id_string , tweet_id_string );
 										},
 										false );
-				reply.innerText = "Reply";
-				action.appendChild( reply );
+
+				action.appendChild( destroy );		
+			}
+			else
+			{
+
+				// reply menu build
+				var reply			= document.createElement("A");
+					reply.className	= "reply";
+					reply.href		= "http://twitter.com/" + this.user.screen_name + "";
+			
+					reply.addEventListener("click" ,
+											function( event )
+											{
+												event.preventDefault();
+												reply_to_message( user_name );									
+											},
+											false );
+					reply.innerText = "Reply";
+					action.appendChild( reply );
+			
+			}
 		}
 		entry_wrapper.querySelector(".u-status").appendChild( action );
 	}
@@ -861,11 +915,43 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 			var timeline			= document.querySelector( "#" + entry_wrapper.id.match(/([a-zA-Z0-9_]+)\-[0-9]+/)[1] );
 			var target_scrollTop	= timeline.scrollTop;
 			var current_margin		= 0;
-			
 			switch ( append_mode )
 			{
 				case "insert":
+						if( is_in_view( timeline , option ) )
+						{
+							addClass( entry_wrapper , "animation");
+							entry_wrapper.addEventListener( "webkitAnimationEnd",
+															function( event )
+															{
+																removeClass( event.target , "animation");										
+															},
+															false);
+							setTimeout( function(){removeClass( entry_wrapper , "animation")} , 1000 );
+						}
 						target.insertBefore( entry_wrapper , option );
+					break;
+				
+				case "sort":
+						var option_id = (option.id.replace(/^.+\-([0-9]+)$/ , "$1"));
+						while( (status_id < option_id) )
+						{
+							option = option.nextElementSibling;
+							option_id = (option.id.replace(/^.+\-([0-9]+)$/ , "$1"));
+						}
+						if( is_in_view( timeline , option ) )
+						{
+							addClass( entry_wrapper , "animation");
+							entry_wrapper.addEventListener( "webkitAnimationEnd",
+															function( event )
+															{
+																removeClass( event.target , "animation");										
+															},
+															false);
+							setTimeout( function(){removeClass( entry_wrapper , "animation")} , 1000 );
+						}
+						target.insertBefore( entry_wrapper , option );
+						timeline.scrollTop = 0;
 					break;
 				
 				case "conv":
@@ -903,6 +989,19 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 						{
 							//current_margin =- 6;						
 						}
+
+						if( is_in_view( timeline , load_conv_button ) )
+						{
+							addClass( entry_wrapper , "animation");
+							entry_wrapper.addEventListener( "webkitAnimationEnd",
+															function( event )
+															{
+																removeClass( event.target , "animation");										
+															},
+															false);
+							setTimeout( function(){removeClass( entry_wrapper , "animation")} , 1000 );
+
+						}
 						
 						target.insertBefore( entry_wrapper , load_conv_button );
 					break;
@@ -912,7 +1011,7 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 
 			unread_counter( timeline.id );			
 			// fixsing view
-			if( entry_wrapper.offsetTop <= target_scrollTop + 4 )
+			if( (entry_wrapper.offsetTop < target_scrollTop + 10) && ( append_mode != "sort" ) )
 			{
 				timeline.scrollTop = target_scrollTop + entry_wrapper.offsetHeight + current_margin;
 
@@ -940,7 +1039,22 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 	}
 	else
 	{
-		target.appendChild( entry_wrapper );
+		var readmore = target.lastChild;
+
+		var is_view = is_in_view( target , readmore );
+		if( is_view == true )
+		{
+			addClass( entry_wrapper , "animation");
+			entry_wrapper.addEventListener( "webkitAnimationEnd",
+											function( event )
+											{
+												removeClass( event.target , "animation");										
+											},
+											false);
+			setTimeout( function(){removeClass( entry_wrapper , "animation")} , 1000 );
+		}
+
+		target.insertBefore( entry_wrapper , target.lastChild );
 		//counting number of tweets.
 		unread_counter( target.id );
 	}

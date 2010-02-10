@@ -3,7 +3,7 @@ var mbtweet = {};
 mbtweet = 
 {
 	debug			: false ,
-	build			: 00017 ,
+	build			: 00021 ,
 	version			: "1.0" ,
 	bitly_token		: "",
 	currentSearch	: "",
@@ -103,7 +103,7 @@ function count_api_rate( option )
 {
 	var callback_process = "countRate";
 	if( option.auth == false) callback_process = "countNoAuthRate";
-	mbtweetOAuth.callAPI(	"https://api.twitter.com/1/account/rate_limit_status.json" ,
+	mbtweetOAuth.callAPI(	"https://twitter.com/account/rate_limit_status.json" ,
 							"GET",
 							[
 								["callback" , callback_process ],
@@ -219,22 +219,29 @@ reply_to = function( in_reply_to_screen_name , in_reply_to_status_id )
 		reply_to_container.value = "@" + in_reply_to_screen_name;
 	var reply_link = document.querySelector("#reply_link");
 		reply_link.checked = true;
-	status_editor.value = "@" + in_reply_to_screen_name;
 
 	if( arguments[2] )
 	{
+//		status_editor.value += "@" + in_reply_to_screen_name;
+		window.console.log( arguments[2] );
+		arguments[2].push( "@" + in_reply_to_screen_name );
 		var user_list_string = "";
 		for(key in arguments[2])
 		{
 			var other_user = arguments[2][key].match( /@([a-zA-Z0-9_]+)/ )[1];
-			if( other_user != in_reply_to_screen_name && other_user != mbtweet.user.screen_name )
+			if(mbtweet.debug)window.console.log( arguments[2] , other_user , other_user != in_reply_to_screen_name , other_user != mbtweet.user.screen_name , !status_editor.value.match( new RegExp(other_user) ));
+			if( other_user != mbtweet.user.screen_name && !status_editor.value.match( new RegExp(other_user) ) && !user_list_string.match( new RegExp(other_user) ) )
 			{
-				user_list_string += " @" + other_user;
+				user_list_string += "@" + other_user + " ";
 			}
 		}
 		status_editor.value += user_list_string;
 	}
-	status_editor.value += " ";
+	else
+	{
+		status_editor.value = "@" + in_reply_to_screen_name + " ";
+	}
+	//status_editor.value += " ";
 	status_id_container.value = in_reply_to_status_id;
 	status_editor.focus();
 	status_editor.setSelectionRange(status_editor.value.length, status_editor.value.length);
@@ -344,7 +351,7 @@ destroy_this = function( status_id_string , tweet_id_string )
 		var status_id = status_id_string;
 		var target_tweet	= document.querySelector( "#" + tweet_id_string );
 	
-		method_url = "http://twitter.com/statuses/destroy/" + status_id + ".xml";
+		method_url = "https://twitter.com/statuses/destroy/" + status_id + ".xml";
 		if( mbtweet.debug )window.console.log([ "destroy", status_id_string, tweet_id_string ]);
 	
 		mbtweetOAuth.callAPI(	method_url ,
@@ -356,6 +363,27 @@ destroy_this = function( status_id_string , tweet_id_string )
 		return true;
 	}
 }
+
+destroy_this_message = function( status_id_string , tweet_id_string )
+{
+	if( confirm("Sure you want to delete this message?") )
+	{
+		var status_id = status_id_string;
+		var target_tweet	= document.querySelector( "#" + tweet_id_string );
+	
+		method_url = "https://twitter.com/direct_messages/destroy/" + status_id + ".xml";
+		if( mbtweet.debug )window.console.log([ "destroy", status_id_string, tweet_id_string ]);
+	
+		mbtweetOAuth.callAPI(	method_url ,
+								"POST",
+								[
+								],
+								[ "destroy" , status_id_string ]
+							);
+		return true;
+	}
+}
+
 
 translate_this = function( tweet_id_string , status_text_string )
 {

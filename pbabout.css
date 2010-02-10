@@ -38,3 +38,14 @@ pre
 	width	: 420px;
 	float	: right;
 }
+
+.shiftkey
+{
+	font-family	: keytop;
+}
+
+@font-face {
+  font-family: keytop;
+  src: url(keytop.ttf);
+  unicode-range: U+0030-007A;
+}

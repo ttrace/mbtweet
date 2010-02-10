@@ -115,7 +115,9 @@ remove_unread = function( target_id )
 //			target_elements[i].style.display = "none";
 		}
 	}
-
+	var left_target_elements = document.querySelectorAll( target_query + " ~ .entry" );
+		timeline.max_id = left_target_elements[ ( left_target_elements.length - 1 ) ].id.replace(/^.+\-([0-9]+)$/ , "$1");
+		window.console.log( timeline , target_elements[ ( left_target_elements.length - 1 ) ] , timeline.max_id );
 	//counting number of tweets.
 	unread_counter( timeline.id );
 }
