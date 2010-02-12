@@ -776,9 +776,10 @@ a.sname:visited
 	margin	: 0px;
 	width	: 36px;
 	height	: 36px;
-	background-size	: 100% 100%;
-	border-radius	: 4px;
-	box-shadow		: 0px 2px 3px rgba( 0, 0, 0, 0.75);
+	
+	background-size			: 100% 100%;
+	border-radius			: 4px;
+	box-shadow				: 0px 2px 3px rgba( 0, 0, 0, 0.75);
 
 	-webkit-background-size	: 100% 100%;
 	-webkit-border-radius	: 4px;
@@ -951,11 +952,10 @@ a.sname:visited
 
 .entry .conv .load-conv
 {
-	background-size	: 331px 11px, 331px 25px;
+	background-size			: 331px 11px, 331px 25px;
 	-webkit-background-size	: 331px 11px, 331px 25px;
 	background-image		: url("./images/baloon_01.png"), url("./images/baloon_03.png");
-	background-position-x	: 0px, 0px;
-	background-position-y	: 0px, 11px;
+	background-position		: 0px 0px , 0px 11px;
 	background-repeat		: no-repeat;
 	font-size				: 12px;
 	height					: 26px;

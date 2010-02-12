@@ -3,6 +3,7 @@
 <head>
 	<title>mbtweet</title>
 	<meta http-equiv="content-type" content="text/html, text/javascript; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="chrome=1">
 	<link rel="stylesheet"	href="pbapp.css">
 	<script src="./scripts/localstorage.js" 	></script>
 	<script src="./scripts/mbtweet.js"			></script>
@@ -10,18 +11,17 @@
 	<script src="./scripts/twitterapi_call.js" 	></script>
 	<script src="./scripts/oauth.js"			></script>
 	<script src="./scripts/sha1.js"				></script>
-	<script src="./scripts/ui.js"				></script>
 	<script src="./scripts/tweet.js"			></script>
-	<script src="./scripts/timeline.js"			></script>
+	<script src="./scripts/user.js"				></script>
 	<script src="./scripts/list.js"				></script>
+	<script src="./scripts/saved_search.js"		></script>
 	<script src="./scripts/util.js"				></script>
+	<script src="./scripts/timeline.js"			></script>
 	<script src="./scripts/language.js"			></script>
+	<script src="./scripts/ui.js"				></script>
 	<script src="./scripts/bitly.js"			></script>
 	<script src="./scripts/jsonp_extention.js"	></script>
 	<script src="./scripts/geolocation.js"		></script>
-	<script src="https://maps.google.com/maps/geo?q=1600+Amphitheatre+Parkway,+Mountain+View,+CA&output=json&oe=utf8
-&sensor=true_or_false&key=ABQIAAAACAMtc-y1LwywgGCww_SsjBRFsndPxDivWpmm3LCPsjRIR7nWfhSMSZGeBiJYutVahrNReaGnuE7MbQ
-"		></script>
 </head>
 
 <body onload="init_mbtweet()">
@@ -41,9 +41,16 @@
 	<div id = "post">
 		<div id="counter">140</div>
 		<form onSubmit="post_tweet(this , event); return(false);">
+		<div id="post_editor" contenteditable="true" style="display:none;">
+		</div>
 		<textarea id="status" tabindex="0"></textarea>
 		<input name="post_status" id="post_status" type="submit" value="tweet!">
+		<input id="hashtag" name="hashtag" type="text" value="" onchange="status_counter()" placeholder="hashtag">
+		<div id="reply_link_object">
+			<input name="reply_link" id="reply_link" type="checkbox" value="false" onchange="remove_in_reply_to()"><label for="reply_link">conversation</label>
+		</div>
 		<input name="post_in_reply_to_status_id" id="post_in_reply_to_status_id" type="hidden" value="">
+		<input name="in_reply_to" id="in_reply_to" type="hidden" value="">
 		</form>
 	</div>
 </header>
@@ -54,13 +61,39 @@
 <footer>
 	<div class="dock">
 		<section class="launcher">
-			<div class = "home"		onclick = "var mention = new timeline('home');">Home</div>
-			<div class = "mention"	onclick = "var mention = new timeline('mention');">Mentions</div>
-			<div class = "favorite"	onclick = "var mention = new timeline('favorite');">Favorites</div>
-			<!-- div class = "message"	onclick = "var mention = new timeline('message');">Messages</div -->
-			<div class = "your"		onclick = "var mention = new timeline('mine');">Yours</div>
-			<div class = "" id = "my_lists">Lists</div>
-			<div class = "search"		onclick = "var mention = new timeline('search');">Search</div>
+			<div class = "home"		onclick = "var mention = new timeline('home');">
+				<img src="images/home_icn.png">
+			</div>
+			<div class = "mention"	onclick = "var mention = new timeline('mention');">
+				<img src="images/mentions_icn.png">
+			</div>
+			<div class = "favorite"	onclick = "var mention = new timeline('favorite');">
+				<img src="images/favorites_icn.png">
+			</div>
+			<div class = "message"	onclick = "var mention = new timeline('message');">
+				<img src="images/messages_icn.png">
+			</div>
+			<div class = "your  dock-icon">
+				<div class="dock-menu">
+					<div class="dock-menu-index" onclick = "var mention = new timeline('following');return false;">Your following</div>
+					<div class="dock-menu-index" onclick = "var mention = new timeline('followwers');">Your follower</div>
+				</div>
+				<img class = "user-icon" src="images/home_icn.png" onclick = "var mention = new timeline('mine');">
+			</div>
+			<div class = "lists dock-icon" id = "my_lists">
+				<img src="images/lists_icn.png">
+			</div>
+			<div class = "retweets dock-icon">
+				<div class="dock-menu">
+					<div class="dock-menu-index" onclick = "var mention = new timeline('rt_by_me');">ReTweets by You</div>
+					<div class="dock-menu-index" onclick = "var mention = new timeline('rt_to_me');">ReTweets by Others</div>
+					<div class="dock-menu-index" onclick = "var mention = new timeline('rt_of_me');">Your Tweet, ReTweeted</div>
+				</div>
+				<img src="images/rt_icn.png">
+			</div>
+			<div class = "search dock-icon" id = "my_saved_search"		onclick = "var mention = new timeline('search');">
+				<img src="images/search_icn.png">
+			</div>
 		</section>
 		<section class="column">
 		</section>

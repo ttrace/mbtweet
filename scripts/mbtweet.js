@@ -384,7 +384,6 @@ destroy_this_message = function( status_id_string , tweet_id_string )
 	}
 }
 
-
 translate_this = function( tweet_id_string , status_text_string )
 {
 	var target_query = "#" + tweet_id_string;
