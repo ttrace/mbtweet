@@ -929,6 +929,11 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 															false);
 							setTimeout( function(){removeClass( entry_wrapper , "animation")} , 1000 );
 						}
+						if( target_scrollTop == 0 && !timeline.id.match(/^follow/) )
+						{
+							set_unread( entry_wrapper );
+							timeline_tail_cutter( timeline );
+						}
 						target.insertBefore( entry_wrapper , option );
 					break;
 				
@@ -1011,7 +1016,7 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 
 			unread_counter( timeline.id );			
 			// fixsing view
-			if( (entry_wrapper.offsetTop < target_scrollTop + 10) && ( append_mode != "sort" ) )
+			if( (entry_wrapper.offsetTop < target_scrollTop + 10) && ( append_mode != "sort" ) && target_scrollTop != 0 )
 			{
 				timeline.scrollTop = target_scrollTop + entry_wrapper.offsetHeight + current_margin;
 
@@ -1019,15 +1024,8 @@ function append_status( status_id , entry_wrapper , target , append_mode , optio
 				{
 					if( !hasClass(entry_wrapper.nextElementSibling , "read-more") )
 					{
-						addClass( entry_wrapper , "unread" );
+						set_unread( entry_wrapper );
 					}
-					entry_wrapper.addEventListener( 
-						"click" ,
-						function( event ){
-							event.stopPropagation();
-							remove_unread( target_id );
-						},
-						false );
 				}
 				unread_counter( timeline.id );
 			}
@@ -1135,4 +1133,17 @@ load_conversation = function( conv_chain_id , in_reply_to_status_id , conv_lengt
 		);
 	}
 	return false;
+}
+
+set_unread = function( target_element )
+{
+	var target_id = "#" + target_element.id;
+	addClass( target_element , "unread" );
+	target_element.addEventListener( 
+	"click" ,
+	function( event ){
+		event.stopPropagation();
+		remove_unread( target_id );
+	},
+	false );
 }

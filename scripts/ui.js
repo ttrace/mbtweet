@@ -122,6 +122,24 @@ remove_unread = function( target_id )
 	unread_counter( timeline.id );
 }
 
+timeline_tail_cutter = function( timeline )
+{
+	var entry_list = document.querySelectorAll( "#" + timeline.id + " > .entry");
+		window.console.log( entry_list.length , timeline.id );
+	
+	if( entry_list.length > 100 )
+	{
+		for( var i = 100 ; i < entry_list.length ; i++)
+		{
+			timeline.removeChild( entry_list[i] );		
+		}
+		timeline.max_id = timeline.lastChild.previousElementSibling.id.replace(/^.+\-([0-9]+)$/ , "$1");
+		window.console.log( timeline );
+		
+		unread_counter( timeline.id );
+	}
+}
+
 unread_counter = function( timeline_id )
 {
 	var timeline = document.getElementById( timeline_id + "_column" );
