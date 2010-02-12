@@ -20,7 +20,7 @@ init_shorten_url = function()
 										{
 											shorten_url( document.querySelector("#status") , "all" , (bitly_token_temp + ""));
 										} , 1500);
-										if(mbtweet.debug)window.console.log(bitly_token_temp);
+										//if(mbtweet.debug)window.console.log(bitly_token_temp);
 									} ,
 									true );
 

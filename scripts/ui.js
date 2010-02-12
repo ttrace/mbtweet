@@ -117,16 +117,14 @@ remove_unread = function( target_id )
 	}
 	var left_target_elements = document.querySelectorAll( target_query + " ~ .entry" );
 		timeline.max_id = left_target_elements[ ( left_target_elements.length - 1 ) ].id.replace(/^.+\-([0-9]+)$/ , "$1");
-		window.console.log( timeline , target_elements[ ( left_target_elements.length - 1 ) ] , timeline.max_id );
+	//	window.console.log( timeline , target_elements[ ( left_target_elements.length - 1 ) ] , timeline.max_id );
 	//counting number of tweets.
 	unread_counter( timeline.id );
 }
 
 timeline_tail_cutter = function( timeline )
 {
-	var entry_list = document.querySelectorAll( "#" + timeline.id + " > .entry");
-		window.console.log( entry_list.length , timeline.id );
-	
+	var entry_list = document.querySelectorAll( "#" + timeline.id + " > .entry");	
 	if( entry_list.length > 100 )
 	{
 		for( var i = 100 ; i < entry_list.length ; i++)
@@ -134,8 +132,6 @@ timeline_tail_cutter = function( timeline )
 			timeline.removeChild( entry_list[i] );		
 		}
 		timeline.max_id = timeline.lastChild.previousElementSibling.id.replace(/^.+\-([0-9]+)$/ , "$1");
-		window.console.log( timeline );
-		
 		unread_counter( timeline.id );
 	}
 }

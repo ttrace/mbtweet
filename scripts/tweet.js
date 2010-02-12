@@ -249,6 +249,9 @@ create_tweet_element = function( data , cache )
 		newTweet.user.profile_sidebar_fill_color	 = tweet_data.user.profile_sidebar_fill_color;
 		newTweet.user.profile_text_color			 = tweet_data.user.profile_text_color;
 
+	if(mbtweet.debug)window.console.log( newTweet.user.following , newTweet.user.screen_name );
+
+
 		if( cache && mbdatabase.db != false )
 		{
 			var user_json = JSON.stringify( newTweet.user );
@@ -348,6 +351,16 @@ tweet.prototype.buildEntry = function( target , append_mode )
 	var icon = document.createElement("DIV");
 		icon.className = "icon";
 		icon.style.backgroundImage = "url(" + this.user.profile_image_url + ")";
+		icon.user = this.user;
+// 		icon.addEventListener( 	"mouseover",
+// 								function( event ){
+// 													if( event.eventPhase == 2 )
+// 													{
+// 														event.target.user.popMeta( event.target );
+// 													}
+// 												},
+// 												true);
+
 	icon_wrapper.appendChild( icon );
 
 	if( isRetweeted )
@@ -572,7 +585,6 @@ tweet.prototype.buildEntry = function( target , append_mode )
 												}
 												else if( event.eventPhase == 2 )
 												{
-													//event.stopPropagation();
 													event.target.tweet.popMeta();
 												}
 											},
@@ -1074,7 +1086,7 @@ load_conversation = function( conv_chain_id , in_reply_to_status_id , conv_lengt
 		mbdatabase.db.transaction(
 			function( tx ){
 				tx.executeSql(
-					"SELECT status_id , status_data.created_at , status_data.in_reply_to_screen_name , status_data.in_reply_to_status_id , status_data.in_reply_to_user_id , status_data.favorited , status_data.geo , status_data.source , status_data.text , status_data.truncated , status_data.screen_name , status_data.profile_image_url , user_data.user_protected , user_data.name FROM status_data, user_data WHERE ( status_id = ? AND status_data.screen_name = user_data.screen_name) LIMIT 1",
+					"SELECT status_id , status_data.created_at , status_data.in_reply_to_screen_name , status_data.in_reply_to_status_id , status_data.in_reply_to_user_id , status_data.favorited , status_data.geo , status_data.source , status_data.text , status_data.truncated , status_data.screen_name , status_data.profile_image_url , user_data.user_id , user_data.user_protected , user_data.following , user_data.name FROM status_data, user_data WHERE ( status_id = ? AND status_data.screen_name = user_data.screen_name) LIMIT 1",
 					[ in_reply_to_status_id + "" ],
 					function( tx , result )
 					{
@@ -1107,9 +1119,11 @@ load_conversation = function( conv_chain_id , in_reply_to_status_id , conv_lengt
 							{
 								newTweet.truncated = false;							
 							}
+								newTweet.user.user_id				 = status_row['user_id'];
 								newTweet.user.screen_name			 = status_row['screen_name'];
 								newTweet.user.name					 = status_row['name'];
 								newTweet.user.profile_image_url		 = status_row['profile_image_url'];
+
 							if( status_row['user_protected'] == "true")
 							{
 								newTweet.user.user_protected = true;
@@ -1117,6 +1131,19 @@ load_conversation = function( conv_chain_id , in_reply_to_status_id , conv_lengt
 							else
 							{
 								newTweet.user.user_protected = false;							
+							}
+
+							if( status_row['following'] == "true")
+							{
+								newTweet.user.following = true;
+							}
+							else if( status_row['following'] == "false")
+							{
+								newTweet.user.following = false;							
+							}
+							else
+							{
+								newTweet.user.following = null;
 							}
 							
 							var conv_container = document.querySelectorAll( "#" + conv_chain_id );

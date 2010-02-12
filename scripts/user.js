@@ -362,7 +362,6 @@ create_user_element = function( data , cache , cursor )
 		newUser.profile_text_color			 = user_data.profile_text_color;
 
 	// later cache-able codes
-
 	return( newUser );
 }
 
@@ -452,4 +451,44 @@ user.prototype.buildUserInfo = function( target , append_mode )
 		option.cursor = cursor;
 
 	append_status( append_status_id , entry_wrapper , target , "insert" , option );
+}
+
+user.prototype.popMeta = function( icon )
+{
+	if( icon.querySelectorAll(".action").length == 0 )
+	{
+		var other_menu = document.querySelectorAll( ".action" );
+		if( other_menu.length > 0)
+		{
+			for( var i = 0 ; i < other_menu.length ; i++)
+			{
+				other_menu[i].parentNode.removeChild( other_menu[i] );
+			}
+		}
+
+		var screen_name	= this.screen_name;
+		var user_id		= this.user_id;
+
+		if(mbtweet.debug)window.console.log( screen_name , user_id , this.following );
+		var user_menu_wrapper 			= document.createElement("DIV");
+			user_menu_wrapper.className	= "action";
+			user_menu_wrapper.innserText = (this.following + "");
+
+		if( this.following )
+		{
+			var send_message			= document.createElement("A");
+				send_message.className	= "DM";
+				send_message.innerText	= "DM";
+				send_message.addEventListener("click" ,
+											function( event )
+											{
+												event.preventDefault();
+												reply_to_message( screen_name );
+											},
+											false );
+			user_menu_wrapper.appendChild( send_message );
+		}
+
+			icon.appendChild( user_menu_wrapper );		
+	}
 }
