@@ -135,8 +135,9 @@ a:hover
 									left bottom,
 									left top,
 									from( rgba( 50 , 50 , 50 , 0.6) ),
-									color-stop( 0.75, rgb( 150, 150, 150) ),
-									color-stop( 0.95, rgb( 190, 190, 190 ) ),
+									color-stop( 0.45, rgb( 150, 150, 150) ),
+									color-stop( 0.55, rgb( 190, 190, 190) ),
+									color-stop( 0.95, rgb( 220, 220, 220 ) ),
 									to( rgb( 70, 70, 70) )
 									);
 
@@ -159,9 +160,13 @@ a:hover
 {
 	display		: inline-block;
 	height		: 20px;
+	width		: 100px;
+	margin		: 0px 0px 0px -100px;
 	float		: right;
 	text-align	: right;
 	padding		: 0px 10px;
+	text-shadow	: none;
+	font-size	: 12px;
 }
 
 .timeline-button
