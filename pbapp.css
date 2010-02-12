@@ -155,6 +155,15 @@ a:hover
 	-webkit-user-select	: auto;
 }
 
+.timeline_header .unread-counter
+{
+	display		: inline-block;
+	height		: 20px;
+	float		: right;
+	text-align	: right;
+	padding		: 0px 10px;
+}
+
 .timeline-button
 {
 	position	: absolute;

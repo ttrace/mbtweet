@@ -510,6 +510,14 @@ tweet.prototype.buildEntry = function( target , append_mode )
 											false);
 		}
 	}
+
+	for( var i = 0 ; i < url_list.length ; i++ )
+	{
+		if( url_list[i].innerText.length > 31)
+		{
+			url_list[i].innerText = url_list[i].innerText.replace( /^(.{0,30}).+/ , "$1..." );
+		}
+	}
 	
 	var meta = document.createElement("DIV");
 		meta.className = "status-meta";
