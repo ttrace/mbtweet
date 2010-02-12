@@ -148,7 +148,7 @@ unread_counter = function( timeline_id )
 
 anchor_HTML = function( linked_source )
 {
-	linked_source = linked_source.replace( mbutil.isUrlRegexp		, "<a href='$1' target='_blank'>$1</a>$6");
+	linked_source = linked_source.replace( mbutil.isUrlRegexp		, "<a href='$1' target='_blank' rel='noreferrer'>$1</a>$6");
 	linked_source = linked_source.replace( /([^\/]|^)(www\.[\w\d:#@%\/;$\(\)~_\?\+-=\\\.&]+\.[\w\d:#@%\/;$\(\)~_\?\+-=\\\.&]+)/g , "<a href='http://$2' target='_blank'>$2</a>" );
 	linked_source = linked_source.replace(/blank\'\>([^\<]{28})[^\<]+\<\/a/g, "blank'>$1...</a");
 	linked_source = linked_source.replace(/(^|[^\S\/])#((([^\s\(\)\\\!\@\#\$\%\^\&\+\=\;\:\"\'\|\<\>\,\.\~\?]|[0-9a-zA-Z_\-])+[0-9a-zA-Z_\-]+){1,16})/g ,"$1<a class='hashtag' href='" + window.location.protocol + "//twitter.com/search?q=%23$3' target='_blank'>#$3</a>");
