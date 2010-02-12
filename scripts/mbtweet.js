@@ -58,7 +58,7 @@ init_mbtweet = function()
 		console={log:opera.postError};
 	};
 
-/*
+
 //	auto updater with using App Cache on HTML5
 // Safari 4 can't run...
 //     setInterval(function() {
@@ -74,7 +74,7 @@ init_mbtweet = function()
 // 		}
 // 		},
 // 	true);
-*/
+
 
 	init_web_database();
 	init_status_editor();
