@@ -50,7 +50,7 @@ init_mbtweet = function()
 	if( !mbtweetOAuth.accessToken.match(/^[0-9]{4,4}/) || mbtweetOAuth.accessTokenSecret == "")
 	{
 		alert("mbtweet requires OAuth authentication with Twitter.com");
-		location.href = location.pathname + "auth.html";
+		location.href = location.pathname + "about.html";
 	}
 
 	if(window.opera&&!window.console)

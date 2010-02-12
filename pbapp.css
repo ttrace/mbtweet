@@ -149,6 +149,7 @@ a:hover
 	height			: 23px;
 	text-align		: center;
 	line-height		: 20px;
+	cursor			: default;
 }
 
 .timeline_header input
