@@ -4,9 +4,9 @@ gTransExp = function( data ){
 //	var translate_element	= document.querySelector( "#" + arguments[0] ).querySelector( ".translated" );
 //	var translate_parent	= document.querySelector( "#" + arguments[0] ).querySelector( ".u-string" );
 	var translate_element	= document.querySelector( ".translated.loading" );
-	if(arguments[3] != null) // in error case
+	if( data.responseData == null) // in error case
 	{
-		translate_element.innerText = data.responseData.translatedText;
+		translate_element.innerText = data.responseDetails;
 		removeClass(translated_object,'loading');
 	}
 	else
