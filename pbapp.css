@@ -459,21 +459,23 @@ header
 
 .entry.animation
 {
-	opacity	:0;
+	-webkit-animation: appearEntry10 2s linear 1;
 }
 
-@-webkit-keyframes appearEntry
+@-webkit-keyframes appearEntry0
 {
 	0%
 	{
 		opacity				: 0.0;
-		-webkit-transform	: translate( 0px , -5px);
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
 	}
 
 	10%
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: 0px;
 	}
 
 	100%
@@ -483,44 +485,279 @@ header
 	}
 }
 
+@-webkit-keyframes appearEntry1
+{
+	0%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	10%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	20%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: 0px;
+	}
+	100%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+	}
+}
+
+@-webkit-keyframes appearEntry2
+{
+	0%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	20%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	30%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: 0px;
+	}
+	100%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+	}
+}
+
+
+@-webkit-keyframes appearEntry3
+{
+	0%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	30%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	40%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: 0px;
+	}
+	100%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+	}
+}
+
+
+@-webkit-keyframes appearEntry4
+{
+	0%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	40%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	50%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: 0px;
+	}
+	100%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+	}
+}
+
+
+@-webkit-keyframes appearEntry5
+{
+	0%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	50%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	60%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: 0px;
+	}
+	100%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+	}
+}
+
+@-webkit-keyframes appearEntry6
+{
+	0%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	60%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	70%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: 0px;
+	}
+	100%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+	}
+}
+
+@-webkit-keyframes appearEntry7
+{
+	0%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	70%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	80%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: 0px;
+	}
+	100%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+	}
+}
+
+@-webkit-keyframes appearEntry10
+{
+	0%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	80%
+	{
+		opacity				: 0.0;
+		-webkit-transform	: translate( 0px , -15px);
+		margin-top			: -15px;
+	}
+
+	90%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: 0px;
+	}
+	100%
+	{
+		opacity				: 1.0;
+		-webkit-transform	: translate( 0px , 0px);
+	}
+}
+
 .entry.animation:nth-child(0)
 {
-	-webkit-animation: appearEntry 2s 0s ease-in 1 alternate;
+	-webkit-animation: appearEntry0 2s linear 1;
 }
 
 .entry.animation:nth-child(1)
 {
-	-webkit-animation: appearEntry 2s 0.1s ease-in 1 alternate;
+	-webkit-animation: appearEntry1 2s linear 1;
 }
 
 .entry.animation:nth-child(2)
 {
-	-webkit-animation: appearEntry 2s 0.2s ease-in 1 alternate;
+	-webkit-animation: appearEntry2 2s linear 1;
 }
 
 .entry.animation:nth-child(3)
 {
-	-webkit-animation: appearEntry 2s 0.3s ease-in 1 alternate;
+	-webkit-animation: appearEntry3 2s linear 1;
 }
 
 .entry.animation:nth-child(4)
 {
-	-webkit-animation: appearEntry 2s 0.4s ease-in 1 alternate;
+	-webkit-animation: appearEntry4 2s linear 1;
 }
 
 .entry.animation:nth-child(5)
 {
-	-webkit-animation: appearEntry 2s 0.5s ease-in 1 alternate;
+	-webkit-animation: appearEntry5 2s linear 1;
 }
 
 .entry.animation:nth-child(6)
 {
-	-webkit-animation: appearEntry 2s 0.6s ease-in 1 alternate;
+	-webkit-animation: appearEntry6 2s linear 1;
 }
 
 .entry.animation:nth-child(7)
 {
-	-webkit-animation: appearEntry 2s 0.7s ease-in 1 alternate;
+	-webkit-animation: appearEntry7 2s linear 1;
 }
 
 .timeline > .entry
