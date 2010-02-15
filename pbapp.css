@@ -131,6 +131,14 @@ a:hover
 	-webkit-border-top-right-radius: 6px 6px;
 	
 	background-color	: rgb( 70, 70, 70);
+	background	: -o-linear-gradient(	bottom,
+									rgba( 50 , 50 , 50 , 0.6),
+									rgb( 150, 150, 150) 45%,
+									rgb( 190, 190, 190) 55%,
+									rgb( 220, 220, 220 ) 95%,
+									rgb( 70, 70, 70) 100%
+									);
+
 	background	: -webkit-gradient(	linear,
 									left bottom,
 									left top,
@@ -459,7 +467,9 @@ header
 
 .entry.animation
 {
-	margin-top			: 0px;
+	margin-top			: inherit;
+	-webkit-transform	: translate( 0px , 0px);
+	opacity				: 1.0;
 	-webkit-animation: appearEntry10 1s ease-in 1;
 }
 
@@ -476,13 +486,14 @@ header
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
-		margin-top			: 0px;
+		margin-top			: inherit;
 	}
 
 	100%
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: inherit;
 	}
 }
 
@@ -506,12 +517,13 @@ header
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
-		margin-top			: 0px;
+		margin-top			: inherit;
 	}
 	100%
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: inherit;
 	}
 }
 
@@ -535,12 +547,13 @@ header
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
-		margin-top			: 0px;
+		margin-top			: inherit;
 	}
 	100%
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: inherit;
 	}
 }
 
@@ -565,12 +578,13 @@ header
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
-		margin-top			: 0px;
+		margin-top			: inherit;
 	}
 	100%
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: inherit;
 	}
 }
 
@@ -595,12 +609,13 @@ header
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
-		margin-top			: 0px;
+		margin-top			: inherit;
 	}
 	100%
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: inherit;
 	}
 }
 
@@ -625,12 +640,13 @@ header
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
-		margin-top			: 0px;
+		margin-top			: inherit;
 	}
 	100%
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: inherit;
 	}
 }
 
@@ -654,12 +670,13 @@ header
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
-		margin-top			: 0px;
+		margin-top			: inherit;
 	}
 	100%
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: inherit;
 	}
 }
 
@@ -683,12 +700,13 @@ header
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
-		margin-top			: 0px;
+		margin-top			: inherit;
 	}
 	100%
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: inherit;
 	}
 }
 
@@ -712,12 +730,13 @@ header
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
-		margin-top			: 0px;
+		margin-top			: inherit;
 	}
 	100%
 	{
 		opacity				: 1.0;
 		-webkit-transform	: translate( 0px , 0px);
+		margin-top			: inherit;
 	}
 }
 
@@ -907,11 +926,13 @@ a.sname:visited
 	height		: 36px;
 	text-align	: right;
 	z-index	: 999;
+	-webkit-transform	: scale( 1 , 1 );
 }
 
 .entry a.thumbnail
 {
 	display		:	inline-block;
+
 	border		: 6px white solid;
 	max-width		: 100px;
 	max-height		: 100px;
@@ -1664,8 +1685,7 @@ div.geolocation
 
 a.geolocation
 {
-	display		: inline-block;
-	position	: absolute;
+	display		: block;
 	z-index		: 999;
 	font-size	: 12px;
 	height		: 12px;
@@ -1695,6 +1715,7 @@ a.geolocation
 
 div.geolocation:hover a.geolocation
 {
+	position	: absolute;
 	background-color	: rgb(30, 30, 120)
 	background	: -webkit-gradient(	linear,
 					right top,
@@ -1722,7 +1743,7 @@ div.geolocation .map-title
 	padding			: 0px 7px;
 	z-index			: 990;
 	border			: rgb( 120 , 120 , 120 ) 1px solid;
-	background-color	: white;
+	background-color	: white;///
 	background		: -webkit-gradient(	linear,
 										left top,
 										left bottom,
