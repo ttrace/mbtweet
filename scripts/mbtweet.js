@@ -223,7 +223,7 @@ reply_to = function( in_reply_to_screen_name , in_reply_to_status_id )
 	if( arguments[2] )
 	{
 //		status_editor.value += "@" + in_reply_to_screen_name;
-		window.console.log( arguments[2] );
+		if(mbtweet.debug)window.console.log( arguments[2] );
 		arguments[2].push( "@" + in_reply_to_screen_name );
 		var user_list_string = "";
 		for(key in arguments[2])
@@ -232,7 +232,7 @@ reply_to = function( in_reply_to_screen_name , in_reply_to_status_id )
 			if(mbtweet.debug)window.console.log( arguments[2] , other_user , other_user != in_reply_to_screen_name , other_user != mbtweet.user.screen_name , !status_editor.value.match( new RegExp(other_user) ));
 			if( other_user != mbtweet.user.screen_name && !status_editor.value.match( new RegExp(other_user) ) && !user_list_string.match( new RegExp(other_user) ) )
 			{
-				user_list_string += "@" + other_user + " ";
+				user_list_string = "@" + other_user + " " + user_list_string;
 			}
 		}
 		status_editor.value += user_list_string;
