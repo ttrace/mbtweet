@@ -459,7 +459,8 @@ header
 
 .entry.animation
 {
-	-webkit-animation: appearEntry10 2s linear 1;
+	margin-top			: 0px;
+	-webkit-animation: appearEntry10 1s ease-in 1;
 }
 
 @-webkit-keyframes appearEntry0
@@ -722,42 +723,42 @@ header
 
 .entry.animation:nth-child(0)
 {
-	-webkit-animation: appearEntry0 2s linear 1;
+	-webkit-animation: appearEntry0 1s ease-in 1;
 }
 
 .entry.animation:nth-child(1)
 {
-	-webkit-animation: appearEntry1 2s linear 1;
+	-webkit-animation: appearEntry1 1s ease-in 1;
 }
 
 .entry.animation:nth-child(2)
 {
-	-webkit-animation: appearEntry2 2s linear 1;
+	-webkit-animation: appearEntry2 1s ease-in 1;
 }
 
 .entry.animation:nth-child(3)
 {
-	-webkit-animation: appearEntry3 2s linear 1;
+	-webkit-animation: appearEntry3 1s ease-in 1;
 }
 
 .entry.animation:nth-child(4)
 {
-	-webkit-animation: appearEntry4 2s linear 1;
+	-webkit-animation: appearEntry4 1s ease-in 1;
 }
 
 .entry.animation:nth-child(5)
 {
-	-webkit-animation: appearEntry5 2s linear 1;
+	-webkit-animation: appearEntry5 1s ease-in 1;
 }
 
 .entry.animation:nth-child(6)
 {
-	-webkit-animation: appearEntry6 2s linear 1;
+	-webkit-animation: appearEntry6 1s ease-in 1;
 }
 
 .entry.animation:nth-child(7)
 {
-	-webkit-animation: appearEntry7 2s linear 1;
+	-webkit-animation: appearEntry7 1s ease-in 1;
 }
 
 .timeline > .entry
