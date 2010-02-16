@@ -430,6 +430,18 @@ header
 	float		: left;
 }
 
+#post_editor
+{
+	width		: 400px;
+	height		: 70px;
+	position	: absolute;
+	padding		: 6px;
+	border-radius	: 6px;
+	-webkit-border-radius	: 6px;
+	right		: 0px;
+	-webkit-user-modify: read-write-plaintext-only;
+}
+
 #post #hashtag
 {
 	vertical-align	: top;
