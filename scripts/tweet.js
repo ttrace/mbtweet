@@ -249,7 +249,7 @@ create_tweet_element = function( data , cache )
 		newTweet.user.profile_sidebar_fill_color	 = tweet_data.user.profile_sidebar_fill_color;
 		newTweet.user.profile_text_color			 = tweet_data.user.profile_text_color;
 
-	if(mbtweet.debug)window.console.log( newTweet.user.following , newTweet.user.screen_name );
+//	if(mbtweet.debug)window.console.log( newTweet.user.following , newTweet.user.screen_name );
 
 
 		if( cache && mbdatabase.db != false )

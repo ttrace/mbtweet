@@ -142,6 +142,7 @@ is_in_view = function( target_column , target_object )
 	}
 }
 
+
 // following codes are used after twitter support XHR2.
 // function __jsonp_fetch( access_URL , action , method , parameter , mbtweet_method )
 // {

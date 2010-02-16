@@ -3,7 +3,7 @@ var mbtweet = {};
 mbtweet = 
 {
 	debug			: false ,
-	build			: 00022 ,
+	build			: 00023 ,
 	version			: "1.0" ,
 	bitly_token		: "",
 	currentSearch	: "",
@@ -117,61 +117,6 @@ function count_api_rate( option )
 	}
 }
 
-
-retreve_search = function( input_element , search_language )
-{
-	if( mbtweet.debug )window.console.log("retreve_search:" , input_element);
-	if( query != mbtweet.currentSearch )
-	{
-		var old_entry = document.querySelectorAll( "#search .entry" );
-		var search_timeline = document.querySelector( "#search" );
-		for( i = 0 ; i < old_entry.length ; i++ )
-		{
-			search_timeline.removeChild( old_entry[i] );
-		}
-		var query = input_element.value;
-		if( query != "" )
-		{
-			mbtweet.currentSearch = query;
-			mbtweetOAuth.callAPI(	"http://search.twitter.com/search.json" ,
-									"GET",
-									[
-										["callback" , "retreveSearch"],
-										["q" , query],
-										["lang" , search_language],
-										["rpp" , "50"]
-									],
-									{ auth : false }
-								);
-			setTimeout( function(){ update_search( query , search_language ) } , 60000 );
-		}
-	}
-}
-
-update_search = function( update_query , search_language )
-{
-	if( document.querySelectorAll("#search").length != 0 && mbtweet.currentSearch == update_query )
-	{
-		var latest_entry = document.querySelectorAll("#search > .entry")[0];
-		var since_id	= null;
-		if( latest_entry )
-		{
-			since_id = latest_entry.id.replace(/[a-zA-Z0-9_]+\-/ , "") + "";
-		}
-		mbtweetOAuth.callAPI(	"http://search.twitter.com/search.json" ,
-								"GET",
-								[
-									["callback" , "updateInitSearchTimeline"],
-									["q" , update_query ],
-									["lang" , search_language],
-									["since_id" , since_id],
-									["rpp" , "100"]
-								],
-								{ auth : false }
-							);
-		setTimeout( function(){ update_search( update_query , search_language ) } , 60000 );
-	}
-}
 
 post_tweet = function( form , event)
 {

@@ -114,25 +114,25 @@ reset_time_in_seconds: 1261737855
 	mbtweet.rate.ip_reset	= data.reset_time_in_seconds;
 }
 
-retreveSearch = function( data )
-{
-	var search_timeline = document.querySelector("#search");
-	for( i = 0 ; i < data.results.length ; i++ )
-	{
-		create_search_element( data.results[i] ).buildEntry( search_timeline );
-	}
-}
-
-updateInitSearchTimeline = function(data)
-{
-	var search_timeline = document.querySelector("#search");
-	var insert_target = document.querySelector("#search > .entry");
-
-	for( i = 0 ; i < data.results.length ; i++ )
-	{
-		create_search_element( data.results[i] ).buildEntry( search_timeline , "insert" , insert_target );
-	}
-}
+// retreveSearch = function( data )
+// {
+// 	var search_timeline = document.querySelector("#search");
+// 	for( i = 0 ; i < data.results.length ; i++ )
+// 	{
+// 		create_search_element( data.results[i] ).buildEntry( search_timeline );
+// 	}
+// }
+// 
+// updateInitSearchTimeline = function(data)
+// {
+// 	var search_timeline = document.querySelector("#search");
+// 	var insert_target = document.querySelector("#search > .entry");
+// 
+// 	for( i = 0 ; i < data.results.length ; i++ )
+// 	{
+// 		create_search_element( data.results[i] ).buildEntry( search_timeline , "insert" , insert_target );
+// 	}
+// }
 
 place_timeline = function(data)
 {

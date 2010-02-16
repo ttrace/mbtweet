@@ -386,42 +386,7 @@ timeline.prototype.create = function()
 		timeline_header.className = "timeline_header";
 		timeline_header.innerHTML = this.name;
 	timeline_column.appendChild( timeline_header );
-	
-	//if( this.timeline_id.match(/^search/ )
-	if( this.search && this.search.query == "" )
-	{
-		var search_field		= document.createElement("INPUT");
-			search_field.id		= "search_keyword";
-			search_field.type	= "search";
-			search_field.addEventListener(	"change",
-											function( event )
-											{
-												if( event.target.shiftKey == true )
-												{
-													retreve_search( search_field , mbtweet.user.language );
-												}
-												else
-												{
-													retreve_search( search_field );
-												}
-											},
-											false);
-			search_field.addEventListener(	"keydown",
-											function( event )
-											{
-												if( event.shiftKey )
-												{
-													event.target.shiftKey = true;
-												}
-												else
-												{
-													event.target.shiftKey = false;												
-												}
-											},
-											false);
-		timeline_header.appendChild( search_field );			
-	}
-	
+		
 	var timeline_count = document.createElement("SPAN");
 		timeline_count.className = "unread-counter";
 		timeline_count.innerText = "0";
@@ -447,6 +412,48 @@ timeline.prototype.create = function()
 	var timeline_readmore = document.createElement("DIV");
 		timeline_readmore.className = "read-more";
 		timeline_readmore.innerText = "Load next page";
+
+	this.timeline = timeline;
+
+	//if( this.timeline_id.match(/^search/ )
+	if( this.search && this.search.query == "" )
+	{
+		var search_field		= document.createElement("INPUT");
+			search_field.id		= "search_keyword";
+			search_field.type	= "search";
+			search_field.searchtimeline = this;
+			search_field.addEventListener(	"change",
+											function( event )
+											{
+												event.target.searchtimeline.search.query = event.target.value;
+												if( event.target.shiftKey == true )
+												{
+													event.target.searchtimeline.search.lang = mbtweet.user.language;
+//													if(mbtweet.debug)window.console.log( event.target.searchtimeline );
+													event.target.searchtimeline.search.init( event.target.searchtimeline );
+												}
+												else
+												{
+													event.target.searchtimeline.search.lang = "";
+													event.target.searchtimeline.search.init( event.target.searchtimeline );
+												}
+											},
+											false);
+			search_field.addEventListener(	"keydown",
+											function( event )
+											{
+												if( event.shiftKey )
+												{
+													event.target.shiftKey = true;
+												}
+												else
+												{
+													event.target.shiftKey = false;												
+												}
+											},
+											false);
+		timeline_header.appendChild( search_field );			
+	}
 
 	if( this.timeline_id.match(/^follow/) )
 	{
@@ -490,8 +497,6 @@ timeline.prototype.create = function()
 
 	timeline_column.appendChild( timeline );
 	
-	this.timeline = timeline;
-
 	document.querySelector("#column").appendChild( timeline_column );
 
 	fit_holizontal_width();
@@ -563,6 +568,7 @@ timeline.prototype.loadMax = function()
 timeline.prototype.loadMaxSearch = function()
 {
 	var max_id = (this.timeline.max_id);
+	if(mbtweet.debug)window.console.log( this );
 	eval( "initial" + this.timeline_id + "=function(data){initialSearchTimeline(data,'" + this.timeline_id + "' , " + this.cache + ",'removefirst');delete this}" );
 
 	mbtweetOAuth.callAPI(	this.api ,
@@ -624,7 +630,13 @@ timeline.prototype.update = function()
 
 search.prototype.init = function( timeline )
 {
-//	var timeline_object = timeline.timeline;
+	var timeline_object = document.querySelector( "#" + timeline.timeline_id );
+	var old_entry = timeline_object.querySelectorAll( " .entry" );
+	for( i = 0 ; i < old_entry.length ; i++ )
+	{
+		timeline_object.removeChild( old_entry[i] );
+	}
+
 	eval( "initial" + timeline.timeline_id + "=function(data){initialSearchTimeline(data,'" + timeline.timeline_id + "' , " + timeline.cache + ");delete this}" );
 
 	mbtweetOAuth.callAPI(	timeline.api ,
@@ -637,14 +649,17 @@ search.prototype.init = function( timeline )
 							],
 							{ auth	: false }
 						);
-	setTimeout( function(){ timeline.search.update( timeline ) } , timeline.interval );
+
+	var init_query = this.query;
+	setTimeout( function(){ timeline.search.update( timeline , init_query ) } , timeline.interval );
 	return false;
 }
 
-search.prototype.update = function( timeline )
+search.prototype.update = function( timeline , init_query )
 {
+	if(mbtweet.debug)window.console.log( init_query , this.query );
 	var timeline_object = timeline.timeline;
-	if( document.getElementById( timeline_object.id ) )
+	if( document.getElementById( timeline_object.id ) && init_query == this.query )
 	{
 		var timeline_object = timeline.timeline;
 		var since_id = timeline_object.querySelector(".entry").id.replace(/.+\-([0-9]+)$/ , "$1") + "";
@@ -660,7 +675,8 @@ search.prototype.update = function( timeline )
 								],
 								{ auth	: false }
 							);
-		setTimeout( function(){ timeline.search.update( timeline ) } , timeline.interval );
+		var init_query = this.query;
+		setTimeout( function(){ timeline.search.update( timeline , init_query ) } , timeline.interval );
 	}
 	return false;
 }
@@ -771,7 +787,7 @@ initialSearchTimeline = function( data , target_id , cache )
 {
 	var max_id = "";
 	var timeline = document.getElementById( target_id );
-	var insert_target = timeline.querySelector(".read.more");
+	var insert_target = timeline.querySelector(".read-more");
 
 	var i = 0;
 	if( arguments[3] == "removefirst" ) i = 1;
