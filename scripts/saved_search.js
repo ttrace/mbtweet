@@ -141,6 +141,10 @@ search_index = function( search )
 	var search_anchor			= document.createElement("A");
 		search_anchor.href		= "http://twitter.com/" + search.query;
 		search_anchor.innerText	= search.name;
+	if( search.name.length > 20 )
+	{
+		search_anchor.innerText	= search.name.replace(/^(.{1,20}).*/ , "$1...");		
+	}
 		search_anchor.target	= "_blank";
 		search_anchor.mysearch	= search;
 		search_anchor.addEventListener(	"click" ,
