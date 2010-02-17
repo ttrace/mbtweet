@@ -33,6 +33,7 @@ mbutil.defined_media_regexp =
 	twitpic_carrier		: /(http\:\/\/twitpic.com\/[a-zA-Z0-9]+)/,
 	pikchur_carrier		: /(http\:\/\/pk.gd\/([a-zA-Z0-9]+))/,
 	movapic_carrier		: /http\:\/\/movapic.com\/pic\/([a-z0-9]+)/,
+	gyazo_carrier		: /(http\:\/\/gyazo.com\/[a-zA-Z0-9]+.png)/,
 	tweetphoto_carrier	: /http\:\/\/pic\.gd\/([a-zA-Z0-9]+)/,
 	yfrog_carrier		: /http\:\/\/yfrog.[a-z]+\/([a-zA-Z0-9]+)/,
 	photoshare_carrier	: /(http\:\/\/www.bcphotoshare\.com\/photos\/([0-9][0-9])[0-9]+\/([0-9]+))/,
@@ -93,6 +94,11 @@ fetch_media_thumbnail = function( status_id , media_url , media_carrier )
 
 		case "movapic_carrier":
 			var pic_thumb_src = "http://image.movapic.com/pic/s_" + media_url.match(mbutil.defined_media_regexp[media_carrier])[1] +".jpeg";
+			place_picture( status_id , pic_thumb_src , media_url );
+			break;
+
+		case "gyazo_carrier":
+			var pic_thumb_src = media_url;
 			place_picture( status_id , pic_thumb_src , media_url );
 			break;
 
