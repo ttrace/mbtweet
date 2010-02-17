@@ -20,15 +20,23 @@ init_status_editor = function()
 	
 	var hashtag_editor = document.querySelector("#hashtag");
 		hashtag_editor.addEventListener(	"keydown",
-									function( event )
-									{
-										status_counter();
-										if( event.keyCode == 32 )
-										{
-											validate_hashtag( event.target , "withspace" );
-										}
-									},
-									false);
+											function( event )
+											{
+												status_counter();
+												if( event.keyCode == 32 )
+												{
+													validate_hashtag( event.target , "withspace" );
+												}
+											},
+											false);
+
+		hashtag_editor.addEventListener(	"blur",
+											function( event )
+											{
+												status_counter();
+												validate_hashtag( event.target , "withspace" );
+											},
+											false);
 	
 }
 
