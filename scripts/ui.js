@@ -4,17 +4,6 @@ mbui = {
 	
 init_window_resize = function()
 {
-// 	var timeline_css_list = getMatchedCSSRules( document.querySelector(".timeline") , '')
-// 	for( key in timeline_css_list )
-// 	{
-// 		if( timeline_css_list[key].selectorText == ".timeline")
-// 		{
-// 			mbui = {
-// 					timeline_css_height : timeline_css_list[key].style,
-// 					window_resize_token	: "init",
-// 					}
-// 		}
-// 	}
 	window.addEventListener ( 'resize' , function(){ window_resize_starter() } , true);	
 	window_resize( "init" );
 }
@@ -28,6 +17,19 @@ init_status_editor = function()
 										status_editor_update();
 									},
 									false);
+	
+	var hashtag_editor = document.querySelector("#hashtag");
+		hashtag_editor.addEventListener(	"keydown",
+									function( event )
+									{
+										status_counter();
+										if( event.keyCode == 32 )
+										{
+											validate_hashtag( event.target , "withspace" );
+										}
+									},
+									false);
+	
 }
 
 status_editor_update = function()
@@ -36,6 +38,16 @@ status_editor_update = function()
 	var status_form = document.querySelector("#status");
 		status_form.value = editor.innerText;
 	if(mbtweet.debug)window.console.log(editor.innerText);
+}
+
+validate_hashtag = function( hashtag_editor )
+{
+	var hashtag_base_string = hashtag_editor.value;
+		hashtag_base_string = hashtag_base_string.replace(/(^|\s)(\S+)/g , "#$2 " );
+		hashtag_base_string = hashtag_base_string.replace(/#+/g , "#" );
+		hashtag_base_string = hashtag_base_string.replace(/\s$/ , "" );
+		hashtag_editor.value = hashtag_base_string;
+	status_counter();		
 }
 
 window_resize_starter = function()
