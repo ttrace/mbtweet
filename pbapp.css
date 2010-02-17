@@ -1625,12 +1625,21 @@ footer .dock-icon:hover .dock-menu,
 	padding-left	: 4px;
 }
 
+/*
 #saved_search .dock-menu-index a:after
 {
 	font-family	: keytop;
 	font-size	: 10px;
 	float		:right;
 	content		: "S";
+}
+*/
+
+#saved_search .dock-menu-index a img.flag
+{
+	float		: right;
+	width		: 18px;
+	height		: 12px;
 }
 
 .dock-menu-index a:hover

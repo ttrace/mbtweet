@@ -174,7 +174,27 @@ search_index = function( search )
 										},
 										false );
 
+	var language_flag			= document.createElement("IMG");
+		language_flag.className	= "flag";
+		language_flag.src		= "images/flags/" + mbtweet.user.country + ".gif";
+		language_flag.addEventListener(	"click" ,
+										function( event )
+										{
+											event.stopPropagation();
+											event.preventDefault();
+											var search_index = event.target;
+											search_index = event.target.parentNode;
+											new_search_timeline( search_index.mysearch.query , mbtweet.user.language );												
+											addClass( search_index , "active" );
+											setTimeout( function()
+												{
+													removeClass( search_index , "active" );
+													
+												}, 500);
+										},
+										false );
 
+		search_anchor.appendChild( language_flag );
 		search_index.appendChild( search_anchor );
 
 	return( search_index );

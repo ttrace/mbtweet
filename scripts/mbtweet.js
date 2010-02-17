@@ -16,6 +16,7 @@ mbtweet =
 	{
 		profile_image	: "",
 		language	: navigator.language.substr(0,2),
+		country		: navigator.language.substr(3,2),
 		conv_length	: 2,
 	},
 	rate :
