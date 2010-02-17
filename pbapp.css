@@ -1625,7 +1625,7 @@ footer .dock-icon:hover .dock-menu,
 	padding-left	: 4px;
 }
 
-/*
+
 #saved_search .dock-menu-index a:after
 {
 	font-family	: keytop;
@@ -1633,7 +1633,7 @@ footer .dock-icon:hover .dock-menu,
 	float		:right;
 	content		: "S";
 }
-*/
+
 
 #saved_search .dock-menu-index a img.flag
 {
