@@ -152,11 +152,11 @@ search_index = function( search )
 										{
 											event.stopPropagation();
 											event.preventDefault();
+											var search_index = event.target;
 											if( !event.target.mysearch )
 											{
 												search_index = event.target.parentNode;
 											}
-											var search_index = event.target;
 											if( !event.shiftKey )  // Shift click openes Twitter Website
 											{
 												new_search_timeline( search_index.mysearch.query );
