@@ -387,6 +387,13 @@ tweet.prototype.buildEntry = function( target , append_mode )
 		user_name.target = "_blank";
 	status_string_wrapper.appendChild( user_name );
 
+	if( this.user.verified )
+	{
+		//user_verified = document.createElement("SPAN");
+		//user_verified.className = "verified";
+		user_name.className = "user-name verified";
+	}
+
 	if( isRetweeted )
 	{
 		var rt_connect = document.createElement("span");
