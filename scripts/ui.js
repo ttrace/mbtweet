@@ -90,6 +90,8 @@ window_resize = function( window_resize_token )
 		{
 			api_rate_counter.style.display = "block";
 		}
+		
+		fit_dock_menu_height();
 	}
 	return( false );
 }
@@ -107,6 +109,21 @@ function fit_holizontal_width()
 		}
 	}
 	column_wrapper.style.width = total_width + "px";
+}
+
+function fit_dock_menu_height()
+{
+	var dock_menu_style_list = document.styleSheets[0].cssRules;
+	var window_height = window.innerHeight - 100;
+	for( var i = 0 ; i < dock_menu_style_list.length ; i++)
+	{
+
+		if( dock_menu_style_list[i].selectorText == "footer .dock-menu")
+		{
+
+			dock_menu_style_list[i].style.setProperty("max-height", window_height + "px");
+		}
+	}
 }
 
 status_counter = function()

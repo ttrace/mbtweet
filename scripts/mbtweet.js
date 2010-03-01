@@ -63,20 +63,20 @@ init_mbtweet = function()
 
 //	auto updater with using App Cache on HTML5
 // Safari 4 can't run...
-//     setInterval(function() {
-// 	applicationCache.update();
-//     }, 5000);
-//     applicationCache.addEventListener(
-//     	"updateready",
-//     	function() {
-// 		if (confirm("New update"))
-// 		{
-// 			applicationCache.swapCache();
-// 			location.href = location.href;
-// 		}
-// 		},
-// 	true);
-
+//      setInterval(function() {
+//  	applicationCache.update();
+//      }, 5000);
+//      applicationCache.addEventListener(
+//      	"updateready",
+//      	function() {
+//  		if (confirm("New update"))
+//  		{
+//  			applicationCache.swapCache();
+//  			location.href = location.href;
+//  		}
+//  		},
+//  	true);
+// 
 
 	init_web_database();
 	init_status_editor();
