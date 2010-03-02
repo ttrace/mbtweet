@@ -348,18 +348,18 @@ create_user_element = function( data , cache , cursor )
 		newUser.user_protected		 = user_data.protected;
 		newUser.screen_name			 = user_data.screen_name;
 		newUser.statuses_count		 = user_data.statuses_count;
-		newUser.time_zone			 = user_data.time_zone;
-		newUser.utc_offset			 = user_data.utc_offset;
-		newUser.url					 = user_data.url;
-		newUser.verified				 = user_data.verified;
-		newUser.profile_background_color		 = user_data.profile_background_color;
-		newUser.profile_background_image_url	 = user_data.profile_background_image_url;
-		newUser.profile_background_tile		 = user_data.profile_background_tile;
-		newUser.profile_image_url				 = user_data.profile_image_url;
-		newUser.profile_link_color			 = user_data.profile_link_color;
-		newUser.profile_sidebar_border_color	 = user_data.profile_sidebar_border_color;
-		newUser.profile_sidebar_fill_color	 = user_data.profile_sidebar_fill_color;
-		newUser.profile_text_color			 = user_data.profile_text_color;
+ 		newUser.time_zone			 = user_data.time_zone;
+ 		newUser.utc_offset			 = user_data.utc_offset;
+ 		newUser.url					 = user_data.url;
+ 		newUser.verified				 = user_data.verified;
+ 		newUser.profile_background_color		 = user_data.profile_background_color;
+ 		newUser.profile_background_image_url	 = user_data.profile_background_image_url;
+ 		newUser.profile_background_tile		 = user_data.profile_background_tile;
+ 		newUser.profile_image_url				 = user_data.profile_image_url;
+ 		newUser.profile_link_color			 = user_data.profile_link_color;
+ 		newUser.profile_sidebar_border_color	 = user_data.profile_sidebar_border_color;
+ 		newUser.profile_sidebar_fill_color	 = user_data.profile_sidebar_fill_color;
+ 		newUser.profile_text_color			 = user_data.profile_text_color;
 
 	// later cache-able codes
 	return( newUser );
@@ -404,7 +404,7 @@ user.prototype.buildUserInfo = function( target , append_mode )
 	{
 		linked_source += this.description;
 	}
-// 		string.innerHTML = anchor_HTML(linked_source);
+//		string.innerHTML = anchor_HTML(linked_source);
 	if( this.following && target.id.match(/^followers/) )
 	{
 		linked_source += "<br><b>Following</b>" ;

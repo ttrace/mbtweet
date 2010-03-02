@@ -251,7 +251,7 @@ timeline.prototype =
 	{
 		if (!("_api" in this))
 				this._api = "";
-		if ( this.auth && mbtweet.rate.auth < 5)
+		if ( this.auth && mbtweet.rate.auth < 50)
 		{
 			if(mbtweet.debug)window.console.log( this.auth , mbtweet.rate.auth , "Rate is shortning", this.timeline_id );
 			this._api = this._spare_api;
