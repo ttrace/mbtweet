@@ -1,6 +1,6 @@
 mbtweet = 
 {
-	debug			: true ,
+	debug			: false ,
 	build			: 00001 ,
 	version			: "1.0" ,
 	bitly_token		: "",

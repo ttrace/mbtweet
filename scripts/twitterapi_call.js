@@ -60,10 +60,16 @@ formEncode_noOAuth = function formEncode( parameters ) {
 
 retreveMine = function(data)
 {
+	if(mbtweet.debug)window.console.log( "captured user data" , data[0].user );
+
 	mbtweet.user.profile_image = data[0].user.profile_image_url;
 	document.querySelector(".dock .user-icon").src = mbtweet.user.profile_image;
 	document.querySelector("body").style.backgroundImage = "url(" + data[0].user.profile_background_image_url + ")";
 	document.querySelector("body").style.backgroundColor = "#" + data[0].user.profile_background_color;
+	if( data[0].user.profile_background_tile == true )
+	{
+		document.querySelector("body").style.backgroundRepeat = "repeat";
+	}
 //	if(mbtweet.debug)window.console.log(data[0].user);
 	for( i = 0 ; i < data.length ; i++ )
 	{
